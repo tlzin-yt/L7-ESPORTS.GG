@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, REST, Routes, SlashCommandBuilder } = require('discord.js');
 const http = require('http');
 
 const client = new Client({
@@ -12,16 +12,42 @@ const client = new Client({
 });
 
 // Banco de dados simulado em memória
-const metasGuilda = new Map(); // Guarda pontos da semana
+const metasGuilda = new Map();
 
-client.once('ready', () => {
+// Definindo os comandos de barra (Slash Commands)
+const commands = [
+    new SlashCommandBuilder()
+        .setName('escalacao')
+        .setDescription('Envia o painel de escalação para a Guerra de Guilda'),
+    new SlashCommandBuilder()
+        .setName('painel-meta')
+        .setDescription('Envia o painel para registro de metas da semana'),
+    new SlashCommandBuilder()
+        .setName('salatreino')
+        .setDescription('Gera uma senha temporária para sala de treino')
+].map(command => command.toJSON());
+
+client.once('ready', async () => {
     console.log(`Bot online como ${client.user.tag}!`);
+
+    // Registra os comandos Slash globalmente no Discord
+    const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+    try {
+        console.log('Registrando comandos Slash (/)....');
+        await rest.put(
+            Routes.applicationCommands(client.user.id),
+            { body: commands }
+        );
+        console.log('Comandos registrados com sucesso!');
+    } catch (error) {
+        console.error('Erro ao registrar comandos:', error);
+    }
 });
 
 client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand() && !interaction.isButton()) return;
 
-    // 1. PAINEL DE ESCALAÇÃO VIA EMBED E BOTÕES
+    // 1. PAINEL DE ESCALAÇÃO
     if (interaction.isChatInputCommand() && interaction.commandName === 'escalacao') {
         const embed = new EmbedBuilder()
             .setTitle('🛡️ ESCALAÇÃO PARA GUERRA DE GUILDA')
@@ -51,7 +77,7 @@ client.on('interactionCreate', async interaction => {
             await interaction.reply({ content: '🟡 Registrado como suplente.', ephemeral: true });
         }
 
-        // 2. SISTEMA DE META DE GUERRA (ENTREGAR PONTOS)
+        // 2. SISTEMA DE META DE GUERRA
         if (interaction.customId === 'entregar_meta') {
             const userId = interaction.user.id;
             const pontosAtuais = (metasGuilda.get(userId) || 0) + 100;
@@ -61,7 +87,7 @@ client.on('interactionCreate', async interaction => {
         }
     }
 
-    // COMANDO PARA ENVIAR PAINEL DE METAS
+    // COMANDO PAINEL DE METAS
     if (interaction.isChatInputCommand() && interaction.commandName === 'painel-meta') {
         const embed = new EmbedBuilder()
             .setTitle('🏆 META DE GUERRA DE GUILDA')
@@ -75,14 +101,14 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ embeds: [embed], components: [row] });
     }
 
-    // 3. FUNÇÕES EXTRAS: GERADOR DE SALA CUSTOM (TREINO)
+    // 3. SALA DE TREINO
     if (interaction.isChatInputCommand() && interaction.commandName === 'salatreino') {
         const senha = Math.floor(1000 + Math.random() * 9000);
         await interaction.reply(`🎮 **Sala de Treino Gerada!**\n🔑 **Senha temporária:** \`${senha}\`\n⚠️ Compartilhe apenas com os membros autorizados.`);
     }
 });
 
-// Servidor HTTP falso apenas para o Render detetar a porta aberta e o deploy ficar verde
+// Servidor HTTP para manter o Render em Live
 http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Bot online!');
