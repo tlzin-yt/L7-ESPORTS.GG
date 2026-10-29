@@ -1,4 +1,5 @@
 const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const http = require('http');
 
 const client = new Client({
     intents: [
@@ -53,7 +54,7 @@ client.on('interactionCreate', async interaction => {
         // 2. SISTEMA DE META DE GUERRA (ENTREGAR PONTOS)
         if (interaction.customId === 'entregar_meta') {
             const userId = interaction.user.id;
-            const pontosAtuais = (metasGuilda.get(userId) || 0) + 100; // Exemplo: entrega 100 pontos por clique
+            const pontosAtuais = (metasGuilda.get(userId) || 0) + 100;
             metasGuilda.set(userId, pontosAtuais);
 
             await interaction.reply({ content: `🎯 Meta atualizada! Você acumulou **${pontosAtuais} pontos** nesta semana.`, ephemeral: true });
@@ -80,5 +81,11 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply(`🎮 **Sala de Treino Gerada!**\n🔑 **Senha temporária:** \`${senha}\`\n⚠️ Compartilhe apenas com os membros autorizados.`);
     }
 });
+
+// Servidor HTTP falso apenas para o Render detetar a porta aberta e o deploy ficar verde
+http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Bot online!');
+}).listen(process.env.PORT || 3000);
 
 client.login(process.env.DISCORD_TOKEN);
