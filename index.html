@@ -22,16 +22,16 @@
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #09090b; color: #f4f4f5; }
         .glass-panel { background: rgba(18, 18, 20, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.06); }
-        .sidebar-item { transition: all 0.2s ease; }
-        .sidebar-item:hover, .sidebar-item.active { background: rgba(0, 85, 255, 0.12); color: #3b82f6; border-left: 3px solid #0055FF; }
+        .sidebar-btn { transition: all 0.2s ease; cursor: pointer; text-align: left; width: 100%; }
+        .sidebar-btn:hover, .sidebar-btn.ativo { background: rgba(0, 85, 255, 0.15); color: #3b82f6; border-left: 3px solid #0055FF; }
     </style>
 </head>
 <body class="min-h-screen flex">
 
-    <!-- SIDEBAR ESTILO TICKET KING -->
+    <!-- SIDEBAR -->
     <aside class="w-64 bg-[#0d0d10] border-r border-zinc-800/80 flex flex-col justify-between hidden md:flex shrink-0">
         <div>
-            <!-- Seletor de Servidor / Guilda -->
+            <!-- Seletor de Servidor -->
             <div class="p-4 border-b border-zinc-800/80">
                 <div class="bg-zinc-900/80 border border-zinc-800 rounded-xl p-3 flex items-center justify-between">
                     <div class="flex items-center gap-3">
@@ -50,13 +50,13 @@
             <!-- Menu Principal -->
             <div class="px-4 py-2 text-[10px] font-semibold uppercase tracking-wider text-zinc-500">Menu Principal</div>
             <nav class="px-3 space-y-1 text-xs font-medium">
-                <button onclick="mudarAba('home')" id="nav-home" class="sidebar-item active w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-300">
+                <button onclick="mudarAba('home')" id="nav-home" class="sidebar-btn ativo flex items-center gap-3 px-3 py-2.5 rounded-lg text-blue-400 bg-blue-600/10">
                     <span>🏠</span> Home / Visão Geral
                 </button>
-                <button onclick="mudarAba('membros')" id="nav-membros" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400">
+                <button onclick="mudarAba('membros')" id="nav-membros" class="sidebar-btn flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400">
                     <span>👥</span> Membros & Metas
                 </button>
-                <button onclick="mudarAba('embed')" id="nav-embed" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400">
+                <button onclick="mudarAba('embed')" id="nav-embed" class="sidebar-btn flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400">
                     <span>🎨</span> Bot Personalizer
                 </button>
             </nav>
@@ -86,18 +86,16 @@
             </div>
         </header>
 
-        <!-- ÁREA DINÂMICA DAS ABAS -->
+        <!-- ÁREAS DAS ABAS -->
         <div class="p-6 space-y-6 overflow-y-auto flex-1">
             
-            <!-- ABA 1: HOME / VISÃO GERAL -->
-            <div id=" aba-home" class="space-y-6">
-                <!-- Título da Seção -->
+            <!-- ABA 1: HOME -->
+            <div id="conteudo-home" class="space-y-6">
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight text-zinc-100">Dashboard</h1>
                     <p class="text-xs text-zinc-400 mt-0.5">Visão geral dos dados e estatísticas do bot da guilda no Discord.</p>
                 </div>
 
-                <!-- Cards Superiores de Telemetria -->
                 <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
                     <div class="glass-panel p-5 rounded-xl border border-zinc-800/80">
                         <span class="text-xs text-zinc-400 font-medium block mb-1">Membros Registrados</span>
@@ -119,7 +117,6 @@
                     </div>
                 </div>
 
-                <!-- Tabela de Membros Recentes na Home -->
                 <div class="glass-panel rounded-xl overflow-hidden border border-zinc-800/80">
                     <div class="p-4 border-b border-zinc-800 flex items-center justify-between">
                         <h3 class="font-bold text-xs text-zinc-200 uppercase tracking-wider">Atividade Recente dos Membros</h3>
@@ -143,8 +140,8 @@
                 </div>
             </div>
 
-            <!-- ABA 2: MEMBROS & METAS (GERENCIAMENTO COMPLETO) -->
-            <div id="aba-membros" class="space-y-6 hidden">
+            <!-- ABA 2: MEMBROS & METAS -->
+            <div id="conteudo-membros" class="space-y-6 hidden">
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight text-zinc-100">Gerenciamento de Membros</h1>
                     <p class="text-xs text-zinc-400 mt-0.5">Edite pontuações e acompanhe o desempenho individual da line-up.</p>
@@ -165,4 +162,212 @@
                                     <th class="py-3 px-4">Ação</th>
                                 </tr>
                             </thead>
-                            <tbody
+                            <tbody id="tabela-completa-membros" class="divide-y divide-zinc-800/40 text-xs text-zinc-300">
+                                <tr><td colspan="5" class="py-6 text-center text-zinc-500">A carregar dados...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABA 3: BOT PERSONALIZER -->
+            <div id="conteudo-embed" class="space-y-6 hidden">
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight text-zinc-100">Bot Personalizer</h1>
+                    <p class="text-xs text-zinc-400 mt-0.5">Personalize a aparência dos painéis que o seu bot envia no Discord.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-panel p-5 rounded-xl border border-zinc-800/80 space-y-4">
+                        <h3 class="font-bold text-xs text-zinc-200 uppercase tracking-wider">Configurações do Embed</h3>
+                        <div>
+                            <label class="block text-xs font-medium text-zinc-400 mb-1">Título do Painel</label>
+                            <input type="text" id="input-titulo" value="🎧 TOP 10 • TEMPO EM CALL" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-200 focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-zinc-400 mb-1">Cor Principal</label>
+                            <input type="color" id="input-cor" value="#0055FF" class="w-full h-10 bg-zinc-900 border border-zinc-800 rounded-lg p-1 cursor-pointer">
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-5 rounded-xl border border-zinc-800/80 space-y-3">
+                        <h3 class="font-bold text-xs text-zinc-400 uppercase tracking-wider">Pré-visualização no Discord</h3>
+                        <div id="preview-box" class="bg-[#2b2d31] p-4 rounded-lg border-l-4 border-blue-500 text-sm space-y-2">
+                            <span class="text-xs font-bold text-zinc-300 block">BOT-L7ESPORTS</span>
+                            <h4 id="preview-titulo-texto" class="font-bold text-white text-sm">🎧 TOP 10 • TEMPO EM CALL</h4>
+                            <p class="text-xs text-zinc-300">Acompanhe abaixo os membros mais ativos nas salas de voz da guilda.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FIREBASE SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBu2FCLdG1sLygZW1tHHmk0-5We80x7r9I",
+            authDomain: "bot-l7esports.firebaseapp.com",
+            projectId: "bot-l7esports",
+            storageBucket: "bot-l7esports.firebasestorage.app",
+            messagingSenderId: "575806582902",
+            appId: "1:575806582902:web:fbaffd16059e5b50526f57",
+            measurementId: "G-T9DP3ZCEND"
+        };
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+
+            document.getElementById('status-firebase').innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Conectado ao Firebase';
+            document.getElementById('status-firebase').className = 'text-xs px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-2';
+
+            function formatarTempo(segundos) {
+                if (!segundos) return '0min';
+                const h = Math.floor(segundos / 3600);
+                const m = Math.floor((segundos % 3600) / 60);
+                return h > 0 ? `${h}h ${m}min` : `${m}min`;
+            }
+
+            // DADOS EM TEMPO REAL
+            db.collection('guilda').doc('membros').collection('usuarios')
+                .onSnapshot((snapshot) => {
+                    let totalMembros = 0;
+                    let totalPontos = 0;
+                    let totalSegundos = 0;
+
+                    const tbodyHome = document.getElementById('tabela-home');
+                    const tbodyCompleta = document.getElementById('tabela-completa-membros');
+                    tbodyHome.innerHTML = '';
+                    tbodyCompleta.innerHTML = '';
+
+                    if (snapshot.empty) {
+                        const vazioHTML = `<tr><td colspan="5" class="py-8 text-center text-zinc-500">Nenhum membro registado no banco de dados ainda.</td></tr>`;
+                        tbodyHome.innerHTML = vazioHTML;
+                        tbodyCompleta.innerHTML = vazioHTML;
+                    } else {
+                        snapshot.forEach((doc) => {
+                            totalMembros++;
+                            const data = doc.data();
+                            const userId = doc.id;
+                            const nomeMembro = data.nome || `Membro (${userId.slice(-4)})`;
+                            const pontos = data.pontosGuerra || 0;
+                            const tempo = data.tempoCall || 0;
+
+                            totalPontos += pontos;
+                            totalSegundos += tempo;
+
+                            // Home
+                            const trHome = document.createElement('tr');
+                            trHome.className = 'hover:bg-zinc-800/30 transition-colors';
+                            trHome.innerHTML = `
+                                <td class="py-3 px-4 font-medium text-zinc-200 flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full bg-blue-600/20 text-blue-400 font-bold flex items-center justify-center text-[10px] border border-blue-500/30">L7</div>
+                                    ${nomeMembro}
+                                </td>
+                                <td class="py-3 px-4 font-mono text-zinc-400 text-[11px]">${userId}</td>
+                                <td class="py-3 px-4 font-bold text-blue-400">${pontos} pts</td>
+                                <td class="py-3 px-4 text-emerald-400">${formatarTempo(tempo)}</td>
+                            `;
+                            tbodyHome.appendChild(trHome);
+
+                            // Membros
+                            const trCompleta = document.createElement('tr');
+                            trCompleta.className = 'hover:bg-zinc-800/30 transition-colors';
+                            trCompleta.innerHTML = `
+                                <td class="py-3 px-4 font-medium text-zinc-200 flex items-center gap-2">
+                                    <div class="w-6 h-6 rounded-full bg-blue-600/20 text-blue-400 font-bold flex items-center justify-center text-[10px] border border-blue-500/30">L7</div>
+                                    ${nomeMembro}
+                                </td>
+                                <td class="py-3 px-4 font-mono text-zinc-400 text-[11px]">${userId}</td>
+                                <td class="py-3 px-4 font-bold text-blue-400">${pontos} pts</td>
+                                <td class="py-3 px-4 text-emerald-400">${formatarTempo(tempo)}</td>
+                                <td class="py-3 px-4">
+                                    <button onclick="editarPontos('${userId}', ${pontos})" class="bg-zinc-800 hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors text-xs border border-zinc-700">
+                                        ✏️ Editar
+                                    </button>
+                                </td>
+                            `;
+                            tbodyCompleta.appendChild(trCompleta);
+                        });
+                    }
+
+                    document.getElementById('stat-membros').textContent = totalMembros;
+                    document.getElementById('stat-pontos').textContent = `${totalPontos} pts`;
+                    document.getElementById('stat-horas').textContent = `${Math.floor(totalSegundos / 3600)}h`;
+                });
+
+            window.editarPontos = function(userId, pontosAtuais) {
+                const novoValor = prompt(`Digite os novos pontos de Guerra para o ID ${userId}:`, pontosAtuais);
+                if (novoValor !== null && !isNaN(novoValor)) {
+                    db.collection('guilda').doc('membros').collection('usuarios').doc(userId).set({
+                        pontosGuerra: parseInt(novoValor, 10)
+                    }, { merge: true }).then(() => {
+                        alert("Pontuação atualizada com sucesso!");
+                    }).catch(err => {
+                        alert("Erro ao atualizar: " + err.message);
+                    });
+                }
+            };
+
+        } catch (e) {
+            document.getElementById('status-firebase').innerHTML = '<span class="w-2 h-2 rounded-full bg-red-500"></span> Erro de Conexão';
+            console.error(e);
+        }
+
+        // SISTEMA DE ABAS SÓLIDO E AUTOMÁTICO COM HASH URL
+        function mudarAba(aba) {
+            ['home', 'membros', 'embed'].forEach(a => {
+                const el = document.getElementById(`conteudo-${a}`);
+                const nav = document.getElementById(`nav-${a}`);
+                if (el) el.classList.add('hidden');
+                if (nav) {
+                    nav.classList.remove('ativo', 'bg-blue-600/10', 'text-blue-400');
+                    nav.classList.add('text-zinc-400');
+                }
+            });
+
+            const abaAtiva = document.getElementById(`conteudo-${aba}`);
+            const navAtiva = document.getElementById(`nav-${aba}`);
+            
+            if (abaAtiva) abaAtiva.classList.remove('hidden');
+            if (navAtiva) {
+                navAtiva.classList.add('ativo', 'bg-blue-600/10', 'text-blue-400');
+                navAtiva.classList.remove('text-zinc-400');
+            }
+
+            const titulos = { home: 'Home', membros: 'Membros & Metas', embed: 'Bot Personalizer' };
+            document.getElementById('breadcrumb-atual').textContent = titulos[aba] || 'Home';
+            window.location.hash = aba;
+        }
+
+        // Verifica o hash ao carregar a página (ex: #embed ou #membros)
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (['home', 'membros', 'embed'].includes(hash)) {
+                mudarAba(hash);
+            } else {
+                mudarAba('home');
+            }
+        });
+
+        // Personalizador ao vivo
+        const inputTitulo = document.getElementById('input-titulo');
+        const inputCor = document.getElementById('input-cor');
+        const previewTituloTexto = document.getElementById('preview-titulo-texto');
+        const previewBox = document.getElementById('preview-box');
+
+        inputTitulo.addEventListener('input', (e) => {
+            previewTituloTexto.textContent = e.target.value || 'Título do Painel';
+        });
+
+        inputCor.addEventListener('input', (e) => {
+            previewBox.style.borderColor = e.target.value;
+        });
+    </script>
+</body>
+</html>
