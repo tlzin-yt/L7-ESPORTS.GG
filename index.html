@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L7 ESPORTS - Dashboard</title>
+    <title>L7 ESPORTS - Dashboard Oficial</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -20,250 +20,149 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .glass-panel { background: rgba(18, 18, 20, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        body { font-family: 'Inter', sans-serif; background-color: #09090b; color: #f4f4f5; }
+        .glass-panel { background: rgba(18, 18, 20, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.06); }
+        .sidebar-item { transition: all 0.2s ease; }
+        .sidebar-item:hover, .sidebar-item.active { background: rgba(0, 85, 255, 0.12); color: #3b82f6; border-left: 3px solid #0055FF; }
     </style>
 </head>
-<body class="bg-[#09090b] text-zinc-100 min-h-screen flex">
+<body class="min-h-screen flex">
 
-    <!-- Sidebar Estilo Ticket King -->
-    <aside class="w-64 bg-[#0d0d10] border-r border-zinc-800/60 flex flex-col justify-between hidden md:flex shrink-0">
+    <!-- SIDEBAR ESTILO TICKET KING -->
+    <aside class="w-64 bg-[#0d0d10] border-r border-zinc-800/80 flex flex-col justify-between hidden md:flex shrink-0">
         <div>
-            <div class="p-4 border-b border-zinc-800/60 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center font-bold text-lg shadow-lg shadow-blue-500/20">
-                        L7
+            <!-- Seletor de Servidor / Guilda -->
+            <div class="p-4 border-b border-zinc-800/80">
+                <div class="bg-zinc-900/80 border border-zinc-800 rounded-xl p-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-lg bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow-md shadow-blue-600/30">
+                            L7
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-xs text-zinc-200">L7 ESPORTS</h2>
+                            <span class="text-[10px] text-zinc-500">Guilda Oficial FF</span>
+                        </div>
                     </div>
-                    <div>
-                        <h2 class="font-bold text-sm tracking-wide">L7 ESPORTS</h2>
-                        <span class="text-[11px] text-zinc-500 flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Bot Online
-                        </span>
-                    </div>
+                    <span class="text-zinc-500 text-xs">▼</span>
                 </div>
             </div>
 
-            <nav class="p-3 space-y-1 text-sm font-medium">
-                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600/10 text-blue-400 border border-blue-500/20">
-                    <span>📊</span> Visão Geral
-                </a>
-                <a href="#membros" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors">
+            <!-- Menu Principal -->
+            <div class="px-4 py-2 text-[10px] font-semibold uppercase tracking-wider text-zinc-500">Menu Principal</div>
+            <nav class="px-3 space-y-1 text-xs font-medium">
+                <button onclick="mudarAba('home')" id="nav-home" class="sidebar-item active w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-300">
+                    <span>🏠</span> Home / Visão Geral
+                </button>
+                <button onclick="mudarAba('membros')" id="nav-membros" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400">
                     <span>👥</span> Membros & Metas
-                </a>
-                <a href="#embed" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors">
-                    <span>🎨</span> Personalizador
-                </a>
+                </button>
+                <button onclick="mudarAba('embed')" id="nav-embed" class="sidebar-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400">
+                    <span>🎨</span> Bot Personalizer
+                </button>
             </nav>
         </div>
-        <div class="p-4 border-t border-zinc-800/60 text-xs text-zinc-500 text-center">
-            TL STUDIO © 2026
+
+        <div class="p-4 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-500">
+            <span>TL STUDIO</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
         </div>
     </aside>
 
-    <!-- Main Content -->
+    <!-- CONTEÚDO PRINCIPAL -->
     <main class="flex-1 flex flex-col min-w-0">
-        <!-- Top Navbar -->
-        <header class="h-16 border-b border-zinc-800/60 flex items-center justify-between px-6 bg-[#0d0d10]/50 backdrop-blur-md">
+        
+        <!-- TOP HEADER -->
+        <header class="h-16 border-b border-zinc-800/80 flex items-center justify-between px-6 bg-[#0d0d10]/60 backdrop-blur-md">
             <div class="flex items-center gap-2 text-xs text-zinc-400">
-                <span>L7 ESPORTS</span> / <span class="text-zinc-100 font-medium">Dashboard</span>
+                <span class="text-zinc-200 font-medium">L7 ESPORTS</span> / <span id="breadcrumb-atual" class="text-zinc-400">Home</span>
             </div>
-            <div id="status-firebase" class="text-xs px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-400 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> A conectar ao Firebase...
+            <div class="flex items-center gap-4">
+                <div id="status-firebase" class="text-xs px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Conectando ao Firebase...
+                </div>
+                <div class="w-8 h-8 rounded-full bg-blue-600/20 border border-blue-500/30 text-blue-400 font-bold flex items-center justify-center text-xs">
+                    TL
+                </div>
             </div>
         </header>
 
-        <!-- Container de Dados -->
-        <div class="p-6 space-y-6 overflow-y-auto">
+        <!-- ÁREA DINÂMICA DAS ABAS -->
+        <div class="p-6 space-y-6 overflow-y-auto flex-1">
             
-            <!-- Cards Superiores -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="glass-panel p-5 rounded-2xl">
-                    <span class="text-xs font-medium text-zinc-400">Membros Registrados</span>
-                    <div id="stat-membros" class="text-2xl font-bold mt-1 text-zinc-100">0</div>
+            <!-- ABA 1: HOME / VISÃO GERAL -->
+            <div id=" aba-home" class="space-y-6">
+                <!-- Título da Seção -->
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight text-zinc-100">Dashboard</h1>
+                    <p class="text-xs text-zinc-400 mt-0.5">Visão geral dos dados e estatísticas do bot da guilda no Discord.</p>
                 </div>
-                <div class="glass-panel p-5 rounded-2xl">
-                    <span class="text-xs font-medium text-zinc-400">Total de Pontos de Guerra</span>
-                    <div id="stat-pontos" class="text-2xl font-bold mt-1 text-blue-400">0 pts</div>
-                </div>
-                <div class="glass-panel p-5 rounded-2xl">
-                    <span class="text-xs font-medium text-zinc-400">Total de Horas em Call</span>
-                    <div id="stat-horas" class="text-2xl font-bold mt-1 text-emerald-400">0h</div>
-                </div>
-            </div>
 
-            <!-- Tabela de Membros (Com Nome e ID separados) -->
-            <div id="membros" class="glass-panel rounded-2xl overflow-hidden">
-                <div class="p-5 border-b border-zinc-800/60 flex items-center justify-between">
-                    <div>
-                        <h3 class="font-bold text-sm text-zinc-100">Classificação e Membros Ativos</h3>
-                        <p class="text-xs text-zinc-400">Sincronizado em tempo real com o Firestore</p>
+                <!-- Cards Superiores de Telemetria -->
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                    <div class="glass-panel p-5 rounded-xl border border-zinc-800/80">
+                        <span class="text-xs text-zinc-400 font-medium block mb-1">Membros Registrados</span>
+                        <div id="stat-membros" class="text-2xl font-bold text-zinc-100">0</div>
                     </div>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b border-zinc-800/60 text-[11px] font-semibold text-zinc-400 uppercase tracking-wider bg-zinc-900/40">
-                                <th class="py-3 px-4">Membro (Nome)</th>
-                                <th class="py-3 px-4">ID do Discord</th>
-                                <th class="py-3 px-4">Pontos de Guerra</th>
-                                <th class="py-3 px-4">Tempo em Call</th>
-                                <th class="py-3 px-4">Ação</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabela-membros" class="divide-y divide-zinc-800/40 text-xs">
-                            <tr>
-                                <td colspan="5" class="py-8 text-center text-zinc-500">
-                                    A carregar dados do banco...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Personalizador de Embeds -->
-            <div id="embed" class="glass-panel p-6 rounded-2xl space-y-4">
-                <h3 class="font-bold text-sm text-zinc-100">🎨 Personalizador de Embeds do Discord</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-3">
-                        <div>
-                            <label class="block text-xs font-medium text-zinc-400 mb-1">Título do Painel</label>
-                            <input type="text" id="input-embed-title" value="🎧 TOP 10 • TEMPO EM CALL" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2.5 text-xs focus:outline-none focus:border-blue-500 text-zinc-200">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-zinc-400 mb-1">Cor Principal</label>
-                            <input type="color" id="input-embed-color" value="#0055FF" class="w-full h-10 bg-zinc-900 border border-zinc-800 rounded-lg p-1 cursor-pointer">
+                    <div class="glass-panel p-5 rounded-xl border border-zinc-800/80">
+                        <span class="text-xs text-zinc-400 font-medium block mb-1">Total de Pontos</span>
+                        <div id="stat-pontos" class="text-2xl font-bold text-blue-400">0 pts</div>
+                    </div>
+                    <div class="glass-panel p-5 rounded-xl border border-zinc-800/80">
+                        <span class="text-xs text-zinc-400 font-medium block mb-1">Horas em Call</span>
+                        <div id="stat-horas" class="text-2xl font-bold text-emerald-400">0h</div>
+                    </div>
+                    <div class="glass-panel p-5 rounded-xl border border-zinc-800/80">
+                        <span class="text-xs text-zinc-400 font-medium block mb-1">Status do Sistema</span>
+                        <div class="text-xs font-semibold text-emerald-400 mt-2 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Operacional
                         </div>
                     </div>
-                    <!-- Pré-visualização do Discord -->
-                    <div id="preview-embed-box" class="bg-[#2b2d31] p-4 rounded-lg border-l-4 border-blue-500 text-sm space-y-2">
-                        <span class="text-xs font-bold text-zinc-300 block">BOT-L7ESPORTS</span>
-                        <h4 id="preview-title" class="font-bold text-white text-base">🎧 TOP 10 • TEMPO EM CALL</h4>
-                        <p class="text-xs text-zinc-300">Acompanhe abaixo os membros mais ativos nas salas de voz.</p>
+                </div>
+
+                <!-- Tabela de Membros Recentes na Home -->
+                <div class="glass-panel rounded-xl overflow-hidden border border-zinc-800/80">
+                    <div class="p-4 border-b border-zinc-800 flex items-center justify-between">
+                        <h3 class="font-bold text-xs text-zinc-200 uppercase tracking-wider">Atividade Recente dos Membros</h3>
+                        <button onclick="mudarAba('membros')" class="text-xs text-blue-400 hover:underline">Ver todos →</button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-zinc-800 text-[11px] font-semibold text-zinc-400 uppercase bg-zinc-950/40">
+                                    <th class="py-3 px-4">Nome / Utilizador</th>
+                                    <th class="py-3 px-4">ID Discord</th>
+                                    <th class="py-3 px-4">Pontos de Guerra</th>
+                                    <th class="py-3 px-4">Tempo em Call</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-home" class="divide-y divide-zinc-800/40 text-xs text-zinc-300">
+                                <tr><td colspan="4" class="py-6 text-center text-zinc-500">A carregar dados...</td></tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
-        </div>
-    </main>
+            <!-- ABA 2: MEMBROS & METAS (GERENCIAMENTO COMPLETO) -->
+            <div id="aba-membros" class="space-y-6 hidden">
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight text-zinc-100">Gerenciamento de Membros</h1>
+                    <p class="text-xs text-zinc-400 mt-0.5">Edite pontuações e acompanhe o desempenho individual da line-up.</p>
+                </div>
 
-    <!-- Firebase SDKs v10 (Compat) -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBu2FCLdG1sLygZW1tHHmk0-5We80x7r9I",
-            authDomain: "bot-l7esports.firebaseapp.com",
-            projectId: "bot-l7esports",
-            storageBucket: "bot-l7esports.firebasestorage.app",
-            messagingSenderId: "575806582902",
-            appId: "1:575806582902:web:fbaffd16059e5b50526f57",
-            measurementId: "G-T9DP3ZCEND"
-        };
-
-        try {
-            firebase.initializeApp(firebaseConfig);
-            const db = firebase.firestore();
-
-            document.getElementById('status-firebase').innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Conectado ao Firebase';
-
-            function formatarTempo(segundos) {
-                if (!segundos) return '0min';
-                const h = Math.floor(segundos / 3600);
-                const m = Math.floor((segundos % 3600) / 60);
-                return h > 0 ? `${h}h ${m}min` : `${m}min`;
-            }
-
-            // Ouvir Firestore em Tempo Real
-            db.collection('guilda').doc('membros').collection('usuarios')
-                .onSnapshot((snapshot) => {
-                    let totalMembros = 0;
-                    let totalPontos = 0;
-                    let totalSegundos = 0;
-
-                    const tbody = document.getElementById('tabela-membros');
-                    tbody.innerHTML = '';
-
-                    if (snapshot.empty) {
-                        tbody.innerHTML = `
-                            <tr>
-                                <td colspan="5" class="py-8 text-center text-zinc-500">
-                                    Nenhum membro registado. Interaja com o bot no Discord para gerar dados!
-                                </td>
-                            </tr>
-                        `;
-                    } else {
-                        snapshot.forEach((doc) => {
-                            totalMembros++;
-                            const data = doc.data();
-                            const userId = doc.id;
-                            const nomeMembro = data.nome || `Membro (${userId.slice(-4)})`;
-                            const pontos = data.pontosGuerra || 0;
-                            const tempo = data.tempoCall || 0;
-
-                            totalPontos += pontos;
-                            totalSegundos += tempo;
-
-                            const tr = document.createElement('tr');
-                            tr.className = 'hover:bg-zinc-800/30 transition-colors text-zinc-300';
-                            tr.innerHTML = `
-                                <td class="py-3 px-4 font-medium text-zinc-200 flex items-center gap-2">
-                                    <div class="w-6 h-6 rounded-full bg-blue-600/20 text-blue-400 font-bold flex items-center justify-center border border-blue-500/30 text-[10px]">
-                                        L7
-                                    </div>
-                                    ${nomeMembro}
-                                </td>
-                                <td class="py-3 px-4 font-mono text-zinc-400 text-[11px]">${userId}</td>
-                                <td class="py-3 px-4 font-bold text-blue-400">${pontos} pts</td>
-                                <td class="py-3 px-4 text-emerald-400 font-medium">${formatarTempo(tempo)}</td>
-                                <td class="py-3 px-4">
-                                    <button onclick="editarPontos('${userId}', ${pontos})" class="bg-zinc-800 hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition-colors text-xs border border-zinc-700">
-                                        ✏️ Editar
-                                    </button>
-                                </td>
-                            `;
-                            tbody.appendChild(tr);
-                        });
-                    }
-
-                    document.getElementById('stat-membros').textContent = totalMembros;
-                    document.getElementById('stat-pontos').textContent = `${totalPontos} pts`;
-                    document.getElementById('stat-horas').textContent = `${Math.floor(totalSegundos / 3600)}h`;
-                });
-
-            // Função global para editar pontos
-            window.editarPontos = function(userId, pontosAtuais) {
-                const novoValor = prompt(`Editar pontos de Guerra para o ID ${userId}:`, pontosAtuais);
-                if (novoValor !== null && !isNaN(novoValor)) {
-                    db.collection('guilda').doc('membros').collection('usuarios').doc(userId).set({
-                        pontosGuerra: parseInt(novoValor, 10)
-                    }, { merge: true }).then(() => {
-                        alert("Pontuação atualizada com sucesso!");
-                    }).catch(err => {
-                        alert("Erro ao atualizar: " + err.message);
-                    });
-                }
-            };
-
-            // Interatividade do Personalizador
-            const inputTitle = document.getElementById('input-embed-title');
-            const inputColor = document.getElementById('input-embed-color');
-            const previewTitle = document.getElementById('preview-title');
-            const previewBox = document.getElementById('preview-embed-box');
-
-            inputTitle.addEventListener('input', (e) => {
-                previewTitle.textContent = e.target.value || 'Título do Painel';
-            });
-
-            inputColor.addEventListener('input', (e) => {
-                previewBox.style.borderColor = e.target.value;
-            });
-
-        } catch (e) {
-            document.getElementById('status-firebase').innerHTML = '<span class="w-2 h-2 rounded-full bg-red-500"></span> Erro de Conexão';
-            console.error("Erro no Firebase:", e);
-        }
-    </script>
-</body>
-</html>
+                <div class="glass-panel rounded-xl overflow-hidden border border-zinc-800/80">
+                    <div class="p-4 border-b border-zinc-800">
+                        <h3 class="font-bold text-xs text-zinc-200 uppercase tracking-wider">Lista Completa do Banco de Dados</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-zinc-800 text-[11px] font-semibold text-zinc-400 uppercase bg-zinc-950/40">
+                                    <th class="py-3 px-4">Membro</th>
+                                    <th class="py-3 px-4">ID Discord</th>
+                                    <th class="py-3 px-4">Pontos de Guerra</th>
+                                    <th class="py-3 px-4">Tempo em Call</th>
+                                    <th class="py-3 px-4">Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody
