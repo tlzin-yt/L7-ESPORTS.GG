@@ -43,7 +43,6 @@
                             <span class="text-[10px] text-zinc-500">Guilda Oficial FF</span>
                         </div>
                     </div>
-                    <span class="text-zinc-500 text-xs">▼</span>
                 </div>
             </div>
 
@@ -126,7 +125,7 @@
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-zinc-800 text-[11px] font-semibold text-zinc-400 uppercase bg-zinc-950/40">
-                                    <th class="py-3 px-4">Nome / Utilizador</th>
+                                    <th class="py-3 px-4">Nome Discord</th>
                                     <th class="py-3 px-4">ID Discord</th>
                                     <th class="py-3 px-4">Pontos de Guerra</th>
                                     <th class="py-3 px-4">Tempo em Call</th>
@@ -155,7 +154,7 @@
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="border-b border-zinc-800 text-[11px] font-semibold text-zinc-400 uppercase bg-zinc-950/40">
-                                    <th class="py-3 px-4">Membro</th>
+                                    <th class="py-3 px-4">Nome Discord</th>
                                     <th class="py-3 px-4">ID Discord</th>
                                     <th class="py-3 px-4">Pontos de Guerra</th>
                                     <th class="py-3 px-4">Tempo em Call</th>
@@ -174,24 +173,28 @@
             <div id="conteudo-embed" class="space-y-6 hidden">
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight text-zinc-100">Bot Personalizer</h1>
-                    <p class="text-xs text-zinc-400 mt-0.5">Personalize a aparência dos painéis que o seu bot envia no Discord.</p>
+                    <p class="text-xs text-zinc-400 mt-0.5">Altere as configurações visuais do painel no Discord em tempo real.</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="glass-panel p-5 rounded-xl border border-zinc-800/80 space-y-4">
-                        <h3 class="font-bold text-xs text-zinc-200 uppercase tracking-wider">Configurações do Embed</h3>
+                        <h3 class="font-bold text-xs text-zinc-200 uppercase tracking-wider">Configurações do Painel</h3>
                         <div>
-                            <label class="block text-xs font-medium text-zinc-400 mb-1">Título do Painel</label>
+                            <label class="block text-xs font-medium text-zinc-400 mb-1">Título do Painel no Discord</label>
                             <input type="text" id="input-titulo" value="🎧 TOP 10 • TEMPO EM CALL" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-200 focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-zinc-400 mb-1">Cor Principal</label>
+                            <label class="block text-xs font-medium text-zinc-400 mb-1">Cor Principal (HEX)</label>
                             <input type="color" id="input-cor" value="#0055FF" class="w-full h-10 bg-zinc-900 border border-zinc-800 rounded-lg p-1 cursor-pointer">
                         </div>
+
+                        <button onclick="salvarConfiguracoesDiscord()" id="btn-salvar-embed" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-lg transition-colors text-xs shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2">
+                            <span>🚀</span> Aplicar Alterações no Discord
+                        </button>
                     </div>
 
                     <div class="glass-panel p-5 rounded-xl border border-zinc-800/80 space-y-3">
-                        <h3 class="font-bold text-xs text-zinc-400 uppercase tracking-wider">Pré-visualização no Discord</h3>
+                        <h3 class="font-bold text-xs text-zinc-400 uppercase tracking-wider">Pré-visualização do Discord</h3>
                         <div id="preview-box" class="bg-[#2b2d31] p-4 rounded-lg border-l-4 border-blue-500 text-sm space-y-2">
                             <span class="text-xs font-bold text-zinc-300 block">BOT-L7ESPORTS</span>
                             <h4 id="preview-titulo-texto" class="font-bold text-white text-sm">🎧 TOP 10 • TEMPO EM CALL</h4>
@@ -233,7 +236,7 @@
                 return h > 0 ? `${h}h ${m}min` : `${m}min`;
             }
 
-            // DADOS EM TEMPO REAL
+            // OUVIR DADOS DOS MEMBROS
             db.collection('guilda').doc('membros').collection('usuarios')
                 .onSnapshot((snapshot) => {
                     let totalMembros = 0;
@@ -254,14 +257,13 @@
                             totalMembros++;
                             const data = doc.data();
                             const userId = doc.id;
-                            const nomeMembro = data.nome || `Membro (${userId.slice(-4)})`;
+                            const nomeMembro = data.nome || `Discord User (${userId.slice(-4)})`;
                             const pontos = data.pontosGuerra || 0;
                             const tempo = data.tempoCall || 0;
 
                             totalPontos += pontos;
                             totalSegundos += tempo;
 
-                            // Home
                             const trHome = document.createElement('tr');
                             trHome.className = 'hover:bg-zinc-800/30 transition-colors';
                             trHome.innerHTML = `
@@ -275,7 +277,6 @@
                             `;
                             tbodyHome.appendChild(trHome);
 
-                            // Membros
                             const trCompleta = document.createElement('tr');
                             trCompleta.className = 'hover:bg-zinc-800/30 transition-colors';
                             trCompleta.innerHTML = `
@@ -301,25 +302,44 @@
                     document.getElementById('stat-horas').textContent = `${Math.floor(totalSegundos / 3600)}h`;
                 });
 
+            // SALVAR CONFIGURAÇÕES DO EMBED NO FIREBASE (SINCRONIZA COM O DISCORD)
+            window.salvarConfiguracoesDiscord = function() {
+                const titulo = document.getElementById('input-titulo').value;
+                const cor = document.getElementById('input-cor').value;
+
+                const btn = document.getElementById('btn-salvar-embed');
+                btn.disabled = true;
+                btn.innerHTML = '<span>⏳</span> Salvando e enviando ao Discord...';
+
+                db.collection('configuracoes').doc('painel').set({
+                    tituloPainel: titulo,
+                    corPrincipal: cor,
+                    ultimaAtualizacao: new Date()
+                }, { merge: true }).then(() => {
+                    alert('✅ Configurações salvas! O bot no Discord vai atualizar a mensagem automaticamente.');
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>🚀</span> Aplicar Alterações no Discord';
+                }).catch(err => {
+                    alert('Erro ao salvar no Firebase: ' + err.message);
+                    btn.disabled = false;
+                    btn.innerHTML = '<span>🚀</span> Aplicar Alterações no Discord';
+                });
+            };
+
             window.editarPontos = function(userId, pontosAtuais) {
                 const novoValor = prompt(`Digite os novos pontos de Guerra para o ID ${userId}:`, pontosAtuais);
                 if (novoValor !== null && !isNaN(novoValor)) {
                     db.collection('guilda').doc('membros').collection('usuarios').doc(userId).set({
                         pontosGuerra: parseInt(novoValor, 10)
-                    }, { merge: true }).then(() => {
-                        alert("Pontuação atualizada com sucesso!");
-                    }).catch(err => {
-                        alert("Erro ao atualizar: " + err.message);
-                    });
+                    }, { merge: true });
                 }
             };
 
         } catch (e) {
-            document.getElementById('status-firebase').innerHTML = '<span class="w-2 h-2 rounded-full bg-red-500"></span> Erro de Conexão';
             console.error(e);
         }
 
-        // SISTEMA DE ABAS SÓLIDO E AUTOMÁTICO COM HASH URL
+        // CONTROLADOR DE ABAS E HASH
         function mudarAba(aba) {
             ['home', 'membros', 'embed'].forEach(a => {
                 const el = document.getElementById(`conteudo-${a}`);
@@ -345,7 +365,6 @@
             window.location.hash = aba;
         }
 
-        // Verifica o hash ao carregar a página (ex: #embed ou #membros)
         window.addEventListener('DOMContentLoaded', () => {
             const hash = window.location.hash.replace('#', '');
             if (['home', 'membros', 'embed'].includes(hash)) {
@@ -355,7 +374,6 @@
             }
         });
 
-        // Personalizador ao vivo
         const inputTitulo = document.getElementById('input-titulo');
         const inputCor = document.getElementById('input-cor');
         const previewTituloTexto = document.getElementById('preview-titulo-texto');
