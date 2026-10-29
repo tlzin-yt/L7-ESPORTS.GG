@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L7 ESPORTS — Dashboard do Bot</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#0F0F12',
+                        sidebarbg: '#141418',
+                        cardbg: '#18181D',
+                        cardborder: '#24242C',
+                        goldaccent: '#EAB308',
+                        brandblue: '#5865F2'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0F0F12;
+            color: #E4E4E7;
+        }
+
+        /* Sidebar scrollbar */
+        .custom-scroll::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #141418;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #27272A;
+            border-radius: 4px;
+        }
+
+        .nav-item {
+            transition: all 0.2s ease;
+        }
+        .nav-item.active {
+            background-color: #202026;
+            color: #FFFFFF;
+            border-left: 3px solid #EAB308;
+        }
+        .nav-item:hover:not(.active) {
+            background-color: #1A1A20;
+            color: #F4F4F5;
+        }
+
+        .discord-embed-border {
+            border-left: 4px solid #5865F2;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex text-sm">
+
+    <!-- LEFT SIDEBAR (TICKET KING STYLE) -->
+    <aside class="w-64 bg-sidebarbg border-r border-cardborder flex flex-col justify-between shrink-0 h-screen sticky top-0 custom-scroll overflow-y-auto">
+        <div>
+            <!-- LOGO HEADER -->
+            <div class="p-5 flex items-center space-x-3 border-b border-cardborder/50">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-600 to-yellow-400 flex items-center justify-center font-black text-black shadow-lg shadow-amber-500/20 text-lg">
+                    L7
+                </div>
+                <div>
+                    <h1 class="font-black text-base tracking-wider text-white uppercase flex items-center gap-1.5">
+                        L7 ESPORTS
+                    </h1>
+                    <span class="text-[10px] text-gray-500 font-semibold tracking-widest uppercase">Guild Manager</span>
+                </div>
+            </div>
+
+            <!-- SERVER SELECTOR DROPDOWN -->
+            <div class="p-4">
+                <div class="bg-[#1A1A20] border border-cardborder hover:border-gray-700 p-2.5 rounded-xl flex items-center justify-between cursor-pointer transition">
+                    <div class="flex items-center space-x-3 truncate">
+                        <div class="w-8 h-8 rounded-lg bg-black/60 border border-amber-500/30 flex items-center justify-center text-xs font-extrabold text-amber-400">
+                            LE
+                        </div>
+                        <div class="truncate">
+                            <p class="font-bold text-xs text-white truncate">L7 ESPORTS</p>
+                            <p class="text-[10px] text-gray-400">61 membros • Guilda FF</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down text-xs text-gray-400 mr-1"></i>
+                </div>
+            </div>
+
+            <!-- MAIN NAVIGATION MENU -->
+            <nav class="px-3 space-y-1">
+                <div class="px-3 pt-2 pb-1 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Main Menu</div>
+                
+                <a href="#" onclick="switchSection('dashboardSection', this)" class="nav-item active flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-gray-300">
+                    <i class="fa-solid fa-house text-sm w-5 text-center"></i>
+                    <span>Home</span>
+                </a>
+
+                <a href="#" onclick="switchSection('panelsSection', this)" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-gray-400">
+                    <i class="fa-solid fa-layer-group text-sm w-5 text-center"></i>
+                    <span>Panels & Embeds</span>
+                </a>
+
+                <a href="#" onclick="switchSection('metasSection', this)" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-gray-400">
+                    <i class="fa-solid fa-shield-halved text-sm w-5 text-center"></i>
+                    <span>Metas de Guerra</span>
+                </a>
+
+                <a href="#" onclick="switchSection('topCallSection', this)" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-gray-400">
+                    <i class="fa-solid fa-headset text-sm w-5 text-center"></i>
+                    <span>Top Call ao Vivo</span>
+                </a>
+
+                <a href="#" class="nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-semibold text-gray-400">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-terminal text-sm w-5 text-center"></i>
+                        <span>Custom Commands</span>
+                    </div>
+                    <i class="fa-solid fa-crown text-[10px] text-amber-400"></i>
+                </a>
+
+                <a href="#" class="nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-semibold text-gray-400">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-chart-line text-sm w-5 text-center"></i>
+                        <span>Statistics</span>
+                    </div>
+                    <i class="fa-solid fa-crown text-[10px] text-amber-400"></i>
+                </a>
+
+                <a href="#" onclick="switchSection('settingsSection', this)" class="nav-item flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-gray-400">
+                    <i class="fa-solid fa-gear text-sm w-5 text-center"></i>
+                    <span>Settings & Firebase</span>
+                </a>
+
+                <a href="#" class="nav-item flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-semibold text-gray-400">
+                    <div class="flex items-center space-x-3">
+                        <i class="fa-solid fa-wand-magic-sparkles text-sm w-5 text-center"></i>
+                        <span>Bot Personalizer</span>
+                    </div>
+                    <i class="fa-solid fa-crown text-[10px] text-amber-400"></i>
+                </a>
+            </nav>
+        </div>
+
+        <!-- SIDEBAR FOOTER CARDS -->
+        <div class="p-3 space-y-2 border-t border-cardborder/50">
+            <button onclick="restartBot()" class="w-full bg-[#1F1F26] hover:bg-gray-800 border border-cardborder py-2 px-3 rounded-lg text-xs font-semibold text-gray-300 flex items-center justify-center space-x-2 transition">
+                <i class="fa-solid fa-rotate-right text-gray-400"></i>
+                <span>Restart Bot Service</span>
+            </button>
+
+            <div class="bg-gradient-to-r from-amber-500/10 to-yellow-500/5 border border-amber-500/20 p-3 rounded-xl flex items-center justify-between">
+                <div>
+                    <span class="text-[11px] font-bold text-amber-400 block">L7 VIP Guild Plan</span>
+                    <span class="text-[10px] text-gray-400">All features unlocked</span>
+                </div>
+                <i class="fa-solid fa-crown text-amber-400 text-sm"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- RIGHT MAIN CONTENT AREA -->
+    <div class="flex-1 flex flex-col min-w-0">
+        
+        <!-- TOP HEADER BAR -->
+        <header class="h-16 border-b border-cardborder px-6 flex items-center justify-between sticky top-0 bg-darkbg/90 backdrop-blur-md z-40">
+            <!-- Breadcrumbs -->
+            <div class="flex items-center space-x-2 text-xs font-medium text-gray-400">
+                <span class="text-white font-semibold">L7 ESPORTS</span>
+                <span>/</span>
+                <span>Home</span>
+                <span>/</span>
+                <span class="text-amber-400 font-semibold" id="currentBreadcrumb">Dashboard</span>
+            </div>
+
+            <!-- Top Right Indicators -->
+            <div class="flex items-center space-x-5">
+                <div class="flex items-center space-x-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full text-emerald-400 text-xs font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>All Systems Operational</span>
+                </div>
+
+                <div class="flex items-center space-x-3 pl-3 border-l border-cardborder">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="Avatar" class="w-8 h-8 rounded-full border border-amber-400">
+                    <div>
+                        <p class="text-xs font-bold text-white">TL #1K</p>
+                        <p class="text-[10px] text-gray-400">Guild Master</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- DASHBOARD BODY CONTAINER -->
+        <main class="p-6 space-y-6 overflow-y-auto flex-1">
+
+            <!-- SECTION 1: DASHBOARD OVERVIEW -->
+            <div id="dashboardSection" class="space-y-6">
+                <!-- PAGE TITLE -->
+                <div>
+                    <h1 class="text-2xl font-extrabold text-white">Dashboard</h1>
+                    <p class="text-xs text-gray-400">Overview of your Discord server data, war metas, and call statistics.</p>
+                </div>
+
+                <!-- 4 METRIC CARDS (TICKET KING STYLE) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Card 1 -->
+                    <div class="bg-cardbg border border-cardborder rounded-xl p-4 flex justify-between items-center hover:border-amber-500/30 transition">
+                        <div>
+                            <p class="text-xs font-semibold text-gray-400">Metas Entregues</p>
+                            <h2 class="text-3xl font-black text-white mt-1" id="dashMetasCount">142</h2>
+                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 text-lg">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-cardbg border border-cardborder rounded-xl p-4 flex justify-between items-center hover:border-amber-500/30 transition">
+                        <div>
+                            <p class="text-xs font-semibold text-gray-400">Membros Ativos</p>
+                            <h2 class="text-3xl font-black text-white mt-1">48</h2>
+                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-lg">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-cardbg border border-cardborder rounded-xl p-4 flex justify-between items-center hover:border-amber-500/30 transition">
+                        <div>
+                            <p class="text-xs font-semibold text-gray-400">Horas em Call</p>
+                            <h2 class="text-3xl font-black text-white mt-1">318h</h2>
+                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-lg">
+                            <i class="fa-solid fa-microphone-lines"></i>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="bg-cardbg border border-cardborder rounded-xl p-4 flex justify-between items-center hover:border-amber-500/30 transition">
+                        <div>
+                            <p class="text-xs font-semibold text-gray-400">Total Pontos Guilda</p>
+                            <h2 class="text-3xl font-black text-white mt-1" id="dashTotalPts">14.200</h2>
+                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 text-lg">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SERVER COUNTERS BAR -->
+                <div class="flex flex-wrap items-center justify-around py-3 px-4 bg-cardbg border border-cardborder rounded-xl text-xs text-gray-300 font-medium gap-4">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-hashtag text-gray-500"></i>
+                        <span><strong class="text-white">35</strong> channels</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-user-shield text-gray-500"></i>
+                        <span><strong class="text-white">61</strong> roles</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-robot text-gray-500"></i>
+                        <span><strong class="text-white">3</strong> bots</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-face-smile text-gray-500"></i>
+                        <span><strong class="text-white">12</strong> emojis</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-note-sticky text-gray-500"></i>
+                        <span><strong class="text-white">5</strong> stickers</span>
+                    </div>
+                </div>
+
+                <!-- ANALYTICS OVERVIEW (TWO CHARTS) -->
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-bold text-white">Analytics Overview</h3>
+                        <a href="#" class="text-xs text-amber-400 hover:underline flex items-center gap-1 font-semibold">
+                            View all analytics <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Chart 1: Meta Distribution -->
+                        <div class="bg-cardbg border border-cardborder rounded-xl p-5 space-y-4">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-bold text-sm text-white">Meta Delivery Distribution</h4>
+                                <span class="bg-[#22222A] px-3 py-1 rounded-lg text-xs font-semibold text-gray-300 border border-cardborder">Last 7 days</span>
+                            </div>
+                            <div class="h-52">
+                                <canvas id="chartMeta"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Recent Voice Call Activity -->
+                        <div class="bg-cardbg border border-cardborder rounded-xl p-5 space-y-4">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-bold text-sm text-white">Voice Call Activity (Hours)</h4>
+                                <span class="bg-[#22222A] px-3 py-1 rounded-lg text-xs font-semibold text-gray-300 border border-cardborder">Last 7 days</span>
+                            </div>
+                            <div class="h-52">
+                                <canvas id="chartCall"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECENT HISTORY TABLE -->
+                <div class="bg-cardbg border border-cardborder rounded-xl p-5 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-base text-white">Recent Meta & Call Activity</h3>
+                        <span class="text-xs text-gray-400">Live Firebase Synchronization</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-cardborder text-gray-400 uppercase tracking-wider">
+                                    <th class="pb-3 px-3">Jogador</th>
+                                    <th class="pb-3 px-3">Ação</th>
+                                    <th class="pb-3 px-3">Pontos Adicionados</th>
+                                    <th class="pb-3 px-3">Horário</th>
+                                    <th class="pb-3 px-3 text-right">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody" class="divide-y divide-cardborder/50 text-gray-200">
+                                <tr>
+                                    <td class="py-3 px-3 font-bold text-white flex items-center space-x-2">
+                                        <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-[10px]">N</div>
+                                        <span>L7_NobruFX</span>
+                                    </td>
+                                    <td class="py-3 px-3">Entrega de Meta Guerra</td>
+                                    <td class="py-3 px-3 font-bold text-amber-400">+100 pts</td>
+                                    <td class="py-3 px-3 text-gray-400">Há 2 minutos</td>
+                                    <td class="py-3 px-3 text-right"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20">Salvo no Firestore</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-3 font-bold text-white flex items-center space-x-2">
+                                        <div class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-[10px]">B</div>
+                                        <span>L7_BakOficial</span>
+                                    </td>
+                                    <td class="py-3 px-3">Tempo de Call Registrado</td>
+                                    <td class="py-3 px-3 font-bold text-blue-400">+1h 45min</td>
+                                    <td class="py-3 px-3 text-gray-400">Há 14 minutos</td>
+                                    <td class="py-3 px-3 text-right"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20">Salvo no Firestore</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-3 font-bold text-white flex items-center space-x-2">
+                                        <div class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-[10px]">T</div>
+                                        <span>L7_Thurzin</span>
+                                    </td>
+                                    <td class="py-3 px-3">Entrega de Meta Guerra</td>
+                                    <td class="py-3 px-3 font-bold text-amber-400">+100 pts</td>
+                                    <td class="py-3 px-3 text-gray-400">Há 35 minutos</td>
+                                    <td class="py-3 px-3 text-right"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20">Salvo no Firestore</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: PANELS & EMBED PERSONALIZER -->
+            <div id="panelsSection" class="hidden space-y-6">
+                <div>
+                    <h1 class="text-2xl font-extrabold text-white">Bot Panels & Live Embed Configurator</h1>
+                    <p class="text-xs text-gray-400">Customize the appearance of rankings sent to Discord in real-time.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Form Controls -->
+                    <div class="bg-cardbg border border-cardborder rounded-xl p-5 space-y-4">
+                        <h3 class="font-bold text-base text-white">Embed Settings</h3>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Título da Embed</label>
+                            <input type="text" id="embedTitleInput" oninput="updateEmbedPreview()" value="🏆 RANKING AO VIVO — GUERRA & CALL" class="w-full bg-[#121215] border border-cardborder rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Descrição</label>
+                            <textarea id="embedDescInput" oninput="updateEmbedPreview()" rows="3" class="w-full bg-[#121215] border border-cardborder rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">Este painel atualiza automaticamente a cada 1 minuto com os mais ativos da guilda L7 ESPORTS.</textarea>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Cor Lateral (Hex)</label>
+                                <div class="flex space-x-2">
+                                    <input type="color" id="embedColorPicker" oninput="syncColorPicker('picker')" value="#5865F2" class="w-9 h-9 rounded bg-transparent border-0 cursor-pointer">
+                                    <input type="text" id="embedColorHex" oninput="syncColorPicker('hex')" value="#5865F2" class="w-full bg-[#121215] border border-cardborder rounded-lg px-3 py-2 text-xs text-white uppercase font-mono">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Link Imagem / Banner</label>
+                                <input type="url" id="embedBannerInput" oninput="updateEmbedPreview()" placeholder="https://..." class="w-full bg-[#121215] border border-cardborder rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                            </div>
+                        </div>
+
+                        <button onclick="saveEmbedToDiscord()" class="w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-2.5 rounded-lg text-xs transition shadow-lg shadow-amber-500/20">
+                            Atualizar Embed no Servidor
+                        </button>
+                    </div>
+
+                    <!-- Live Discord Preview (Ticket King Mock) -->
+                    <div class="bg-cardbg border border-cardborder rounded-xl p-5 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-3">Live Discord Preview</span>
+                            
+                            <div class="bg-[#313338] p-4 rounded-lg font-sans border border-gray-800 space-y-3">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center font-bold text-black text-xs">L7</div>
+                                    <div>
+                                        <div class="flex items-center space-x-1">
+                                            <span class="font-bold text-white text-xs">TL BOT</span>
+                                            <span class="bg-[#5865F2] text-white text-[9px] px-1 rounded font-bold">BOT</span>
+                                        </div>
+                                        <span class="text-[10px] text-gray-400">Hoje às 23:59</span>
+                                    </div>
+                                </div>
+
+                                <div id="previewEmbedContainer" class="bg-[#2B2D31] p-3 rounded discord-embed-border space-y-2">
+                                    <h4 id="previewEmbedTitle" class="font-bold text-white text-sm">🏆 RANKING AO VIVO — GUERRA & CALL</h4>
+                                    <p id="previewEmbedDesc" class="text-xs text-gray-300">Este painel atualiza automaticamente a cada 1 minuto com os mais ativos da guilda L7 ESPORTS.</p>
+                                    
+                                    <div class="text-xs text-gray-200 pt-1 space-y-1">
+                                        <p>👑 <strong>@L7_NobruFX</strong> — 1.450 pts</p>
+                                        <p>🥈 <strong>@L7_BakOficial</strong> — 1.200 pts</p>
+                                        <p>🥉 <strong>@L7_Thurzin</strong> — 980 pts</p>
+                                    </div>
+
+                                    <div id="previewBannerContainer" class="hidden pt-2">
+                                        <img id="previewBannerImg" src="" class="w-full h-28 object-cover rounded">
+                                    </div>
+
+                                    <div class="text-[9px] text-gray-400 pt-2 border-t border-gray-700/50">Página 1/2 • Atualizado via Firebase</div>
+                                </div>
+
+                                <div class="pt-1">
+                                    <button class="bg-[#5865F2] text-white px-3 py-1.5 rounded text-xs font-semibold flex items-center space-x-2">
+                                        <span>Próximo ➡️ (Guerra de Guilda)</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="text-[10px] text-gray-500 text-center mt-4">Pressione 'Atualizar Embed' para enviar as mudanças diretamente ao canal configurado.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: METAS DE GUERRA MEMBER MANAGEMENT -->
+            <div id="metasSection" class="hidden space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-extrabold text-white">Metas de Guerra & Pontuação</h1>
+                        <p class="text-xs text-gray-400">Gerencie a pontuação semanal de todos os jogadores cadastrados no Firebase.</p>
+                    </div>
+
+                    <button onclick="resetWeeklyMetas()" class="bg-red-500/10 border border-red-500/30 hover:bg-red-500/20 text-red-400 px-4 py-2 rounded-lg text-xs font-bold transition flex items-center space-x-2">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Zerar Pontuação Semanal</span>
+                    </button>
+                </div>
+
+                <div class="bg-cardbg border border-cardborder rounded-xl p-5 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <input type="text" id="searchMemberInput" oninput="filterMembers()" placeholder="Buscar jogador por nick..." class="bg-[#121215] border border-cardborder rounded-lg px-3 py-2 text-xs text-white w-64 focus:outline-none focus:border-amber-500">
+                        <span class="text-xs text-gray-400" id="membrosCountText">Exibindo 5 jogadores</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-cardborder text-gray-400 uppercase tracking-wider">
+                                    <th class="pb-3 px-3">Posição</th>
+                                    <th class="pb-3 px-3">Membro</th>
+                                    <th class="pb-3 px-3">Pontos Guerra</th>
+                                    <th class="pb-3 px-3">Horas em Call</th>
+                                    <th class="pb-3 px-3 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="membersTableBody" class="divide-y divide-cardborder/50 text-gray-200">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: TOP CALL LIVE -->
+            <div id="topCallSection" class="hidden space-y-6">
+                <div>
+                    <h1 class="text-2xl font-extrabold text-white">Top Call em Tempo Real</h1>
+                    <p class="text-xs text-gray-400">Monitoramento dos canais de voz com contagem precisa de minutos/horas.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-cardbg border border-cardborder rounded-xl p-4 flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-microphone"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-white">12 Membros em Call</p>
+                            <p class="text-[10px] text-gray-400">Canal: 🎮 | Line Up 1</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-cardbg border border-cardborder rounded-xl p-4 flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-white">L7_BakOficial (Top 1)</p>
+                            <p class="text-[10px] text-gray-400">28h 40min acumuladas</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-cardbg border border-cardborder rounded-xl p-4 flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-white">Reset Semanal</p>
+                            <p class="text-[10px] text-gray-400">Domingo às 23:59:59</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: SETTINGS & FIREBASE -->
+            <div id="settingsSection" class="hidden space-y-6 max-w-3xl">
+                <div>
+                    <h1 class="text-2xl font-extrabold text-white">Configurações & Credenciais</h1>
+                    <p class="text-xs text-gray-400">Gerencie a chave do Firebase Firestore e os tokens de bot.</p>
+                </div>
+
+                <div class="bg-cardbg border border-cardborder rounded-xl p-5 space-y-4">
+                    <h3 class="font-bold text-base text-white">FIREBASE_CONFIG_JSON</h3>
+                    <p class="text-xs text-gray-400">Cole abaixo o arquivo JSON privado da sua Service Account do Firebase para manter sincronização ao vivo.</p>
+
+                    <textarea id="firebaseConfigJson" rows="6" placeholder='{ "type": "service_account", "project_id": "bot-l7esports", ... }' class="w-full bg-[#121215] border border-cardborder rounded-lg p-3 text-xs text-white font-mono focus:outline-none focus:border-amber-500"></textarea>
+
+                    <button onclick="saveFirebaseCredentials()" class="bg-amber-500 hover:bg-amber-400 text-black font-bold px-5 py-2 rounded-lg text-xs transition shadow-lg shadow-amber-500/20">
+                        Salvar Credenciais no Render
+                    </button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL EDIT MEMBER -->
+    <div id="editMemberModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cardbg border border-cardborder rounded-xl p-6 w-full max-w-md space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-white text-base" id="modalMemberTitle">Editar Membro</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Pontos de Guerra</label>
+                    <input type="number" id="modalPontosInput" class="w-full bg-[#121215] border border-cardborder rounded-lg p-2 text-xs text-white font-bold">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase mb-1">Tempo Call (Minutos)</label>
+                    <input type="number" id="modalTempoInput" class="w-full bg-[#121215] border border-cardborder rounded-lg p-2 text-xs text-white font-bold">
+                </div>
+            </div>
+
+            <div class="flex space-x-3 pt-2">
+                <button onclick="closeModal()" class="flex-1 bg-[#22222A] hover:bg-gray-800 text-gray-300 py-2 rounded-lg text-xs font-bold">Cancelar</button>
+                <button onclick="saveMemberData()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-black py-2 rounded-lg text-xs font-bold">Salvar Alterações</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT CODE -->
+    <script>
+        // MEMBER DATA
+        let membersData = [
+            { id: '1', name: 'L7_NobruFX', pts: 1450, minutes: 1540 },
+            { id: '2', name: 'L7_BakOficial', pts: 1200, minutes: 1720 },
+            { id: '3', name: 'L7_Thurzin', pts: 980, minutes: 1080 },
+            { id: '4', name: 'L7_Coringa', pts: 850, minutes: 850 },
+            { id: '5', name: 'L7_Draxx', pts: 620, minutes: 470 }
+        ];
+
+        let activeMemberId = null;
+
+        // INIT ON LOAD
+        window.onload = function() {
+            renderCharts();
+            renderMembersTable();
+        };
+
+        // CHARTS SETUP
+        function renderCharts() {
+            // Chart 1: Meta
+            const ctxMeta = document.getElementById('chartMeta').getContext('2d');
+            new Chart(ctxMeta, {
+                type: 'bar',
+                data: {
+                    labels: ['qua., 22', 'qui., 23', 'sex., 24', 'sáb., 25', 'dom., 26', 'seg., 27', 'ter., 28'],
+                    datasets: [{
+                        label: 'Metas Entregues',
+                        data: [18, 24, 30, 45, 52, 28, 35],
+                        backgroundColor: '#EAB308',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { color: '#71717A', font: { size: 10 } } },
+                        y: { grid: { color: '#24242C' }, ticks: { color: '#71717A', font: { size: 10 } } }
+                    }
+                }
+            });
+
+            // Chart 2: Call
+            const ctxCall = document.getElementById('chartCall').getContext('2d');
+            new Chart(ctxCall, {
+                type: 'line',
+                data: {
+                    labels: ['qua., 22', 'qui., 23', 'sex., 24', 'sáb., 25', 'dom., 26', 'seg., 27', 'ter., 28'],
+                    datasets: [{
+                        label: 'Horas em Call',
+                        data: [32, 40, 58, 72, 85, 42, 50],
+                        borderColor: '#5865F2',
+                        backgroundColor: 'rgba(88, 101, 242, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { color: '#71717A', font: { size: 10 } } },
+                        y: { grid: { color: '#24242C' }, ticks: { color: '#71717A', font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        // RENDER MEMBERS TABLE
+        function renderMembersTable(data = membersData) {
+            const tbody = document.getElementById('membersTableBody');
+            tbody.innerHTML = '';
+
+            const sorted = [...data].sort((a, b) => b.pts - a.pts);
+
+            sorted.forEach((m, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-[#1C1C22] transition';
+                tr.innerHTML = `
+                    <td class="py-3 px-3 font-bold text-amber-400">#${idx + 1}</td>
+                    <td class="py-3 px-3 font-bold text-white">${m.name}</td>
+                    <td class="py-3 px-3 font-bold text-amber-400">${m.pts} pts</td>
+                    <td class="py-3 px-3 text-gray-300">${Math.floor(m.minutes / 60)}h ${m.minutes % 60}min</td>
+                    <td class="py-3 px-3 text-right space-x-2">
+                        <button onclick="addPoints('${m.id}', 100)" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded font-bold text-[11px] border border-emerald-500/20">+100 pts</button>
+                        <button onclick="openModal('${m.id}')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-2 py-1 rounded text-[11px]"><i class="fa-solid fa-pen"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('membrosCountText').innerText = `Exibindo ${sorted.length} jogadores`;
+        }
+
+        function addPoints(id, pts) {
+            const m = membersData.find(item => item.id === id);
+            if (m) {
+                m.pts += pts;
+                renderMembersTable();
+            }
+        }
+
+        function filterMembers() {
+            const q = document.getElementById('searchMemberInput').value.toLowerCase();
+            const filtered = membersData.filter(m => m.name.toLowerCase().includes(q));
+            renderMembersTable(filtered);
+        }
+
+        function resetWeeklyMetas() {
+            if (confirm('Deseja zerar os pontos semanais de todos os membros no Firebase?')) {
+                membersData.forEach(m => m.pts = 0);
+                renderMembersTable();
+            }
+        }
+
+        // NAVIGATION BETWEEN SECTIONS
+        function switchSection(sectionId, element) {
+            document.querySelectorAll('#dashboardSection, #panelsSection, #metasSection, #topCallSection, #settingsSection').forEach(s => s.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            element.classList.add('active');
+
+            const names = {
+                'dashboardSection': 'Dashboard',
+                'panelsSection': 'Panels & Embeds',
+                'metasSection': 'Metas de Guerra',
+                'topCallSection': 'Top Call',
+                'settingsSection': 'Settings'
+            };
+            document.getElementById('currentBreadcrumb').innerText = names[sectionId] || 'Dashboard';
+        }
+
+        // EMBED PREVIEW SYNC
+        function updateEmbedPreview() {
+            const title = document.getElementById('embedTitleInput').value || 'TITULO';
+            const desc = document.getElementById('embedDescInput').value || '';
+            const banner = document.getElementById('embedBannerInput').value;
+            const hex = document.getElementById('embedColorHex').value || '#5865F2';
+
+            document.getElementById('previewEmbedTitle').innerText = title;
+            document.getElementById('previewEmbedDesc').innerText = desc;
+            document.getElementById('previewEmbedContainer').style.borderColor = hex;
+
+            const bannerContainer = document.getElementById('previewBannerContainer');
+            const bannerImg = document.getElementById('previewBannerImg');
+            if (banner) {
+                bannerImg.src = banner;
+                bannerContainer.classList.remove('hidden');
+            } else {
+                bannerContainer.classList.add('hidden');
+            }
+        }
+
+        function syncColorPicker(source) {
+            if (source === 'picker') {
+                const color = document.getElementById('embedColorPicker').value;
+                document.getElementById('embedColorHex').value = color.toUpperCase();
+            } else {
+                const hex = document.getElementById('embedColorHex').value;
+                if (/^#[0-9A-F]{6}$/i.test(hex)) {
+                    document.getElementById('embedColorPicker').value = hex;
+                }
+            }
+            updateEmbedPreview();
+        }
+
+        function openModal(id) {
+            const m = membersData.find(item => item.id === id);
+            if (!m) return;
+            activeMemberId = id;
+            document.getElementById('modalMemberTitle').innerText = `Editar: ${m.name}`;
+            document.getElementById('modalPontosInput').value = m.pts;
+            document.getElementById('modalTempoInput').value = m.minutes;
+            document.getElementById('editMemberModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('editMemberModal').classList.add('hidden');
+            activeMemberId = null;
+        }
+
+        function saveMemberData() {
+            const m = membersData.find(item => item.id === activeMemberId);
+            if (m) {
+                m.pts = parseInt(document.getElementById('modalPontosInput').value) || 0;
+                m.minutes = parseInt(document.getElementById('modalTempoInput').value) || 0;
+                renderMembersTable();
+                closeModal();
+            }
+        }
+
+        function saveEmbedToDiscord() {
+            alert('✅ Embed configurada e sincronizada no canal do Discord!');
+        }
+
+        function saveFirebaseCredentials() {
+            alert('🔥 Credenciais do Firebase salvas com sucesso!');
+        }
+
+        function restartBot() {
+            alert('🔄 Comando de reinicialização enviado ao Render!');
+        }
+    </script>
+</body>
+</html>
