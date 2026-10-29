@@ -14,14 +14,12 @@ const client = new Client({
 // Bancos de dados em memória
 const metasGuilda = new Map(); // Guarda pontos da semana
 const tempoCallAcumulado = new Map(); // Guarda segundos acumulados de calls anteriores
-const entradaVoz = new Map(); // Guarda o horário em que o usuário entrou na call atual
+const entradaVoz = new Map(); // Guarda o horário de entrada na call
 
-// Configuração do painel de ranking
+// Configuração do painel automático (Controla a página ativa: 'call' ou 'guerra')
 const configPainel = {
     cor: '#0055FF',
-    titulo: '🏆 RANKING AO VIVO — GUERRA & CALL',
-    descricao: 'Este painel atualiza automaticamente a cada 1 minuto com o desempenho da guilda.',
-    imagem: '',
+    paginaAtual: 'call', // 'call' ou 'guerra'
     canalRankingId: null,
     mensagemRankingId: null
 };
@@ -36,19 +34,11 @@ const commands = [
         .setDescription('Envia o painel interativo para os membros entregarem as metas de guerra'),
     new SlashCommandBuilder()
         .setName('iniciar-ranking-automatico')
-        .setDescription('Define o canal atual para receber o ranking que atualiza de 1 em 1 minuto (Admin)')
+        .setDescription('Define o canal atual para receber o ranking interativo de 1 em 1 minuto (Admin)')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     new SlashCommandBuilder()
         .setName('painel-admin')
         .setDescription('Painel administrativo para visualizar as metas batidas pelos membros')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-    new SlashCommandBuilder()
-        .setName('config-painel')
-        .setDescription('Configura a aparência do painel de ranking (Admin)')
-        .addStringOption(option => option.setName('titulo').setDescription('Título da Embed').setRequired(false))
-        .addStringOption(option => option.setName('descricao').setDescription('Descrição da Embed').setRequired(false))
-        .addStringOption(option => option.setName('cor').setDescription('Cor em Hexadecimal (ex: #0055FF)').setRequired(false))
-        .addStringOption(option => option.setName('imagem').setDescription('Link da imagem/banner').setRequired(false))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     new SlashCommandBuilder()
         .setName('salatreino')
@@ -69,26 +59,17 @@ client.once('ready', async () => {
 
     // Loop de atualização automática a cada 1 minuto (60.000 ms)
     setInterval(async () => {
-        if (!configPainel.canalRankingId) return;
+        if (!configPainel.canalRankingId || !configPainel.mensagemRankingId) return;
 
         try {
             const canal = await client.channels.fetch(configPainel.canalRankingId);
             if (!canal) return;
 
-            const embedRanking = gerarEmbedRanking();
-
-            if (configPainel.mensagemRankingId) {
-                try {
-                    const msgAntiga = await canal.messages.fetch(configPainel.mensagemRankingId);
-                    await msgAntiga.edit({ embeds: [embedRanking] });
-                    return;
-                } catch (err) {
-                    // Se a mensagem sumiu, cria uma nova
-                }
+            const msg = await canal.messages.fetch(configPainel.mensagemRankingId);
+            if (msg) {
+                const { embed, row } = gerarPainelComBotoes();
+                await msg.edit({ embeds: [embed], components: [row] });
             }
-
-            const novaMsg = await canal.send({ embeds: [embedRanking] });
-            configPainel.mensagemRankingId = novaMsg.id;
         } catch (err) {
             console.error('Erro ao atualizar ranking automático:', err);
         }
@@ -100,12 +81,9 @@ client.on('voiceStateUpdate', (oldState, newState) => {
     const userId = newState.member?.user.id;
     if (!userId || newState.member?.user.bot) return;
 
-    // Entrou em uma call
     if (!oldState.channelId && newState.channelId) {
         entradaVoz.set(userId, Date.now());
-    } 
-    // Saiu de uma call
-    else if (oldState.channelId && !newState.channelId) {
+    } else if (oldState.channelId && !newState.channelId) {
         const inicio = entradaVoz.get(userId);
         if (inicio) {
             const tempoDecorrido = Math.floor((Date.now() - inicio) / 1000);
@@ -116,67 +94,73 @@ client.on('voiceStateUpdate', (oldState, newState) => {
     }
 });
 
-// CALCULA O TEMPO TOTAL EM CALL (ACUMULADO + TEMPO AO VIVO NA CALL ATUAL)
+// CALCULA O TEMPO TOTAL EM CALL
 function obterTempoTotalCall(userId) {
     const acumulado = tempoCallAcumulado.get(userId) || 0;
     const inicioAtual = entradaVoz.get(userId);
-
     if (inicioAtual) {
-        const tempoNaCallAtual = Math.floor((Date.now() - inicioAtual) / 1000);
-        return acumulado + tempoNaCallAtual;
+        return acumulado + Math.floor((Date.now() - inicioAtual) / 1000);
     }
-
     return acumulado;
 }
 
-// GERADOR DA EMBED DO RANKING
-function gerarEmbedRanking() {
-    // 1. Organiza Ranking de Guerra
-    const rankingGuerra = Array.from(metasGuilda.entries())
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5)
-        .map(([id, pts], index) => `**#${index + 1}** <@${id}> — **${pts} pts**`)
-        .join('\n') || 'Nenhum registro nesta semana.';
+// FORMATA O TEMPO EXATO (ex: 1h45min)
+function formatarTempo(segundos) {
+    if (segundos < 60) return `${segundos}s`;
+    const horas = Math.floor(segundos / 3600);
+    const minutos = Math.floor((segundos % 3600) / 60);
 
-    // 2. Coleta o tempo de todos que já entraram em call (acumulado + ao vivo)
-    const todosUsuariosVoz = new Set([...tempoCallAcumulado.keys(), ...entradaVoz.keys()]);
-    const listaCall = [];
+    if (horas > 0) {
+        return `${horas}h${minutos}min`;
+    }
+    return `${minutos}min`;
+}
 
-    todosUsuariosVoz.forEach(userId => {
-        const totalSegundos = obterTempoTotalCall(userId);
-        listaCall.push({ userId, totalSegundos });
-    });
+// GERADOR DA EMBED E DOS BOTÕES DE PAGINAÇÃO
+function gerarPainelComBotoes() {
+    const embed = new EmbedBuilder().setColor(configPainel.cor);
+    const row = new ActionRowBuilder();
 
-    // Organiza Top 5 Call
-    const rankingCall = listaCall
-        .sort((a, b) => b.totalSegundos - a.totalSegundos)
-        .slice(0, 5)
-        .map((item, index) => {
-            const minutos = Math.floor(item.totalSegundos / 60);
-            const horas = (item.totalSegundos / 3600).toFixed(1);
-            
-            // Exibe em minutos se tiver menos de 1 hora, ou em horas
-            const textoTempo = minutos < 60 ? `${minutos} min` : `${horas}h`;
-            return `**#${index + 1}** <@${item.userId}> — **${textoTempo}** em call`;
-        })
-        .join('\n') || 'Nenhum tempo registrado.';
+    if (configPainel.paginaAtual === 'call') {
+        // TOP 10 CALL
+        const todosUsuariosVoz = new Set([...tempoCallAcumulado.keys(), ...entradaVoz.keys()]);
+        const listaCall = [];
+        todosUsuariosVoz.forEach(userId => {
+            listaCall.push({ userId, totalSegundos: obterTempoTotalCall(userId) });
+        });
 
-    const embed = new EmbedBuilder()
-        .setTitle(configPainel.titulo)
-        .setDescription(configPainel.descricao)
-        .setColor(configPainel.cor)
-        .addFields(
-            { name: '🏆 Top Guerra de Guilda (Semanal)', value: rankingGuerra, inline: false },
-            { name: '🎧 Top Tempo em Call (Ao Vivo)', value: rankingCall, inline: false }
-        )
-        .setFooter({ text: 'Atualizado automaticamente a cada 1 minuto.' })
-        .setTimestamp();
+        const rankingCall = listaCall
+            .sort((a, b) => b.totalSegundos - a.totalSegundos)
+            .slice(0, 10)
+            .map((item, index) => `**${index + 1}.** <@${item.userId}> | **${formatarTempo(item.totalSegundos)}**`)
+            .join('\n') || 'Nenhum tempo registrado.';
 
-    if (configPainel.imagem) {
-        embed.setImage(configPainel.imagem);
+        embed.setTitle('🎧 Top Call')
+             .setDescription(rankingCall)
+             .setFooter({ text: 'Página 1/2 • Atualiza a cada 1 min' });
+
+        row.addComponents(
+            new ButtonBuilder().setCustomId('mudar_pagina').setLabel('Próximo ➡️ (Guerra de Guilda)').setStyle(ButtonStyle.Primary)
+        );
+
+    } else {
+        // TOP 10 GUERRA DE GUILDA
+        const rankingGuerra = Array.from(metasGuilda.entries())
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10)
+            .map(([id, pts], index) => `**${index + 1}.** <@${id}> | **${pts} pontos**`)
+            .join('\n') || 'Nenhum registro nesta semana.';
+
+        embed.setTitle('⚔️ Guerra de Guilda')
+             .setDescription(rankingGuerra)
+             .setFooter({ text: 'Página 2/2 • Atualiza a cada 1 min' });
+
+        row.addComponents(
+            new ButtonBuilder().setCustomId('mudar_pagina').setLabel('⬅️ Voltar (Top Call)').setStyle(ButtonStyle.Secondary)
+        );
     }
 
-    return embed;
+    return { embed, row };
 }
 
 // INTERAÇÕES
@@ -218,7 +202,14 @@ client.on('interactionCreate', async interaction => {
             const pontosAtuais = (metasGuilda.get(userId) || 0) + 100;
             metasGuilda.set(userId, pontosAtuais);
 
-            await interaction.reply({ content: `🎯 Meta entregue com sucesso! Seus pontos acumulados na semana: **${pontosAtuais} pts**.`, ephemeral: true });
+            await interaction.reply({ content: `🎯 Meta entregue! Seus pontos acumulados na semana: **${pontosAtuais} pts**.`, ephemeral: true });
+        }
+
+        // BOTÃO DE MUDAR PÁGINA (SETA PARA O LADO)
+        if (interaction.customId === 'mudar_pagina') {
+            configPainel.paginaAtual = configPainel.paginaAtual === 'call' ? 'guerra' : 'call';
+            const { embed, row } = gerarPainelComBotoes();
+            await interaction.update({ embeds: [embed], components: [row] });
         }
     }
 
@@ -226,7 +217,7 @@ client.on('interactionCreate', async interaction => {
     if (interaction.isChatInputCommand() && interaction.commandName === 'painel-meta') {
         const embed = new EmbedBuilder()
             .setTitle('📥 ENTREGA DE METAS DE GUERRA')
-            .setDescription('Clique no botão abaixo sempre que concluir suas partidas para somar pontos na sua meta semanal.\n\n*O reset automático acontece todo domingo às 23:59:59.*')
+            .setDescription('Clique no botão abaixo sempre que concluir suas partidas para somar pontos na sua meta semanal.')
             .setColor('#0052cc');
 
         const row = new ActionRowBuilder().addComponents(
@@ -236,14 +227,14 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ embeds: [embed], components: [row] });
     }
 
-    // ATIVAR RANKING AUTOMÁTICO
+    // ATIVAR RANKING AUTOMÁTICO COM PAGINAÇÃO
     if (interaction.isChatInputCommand() && interaction.commandName === 'iniciar-ranking-automatico') {
         configPainel.canalRankingId = interaction.channelId;
-        const embedInicial = gerarEmbedRanking();
-        const msg = await interaction.channel.send({ embeds: [embedInicial] });
+        const { embed, row } = gerarPainelComBotoes();
+        const msg = await interaction.channel.send({ embeds: [embed], components: [row] });
         configPainel.mensagemRankingId = msg.id;
 
-        await interaction.reply({ content: '✅ Canal configurado com sucesso! O ranking agora vai atualizar sozinho a cada 1 minuto.', ephemeral: true });
+        await interaction.reply({ content: '✅ Painel interativo iniciado! Ele atualizará sozinho a cada 1 minuto.', ephemeral: true });
     }
 
     // PAINEL ADMIN
@@ -254,32 +245,16 @@ client.on('interactionCreate', async interaction => {
 
         const embedAdmin = new EmbedBuilder()
             .setTitle('🛠️ PAINEL ADMINISTRATIVO — METAS DA GUILDA')
-            .setDescription('Aqui os administradores podem visualizar o progresso de cada membro:\n\n' + listaMetas)
-            .setColor('#FF0000')
-            .setFooter({ text: 'As metas semanais resetam todo domingo às 23:59:59.' });
+            .setDescription('Progresso de cada membro:\n\n' + listaMetas)
+            .setColor('#FF0000');
 
         await interaction.reply({ embeds: [embedAdmin], ephemeral: true });
-    }
-
-    // CONFIGURAR PAINEL
-    if (interaction.isChatInputCommand() && interaction.commandName === 'config-painel') {
-        const novoTitulo = interaction.options.getString('titulo');
-        const novaDesc = interaction.options.getString('descricao');
-        const novaCor = interaction.options.getString('cor');
-        const novaImg = interaction.options.getString('imagem');
-
-        if (novoTitulo) configPainel.titulo = novoTitulo;
-        if (novaDesc) configPainel.descricao = novaDesc;
-        if (novaCor) configPainel.cor = novaCor;
-        if (novaImg) configPainel.imagem = novaImg;
-
-        await interaction.reply({ content: '✅ Aparência atualizada! O painel se atualizará automaticamente no próximo ciclo de 1 minuto.', ephemeral: true });
     }
 
     // SALA DE TREINO
     if (interaction.isChatInputCommand() && interaction.commandName === 'salatreino') {
         const senha = Math.floor(1000 + Math.random() * 9000);
-        await interaction.reply(`🎮 **Sala de Treino Gerada!**\n🔑 **Senha temporária:** \`${senha}\`\n⚠️ Compartilhe apenas com os membros autorizados.`);
+        await interaction.reply(`🎮 **Sala de Treino Gerada!**\n🔑 **Senha temporária:** \`${senha}\``);
     }
 });
 
