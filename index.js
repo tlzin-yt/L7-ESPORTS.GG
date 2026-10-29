@@ -13,8 +13,8 @@ const client = new Client({
 
 // Bancos de dados em memória
 const metasGuilda = new Map(); // Guarda pontos da semana
-const tempoCall = new Map();   // Guarda segundos em call
-const controleVoz = new Map(); // Guarda momento de entrada na call
+const tempoCallAcumulado = new Map(); // Guarda segundos acumulados de calls anteriores
+const entradaVoz = new Map(); // Guarda o horário em que o usuário entrou na call atual
 
 // Configuração do painel de ranking
 const configPainel = {
@@ -22,11 +22,11 @@ const configPainel = {
     titulo: '🏆 RANKING AO VIVO — GUERRA & CALL',
     descricao: 'Este painel atualiza automaticamente a cada 1 minuto com o desempenho da guilda.',
     imagem: '',
-    canalRankingId: null, // Canal onde o ranking automático vai rodar
-    mensagemRankingId: null // ID da mensagem fixa do ranking
+    canalRankingId: null,
+    mensagemRankingId: null
 };
 
-// Comandos do bot
+// Comandos Slash
 const commands = [
     new SlashCommandBuilder()
         .setName('escalacao')
@@ -58,7 +58,7 @@ const commands = [
 client.once('ready', async () => {
     console.log(`Bot online como ${client.user.tag}!`);
 
-    // Registra os comandos Slash
+    // Registra os comandos no Discord
     const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
     try {
         await rest.put(Routes.applicationCommands(client.user.id), { body: commands });
@@ -67,7 +67,7 @@ client.once('ready', async () => {
         console.error('Erro ao registrar comandos:', error);
     }
 
-    // Roda o loop de atualização do ranking a cada 1 minuto (60000 ms)
+    // Loop de atualização automática a cada 1 minuto (60.000 ms)
     setInterval(async () => {
         if (!configPainel.canalRankingId) return;
 
@@ -83,7 +83,7 @@ client.once('ready', async () => {
                     await msgAntiga.edit({ embeds: [embedRanking] });
                     return;
                 } catch (err) {
-                    // Se a mensagem foi apagada, cria uma nova abaixo
+                    // Se a mensagem sumiu, cria uma nova
                 }
             }
 
@@ -95,20 +95,69 @@ client.once('ready', async () => {
     }, 60000);
 });
 
-// Função para montar a Embed do Ranking
+// MONITOR DE VOZ (CALL)
+client.on('voiceStateUpdate', (oldState, newState) => {
+    const userId = newState.member?.user.id;
+    if (!userId || newState.member?.user.bot) return;
+
+    // Entrou em uma call
+    if (!oldState.channelId && newState.channelId) {
+        entradaVoz.set(userId, Date.now());
+    } 
+    // Saiu de uma call
+    else if (oldState.channelId && !newState.channelId) {
+        const inicio = entradaVoz.get(userId);
+        if (inicio) {
+            const tempoDecorrido = Math.floor((Date.now() - inicio) / 1000);
+            const acumulado = tempoCallAcumulado.get(userId) || 0;
+            tempoCallAcumulado.set(userId, acumulado + tempoDecorrido);
+            entradaVoz.delete(userId);
+        }
+    }
+});
+
+// CALCULA O TEMPO TOTAL EM CALL (ACUMULADO + TEMPO AO VIVO NA CALL ATUAL)
+function obterTempoTotalCall(userId) {
+    const acumulado = tempoCallAcumulado.get(userId) || 0;
+    const inicioAtual = entradaVoz.get(userId);
+
+    if (inicioAtual) {
+        const tempoNaCallAtual = Math.floor((Date.now() - inicioAtual) / 1000);
+        return acumulado + tempoNaCallAtual;
+    }
+
+    return acumulado;
+}
+
+// GERADOR DA EMBED DO RANKING
 function gerarEmbedRanking() {
+    // 1. Organiza Ranking de Guerra
     const rankingGuerra = Array.from(metasGuilda.entries())
         .sort((a, b) => b[1] - a[1])
         .slice(0, 5)
         .map(([id, pts], index) => `**#${index + 1}** <@${id}> — **${pts} pts**`)
         .join('\n') || 'Nenhum registro nesta semana.';
 
-    const rankingCall = Array.from(tempoCall.entries())
-        .sort((a, b) => b[1] - a[1])
+    // 2. Coleta o tempo de todos que já entraram em call (acumulado + ao vivo)
+    const todosUsuariosVoz = new Set([...tempoCallAcumulado.keys(), ...entradaVoz.keys()]);
+    const listaCall = [];
+
+    todosUsuariosVoz.forEach(userId => {
+        const totalSegundos = obterTempoTotalCall(userId);
+        listaCall.push({ userId, totalSegundos });
+    });
+
+    // Organiza Top 5 Call
+    const rankingCall = listaCall
+        .sort((a, b) => b.totalSegundos - a.totalSegundos)
         .slice(0, 5)
-        .map(([id, segs], index) => {
-            const horas = (segs / 3600).toFixed(1);
-            return `**#${index + 1}** <@${id}> — **${horas}h** em call`;
+        .map((item, index) => {
+            const minutos = Math.floor(item.totalSegundos / 60);
+            const horas = (item.totalSegundos / 3600).toFixed(1);
+            
+            // Exibe em minutos se tiver menos de 1 hora, ou em horas
+            const textoTempo = minutos < 60 ? `${minutos} min` : `${horas}h`;
+            return `**#${index + 1}** <@${item.userId}> — **${textoTempo}** em call`;
         })
         .join('\n') || 'Nenhum tempo registrado.';
 
@@ -118,7 +167,7 @@ function gerarEmbedRanking() {
         .setColor(configPainel.cor)
         .addFields(
             { name: '🏆 Top Guerra de Guilda (Semanal)', value: rankingGuerra, inline: false },
-            { name: '🎧 Top Horas em Call no Servidor', value: rankingCall, inline: false }
+            { name: '🎧 Top Tempo em Call (Ao Vivo)', value: rankingCall, inline: false }
         )
         .setFooter({ text: 'Atualizado automaticamente a cada 1 minuto.' })
         .setTimestamp();
@@ -130,28 +179,11 @@ function gerarEmbedRanking() {
     return embed;
 }
 
-// Contabilização de tempo em call
-client.on('voiceStateUpdate', (oldState, newState) => {
-    const userId = newState.member?.user.id;
-    if (!userId) return;
-
-    if (!oldState.channelId && newState.channelId) {
-        controleVoz.set(userId, Date.now());
-    } else if (oldState.channelId && !newState.channelId) {
-        const inicio = controleVoz.get(userId);
-        if (inicio) {
-            const segundosNaCall = Math.floor((Date.now() - inicio) / 1000);
-            const atual = tempoCall.get(userId) || 0;
-            tempoCall.set(userId, atual + segundosNaCall);
-            controleVoz.delete(userId);
-        }
-    }
-});
-
+// INTERAÇÕES
 client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand() && !interaction.isButton()) return;
 
-    // 1. ESCALAÇÃO
+    // ESCALAÇÃO
     if (interaction.isChatInputCommand() && interaction.commandName === 'escalacao') {
         const embed = new EmbedBuilder()
             .setTitle('🛡️ ESCALAÇÃO PARA GUERRA DE GUILDA')
@@ -180,16 +212,17 @@ client.on('interactionCreate', async interaction => {
             await interaction.reply({ content: '🟡 Registrado como suplente.', ephemeral: true });
         }
 
+        // ENTREGAR META
         if (interaction.customId === 'entregar_meta') {
             const userId = interaction.user.id;
             const pontosAtuais = (metasGuilda.get(userId) || 0) + 100;
             metasGuilda.set(userId, pontosAtuais);
 
-            await interaction.reply({ content: `🎯 Meta entregue! Seus pontos acumulados na semana: **${pontosAtuais} pts**.`, ephemeral: true });
+            await interaction.reply({ content: `🎯 Meta entregue com sucesso! Seus pontos acumulados na semana: **${pontosAtuais} pts**.`, ephemeral: true });
         }
     }
 
-    // 2. PAINEL DE META PARA OS MEMBROS
+    // PAINEL DE META PARA OS MEMBROS
     if (interaction.isChatInputCommand() && interaction.commandName === 'painel-meta') {
         const embed = new EmbedBuilder()
             .setTitle('📥 ENTREGA DE METAS DE GUERRA')
@@ -203,7 +236,7 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ embeds: [embed], components: [row] });
     }
 
-    // 3. ATIVAR O RANKING AUTOMÁTICO NO CANAL ATUAL
+    // ATIVAR RANKING AUTOMÁTICO
     if (interaction.isChatInputCommand() && interaction.commandName === 'iniciar-ranking-automatico') {
         configPainel.canalRankingId = interaction.channelId;
         const embedInicial = gerarEmbedRanking();
@@ -213,7 +246,7 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ content: '✅ Canal configurado com sucesso! O ranking agora vai atualizar sozinho a cada 1 minuto.', ephemeral: true });
     }
 
-    // 4. PAINEL ADMIN (VER METAS DOS MEMBROS)
+    // PAINEL ADMIN
     if (interaction.isChatInputCommand() && interaction.commandName === 'painel-admin') {
         const listaMetas = Array.from(metasGuilda.entries())
             .map(([id, pts]) => `• <@${id}>: **${pts} pontos** na semana`)
@@ -228,7 +261,7 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ embeds: [embedAdmin], ephemeral: true });
     }
 
-    // 5. CONFIGURAR APARÊNCIA DO PAINEL
+    // CONFIGURAR PAINEL
     if (interaction.isChatInputCommand() && interaction.commandName === 'config-painel') {
         const novoTitulo = interaction.options.getString('titulo');
         const novaDesc = interaction.options.getString('descricao');
@@ -243,14 +276,14 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ content: '✅ Aparência atualizada! O painel se atualizará automaticamente no próximo ciclo de 1 minuto.', ephemeral: true });
     }
 
-    // 6. SALA DE TREINO
+    // SALA DE TREINO
     if (interaction.isChatInputCommand() && interaction.commandName === 'salatreino') {
         const senha = Math.floor(1000 + Math.random() * 9000);
         await interaction.reply(`🎮 **Sala de Treino Gerada!**\n🔑 **Senha temporária:** \`${senha}\`\n⚠️ Compartilhe apenas com os membros autorizados.`);
     }
 });
 
-// Servidor HTTP para manter o Render ativo
+// Servidor HTTP para manter o Render ligado
 http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Bot online!');
