@@ -1,51 +1,169 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>L7 ESPORTS - Dashboard</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#0055FF',
+                            600: '#0044cc',
+                            700: '#0033aa'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #09090b; color: #f4f4f5; }
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel { background: rgba(18, 18, 20, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-6">
+<body class="bg-[#09090b] text-zinc-100 min-h-screen flex">
 
-    <div class="max-w-md w-full bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-2xl text-center">
-        <div class="w-16 h-16 bg-blue-600/20 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-500/30 text-2xl font-bold">
-            L7
-        </div>
-        <h1 class="text-2xl font-bold tracking-tight mb-2">L7 ESPORTS Dashboard</h1>
-        <p class="text-zinc-400 text-sm mb-6">Painel de gerenciamento conectado ao Firebase Firestore.</p>
-
-        <div id="status-conexao" class="p-3 rounded-lg bg-zinc-800/50 text-xs text-zinc-300 mb-6 border border-zinc-700/50">
-            Conectando ao banco de dados...
-        </div>
-
-        <div class="grid grid-cols-2 gap-4 mb-6">
-            <div class="bg-zinc-800/30 border border-zinc-800 p-4 rounded-lg">
-                <span class="text-zinc-500 text-xs block mb-1">Membros Registrados</span>
-                <span id="stat-membros" class="text-xl font-bold text-blue-400">0</span>
+    <!-- Sidebar -->
+    <aside class="w-64 bg-[#0d0d10] border-r border-zinc-800/60 flex flex-col justify-between hidden md:flex shrink-0">
+        <div>
+            <!-- Header Guilda -->
+            <div class="p-4 border-b border-zinc-800/60 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center font-bold text-lg shadow-lg shadow-blue-500/20">
+                        L7
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-sm tracking-wide">L7 ESPORTS</h2>
+                        <span class="text-[11px] text-zinc-500 flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Bot Online
+                        </span>
+                    </div>
+                </div>
             </div>
-            <div class="bg-zinc-800/30 border border-zinc-800 p-4 rounded-lg">
-                <span class="text-zinc-500 text-xs block mb-1">Total de Pontos</span>
-                <span id="stat-pontos" class="text-xl font-bold text-emerald-400">0 pts</span>
-            </div>
+
+            <!-- Navegação -->
+            <nav class="p-3 space-y-1 text-sm font-medium">
+                <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-blue-600/10 text-blue-400 border border-blue-500/20">
+                    <span>📊</span> Visão Geral
+                </a>
+                <a href="#membros" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors">
+                    <span>👥</span> Membros & Metas
+                </a>
+                <a href="#embed" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors">
+                    <span>🎨</span> Personalizador
+                </a>
+                <a href="#configs" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40 transition-colors">
+                    <span>⚙️</span> Configurações
+                </a>
+            </nav>
         </div>
 
-        <button onclick="carregarDados()" class="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-lg transition-colors text-sm shadow-lg shadow-blue-600/25">
-            Atualizar Dados
-        </button>
-    </div>
+        <div class="p-4 border-t border-zinc-800/60 text-xs text-zinc-500 text-center">
+            TL STUDIO © 2026
+        </div>
+    </aside>
 
-    <!-- Firebase App & Firestore SDKs v10 -->
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col min-w-0">
+        <!-- Top Navbar -->
+        <header class="h-16 border-b border-zinc-800/60 flex items-center justify-between px-6 bg-[#0d0d10]/50 backdrop-blur-md">
+            <div class="flex items-center gap-2 text-xs text-zinc-400">
+                <span>L7 ESPORTS</span> / <span class="text-zinc-100 font-medium">Dashboard</span>
+            </div>
+            <div id="status-firebase" class="text-xs px-3 py-1 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-400 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span> A conectar ao Firebase...
+            </div>
+        </header>
+
+        <!-- Container -->
+        <div class="p-6 space-y-6 overflow-y-auto">
+            
+            <!-- Cards Superiores -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="glass-panel p-5 rounded-2xl">
+                    <span class="text-xs font-medium text-zinc-400">Total de Membros</span>
+                    <div id="stat-open-tickets" class="text-2xl font-bold mt-1 text-zinc-100">0</div>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl">
+                    <span class="text-xs font-medium text-zinc-400">Pontos de Guerra</span>
+                    <div id="stat-closed-tickets" class="text-2xl font-bold mt-1 text-blue-400">0 pts</div>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl">
+                    <span class="text-xs font-medium text-zinc-400">Horas em Call</span>
+                    <div id="stat-total-tickets" class="text-2xl font-bold mt-1 text-emerald-400">0h</div>
+                </div>
+            </div>
+
+            <!-- Tabela de Membros -->
+            <div id="membros" class="glass-panel rounded-2xl overflow-hidden">
+                <div class="p-5 border-b border-zinc-800/60 flex items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-sm text-zinc-100">Classificação da Guilda</h3>
+                        <p class="text-xs text-zinc-400">Sincronizado em tempo real com o Firestore</p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-zinc-800/60 text-[11px] font-semibold text-zinc-400 uppercase tracking-wider bg-zinc-900/40">
+                                <th class="py-3 px-4">Membro</th>
+                                <th class="py-3 px-4">Pontos de Guerra</th>
+                                <th class="py-3 px-4">Tempo em Call</th>
+                                <th class="py-3 px-4">Status</th>
+                                <th class="py-3 px-4">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ticket-history-body" class="divide-y divide-zinc-800/40">
+                            <tr>
+                                <td colspan="5" class="py-8 text-center text-xs text-zinc-500">
+                                    A carregar os membros da guilda...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Personalizador de Embed -->
+            <div id="embed" class="glass-panel p-6 rounded-2xl space-y-4">
+                <h3 class="font-bold text-sm text-zinc-100">🎨 Personalizador de Embeds do Discord</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-medium text-zinc-400 mb-1">Título do Painel</label>
+                            <input type="text" id="embed-title" value="🎧 TOP 10 • TEMPO EM CALL" class="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2.5 text-xs focus:outline-none focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-zinc-400 mb-1">Cor Principal (HEX)</label>
+                            <input type="color" id="embed-color" value="#0055FF" class="w-full h-10 bg-zinc-900 border border-zinc-800 rounded-lg p-1 cursor-pointer">
+                        </div>
+                    </div>
+                    <!-- Simulação -->
+                    <div class="bg-[#2b2d31] p-4 rounded-lg border-l-4 border-blue-500 text-sm space-y-2">
+                        <span class="text-xs font-bold text-zinc-300 block">BOT-L7ESPORTS</span>
+                        <h4 id="preview-title" class="font-bold text-white text-base">🎧 TOP 10 • TEMPO EM CALL</h4>
+                        <p class="text-xs text-zinc-300">Acompanhe abaixo os membros mais ativos nas salas de voz.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- SDKs do Firebase v10 -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBu2FCLdG1sLygZW1tHHmk0-5We80x7r9I",
             authDomain: "bot-l7esports.firebaseapp.com",
@@ -59,35 +177,77 @@
         try {
             firebase.initializeApp(firebaseConfig);
             const db = firebase.firestore();
-            
-            document.getElementById('status-conexao').innerHTML = '✅ Conectado ao Firebase com sucesso!';
-            document.getElementById('status-conexao').className = 'p-3 rounded-lg bg-emerald-500/10 text-xs text-emerald-400 mb-6 border border-emerald-500/20';
 
-            function carregarDados() {
-                db.collection('guilda').doc('membros').collection('usuarios').get()
-                    .then((snapshot) => {
-                        let totalMembros = snapshot.size;
-                        let totalPontos = 0;
+            const statusEl = document.getElementById('status-firebase');
+            statusEl.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Conectado ao Firebase';
 
-                        snapshot.forEach(doc => {
-                            const data = doc.data();
-                            totalPontos += (data.pontosGuerra || 0);
-                        });
-
-                        document.getElementById('stat-membros').textContent = totalMembros;
-                        document.getElementById('stat-pontos').textContent = `${totalPontos} pts`;
-                    })
-                    .catch(err => {
-                        console.error("Erro ao buscar dados:", err);
-                    });
+            function formatarTempo(segundos) {
+                if (!segundos) return '0min';
+                const h = Math.floor(segundos / 3600);
+                const m = Math.floor((segundos % 3600) / 60);
+                return h > 0 ? `${h}h ${m}min` : `${m}min`;
             }
 
-            // Carrega ao iniciar
-            carregarDados();
+            // Escutar Firestore em Tempo Real
+            db.collection('guilda').doc('membros').collection('usuarios')
+                .onSnapshot((snapshot) => {
+                    let totalMembros = 0;
+                    let totalPontos = 0;
+                    let totalSegundos = 0;
+
+                    const tbody = document.getElementById('ticket-history-body');
+                    tbody.innerHTML = '';
+
+                    if (snapshot.empty) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="5" class="py-8 text-center text-xs text-zinc-500">
+                                    Nenhum membro registado no banco de dados ainda. Ative o bot no Discord!
+                                </td>
+                            </tr>
+                        `;
+                    } else {
+                        snapshot.forEach((doc) => {
+                            totalMembros++;
+                            const data = doc.data();
+                            const userId = doc.id;
+                            const pontos = data.pontosGuerra || 0;
+                            const tempo = data.tempoCall || 0;
+
+                            totalPontos += pontos;
+                            totalSegundos += tempo;
+
+                            const tr = document.createElement('tr');
+                            tr.className = 'hover:bg-zinc-800/30 transition-colors text-xs text-zinc-300';
+                            tr.innerHTML = `
+                                <td class="py-3 px-4 font-mono font-medium text-zinc-200">&lt;@${userId}&gt;</td>
+                                <td class="py-3 px-4 font-bold text-blue-400">${pontos} pts</td>
+                                <td class="py-3 px-4 text-emerald-400 font-medium">${formatarTempo(tempo)}</td>
+                                <td class="py-3 px-4"><span class="px-2 py-0.5 text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">Ativo</span></td>
+                                <td class="py-3 px-4">
+                                    <button onclick="editarPontos('${userId}', ${pontos})" class="text-blue-400 hover:underline">✏️ Editar</button>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    }
+
+                    document.getElementById('stat-open-tickets').textContent = totalMembros;
+                    document.getElementById('stat-closed-tickets').textContent = `${totalPontos} pts`;
+                    document.getElementById('stat-total-tickets').textContent = `${Math.floor(totalSegundos / 3600)}h`;
+                });
+
+            window.editarPontos = function(userId, pontosAtuais) {
+                const novoValor = prompt(`Editar pontos de Guerra do usuário <@${userId}>:`, pontosAtuais);
+                if (novoValor !== null && !isNaN(novoValor)) {
+                    db.collection('guilda').doc('membros').collection('usuarios').doc(userId).set({
+                        pontosGuerra: parseInt(novoValor, 10)
+                    }, { merge: true });
+                }
+            };
 
         } catch (e) {
-            document.getElementById('status-conexao').innerHTML = '❌ Erro ao conectar: ' + e.message;
-            document.getElementById('status-conexao').className = 'p-3 rounded-lg bg-red-500/10 text-xs text-red-400 mb-6 border border-red-500/20';
+            console.error("Erro no Firebase:", e);
         }
     </script>
 </body>
