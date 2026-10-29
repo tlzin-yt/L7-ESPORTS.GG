@@ -2,15 +2,19 @@ const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder
 const http = require('http');
 const admin = require('firebase-admin');
 
-// Inicialização do Firebase (utiliza variável de ambiente com o JSON do Firebase)
+// Inicialização do Firebase
 if (process.env.FIREBASE_CONFIG_JSON) {
-    const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG_JSON);
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
-    });
+    try {
+        const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG_JSON);
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount)
+        });
+        console.log('🔥 Firebase conectado com sucesso!');
+    } catch (e) {
+        console.error('❌ Erro ao ler FIREBASE_CONFIG_JSON:', e);
+    }
 } else {
-    // Modo de segurança local se o JSON não estiver configurado ainda
-    console.log('⚠️ Aviso: Firebase não configurado nas variáveis de ambiente. Rodando em memória.');
+    console.log('⚠️ Aviso: FIREBASE_CONFIG_JSON não configurado.');
 }
 
 const db = admin.apps.length ? admin.firestore() : null;
@@ -28,10 +32,10 @@ const client = new Client({
 // Controle de voz em tempo real
 const entradaVoz = new Map();
 
-// Configuração visual e de estado do painel
+// Configuração visual e estado do painel
 const configPainel = {
-    corPrincipal: '#0055FF', // Azul escuro/elétrico estilo glass/TL Studio
-    paginaAtual: 'call',      // 'call' ou 'guerra'
+    corPrincipal: '#0055FF',
+    paginaAtual: 'call',
     canalRankingId: null,
     mensagemRankingId: null
 };
@@ -46,7 +50,7 @@ const commands = [
         .setDescription('Envia o painel interativo para os membros entregarem as metas de guerra'),
     new SlashCommandBuilder()
         .setName('iniciar-ranking-automatico')
-        .setDescription('Inicia o painel de ranking com design profissional atualizando a cada 1 min (Admin)')
+        .setDescription('Inicia o painel de ranking automático a cada 1 min (Admin)')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
     new SlashCommandBuilder()
         .setName('painel-admin')
@@ -87,7 +91,7 @@ client.once('ready', async () => {
     }, 60000);
 });
 
-// MONITOR DE VOZ (CALCULANDO TEMPO)
+// MONITOR DE VOZ
 client.on('voiceStateUpdate', async (oldState, newState) => {
     const userId = newState.member?.user.id;
     if (!userId || newState.member?.user.bot) return;
@@ -104,39 +108,50 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
     }
 });
 
-// FUNÇÕES DE BANCO DE DADOS (FIREBASE)
+// FUNÇÕES DO FIREBASE
 async function somarTempoCallFirebase(userId, segundos) {
     if (!db) return;
-    const ref = db.collection('guilda').doc('membros').collection('usuarios').doc(userId);
-    const doc = await ref.get();
-    const atual = doc.exists ? (doc.data().tempoCall || 0) : 0;
-    await ref.set({ tempoCall: atual + segundos }, { merge: true });
+    try {
+        const ref = db.collection('guilda').doc('membros').collection('usuarios').doc(userId);
+        const doc = await ref.get();
+        const atual = doc.exists ? (doc.data().tempoCall || 0) : 0;
+        await ref.set({ tempoCall: atual + segundos }, { merge: true });
+    } catch (e) {
+        console.error("Erro no Firebase Call:", e);
+    }
 }
 
 async function adicionarPontosGuerra(userId, pontos) {
     if (!db) return;
-    const ref = db.collection('guilda').doc('membros').collection('usuarios').doc(userId);
-    const doc = await ref.get();
-    const atual = doc.exists ? (doc.data().pontosGuerra || 0) : 0;
-    await ref.set({ pontosGuerra: atual + pontos }, { merge: true });
+    try {
+        const ref = db.collection('guilda').doc('membros').collection('usuarios').doc(userId);
+        const doc = await ref.get();
+        const atual = doc.exists ? (doc.data().pontosGuerra || 0) : 0;
+        await ref.set({ pontosGuerra: atual + pontos }, { merge: true });
+    } catch (e) {
+        console.error("Erro no Firebase Guerra:", e);
+    }
 }
 
 async function buscarDadosMembros() {
-    if (!db) return { callMap: new Map(), guerraMap: new Map() };
-    const snapshot = await db.collection('guilda').doc('membros').collection('usuarios').get();
     const callMap = new Map();
     const guerraMap = new Map();
+    if (!db) return { callMap, guerraMap };
 
-    snapshot.forEach(doc => {
-        const data = doc.data();
-        if (data.tempoCall) callMap.set(doc.id, data.tempoCall);
-        if (data.pontosGuerra) guerraMap.set(doc.id, data.pontosGuerra);
-    });
+    try {
+        const snapshot = await db.collection('guilda').doc('membros').collection('usuarios').get();
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.tempoCall) callMap.set(doc.id, data.tempoCall);
+            if (data.pontosGuerra) guerraMap.set(doc.id, data.pontosGuerra);
+        });
+    } catch (e) {
+        console.error("Erro ao buscar no Firebase:", e);
+    }
 
     return { callMap, guerraMap };
 }
 
-// FORMATADOR DE TEMPO (ex: 1h45min)
 function formatarTempo(segundos) {
     if (segundos < 60) return `${segundos}s`;
     const horas = Math.floor(segundos / 3600);
@@ -145,11 +160,10 @@ function formatarTempo(segundos) {
     return `${minutos}min`;
 }
 
-// GERADOR DO PAINEL COM DESIGN PROFISSIONAL E LIMPO
+// GERADOR DO PAINEL
 async function gerarPainelProfissional() {
     const { callMap, guerraMap } = await buscarDadosMembros();
     
-    // Adiciona tempo dos usuários que estão atualmente na call ao vivo
     entradaVoz.forEach((inicio, userId) => {
         const aoVivo = Math.floor((Date.now() - inicio) / 1000);
         const salvo = callMap.get(userId) || 0;
@@ -172,8 +186,7 @@ async function gerarPainelProfissional() {
 
         embed.setTitle('🎧 TOP 10 • TEMPO EM CALL')
              .setDescription(`Acompanhe abaixo os membros mais ativos nas salas de voz:\n\n${topCall}`)
-             .setThumbnail('https://cdn-icons-png.flaticon.com/512/906/906334.png')
-             .setFooter({ text: 'Página 1/2 • Atualizado em tempo real via Firebase' })
+             .setFooter({ text: 'Página 1/2 • Atualizado em tempo real' })
              .setTimestamp();
 
         row.addComponents(
@@ -192,8 +205,7 @@ async function gerarPainelProfissional() {
 
         embed.setTitle('⚔️ TOP 10 • GUERRA DE GUILDA')
              .setDescription(`Pontuação oficial acumulada pela line-up:\n\n${topGuerra}`)
-             .setThumbnail('https://cdn-icons-png.flaticon.com/512/3112/3112948.png')
-             .setFooter({ text: 'Página 2/2 • Atualizado em tempo real via Firebase' })
+             .setFooter({ text: 'Página 2/2 • Atualizado em tempo real' })
              .setTimestamp();
 
         row.addComponents(
@@ -204,84 +216,101 @@ async function gerarPainelProfissional() {
     return { embed, row };
 }
 
-// INTERAÇÕES E BOTÕES
+// MANIPULAÇÃO DE INTERAÇÕES COM RESPOSTA IMEDIATA (EVITA "O APLICATIVO NÃO RESPONDEU")
 client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand() && !interaction.isButton()) return;
 
-    if (interaction.isChatInputCommand() && interaction.commandName === 'escalacao') {
-        const embed = new EmbedBuilder()
-            .setTitle('🛡️ ESCALAÇÃO PARA GUERRA DE GUILDA')
-            .setDescription('Confirme sua presença na partida de hoje clicando nos botões abaixo:')
-            .setColor('#0055FF');
+    try {
+        // COMANDOS SLASH
+        if (interaction.isChatInputCommand()) {
+            if (interaction.commandName === 'iniciar-ranking-automatico') {
+                await interaction.deferReply({ ephemeral: true });
+                configPainel.canalRankingId = interaction.channelId;
+                const { embed, row } = await gerarPainelProfissional();
+                const msg = await interaction.channel.send({ embeds: [embed], components: [row] });
+                configPainel.mensagemRankingId = msg.id;
+                await interaction.editReply({ content: '✅ Painel profissional ativado com sucesso!' });
+            }
 
-        const row = new ActionRowBuilder().addComponents(
-            new ButtonBuilder().setCustomId('vou').setLabel('🟢 Confirmado').setStyle(ButtonStyle.Success),
-            new ButtonBuilder().setCustomId('nao_vou').setLabel('🔴 Não Vou').setStyle(ButtonStyle.Danger),
-            new ButtonBuilder().setCustomId('suplente').setLabel('🟡 Suplente').setStyle(ButtonStyle.Secondary)
-        );
+            else if (interaction.commandName === 'escalacao') {
+                const embed = new EmbedBuilder()
+                    .setTitle('🛡️ ESCALAÇÃO PARA GUERRA DE GUILDA')
+                    .setDescription('Confirme sua presença na partida de hoje clicando nos botões abaixo:')
+                    .setColor('#0055FF');
 
-        await interaction.reply({ embeds: [embed], components: [row] });
-    }
+                const row = new ActionRowBuilder().addComponents(
+                    new ButtonBuilder().setCustomId('vou').setLabel('🟢 Confirmado').setStyle(ButtonStyle.Success),
+                    new ButtonBuilder().setCustomId('nao_vou').setLabel('🔴 Não Vou').setStyle(ButtonStyle.Danger),
+                    new ButtonBuilder().setCustomId('suplente').setLabel('🟡 Suplente').setStyle(ButtonStyle.Secondary)
+                );
 
-    if (interaction.isButton()) {
-        if (interaction.customId === 'vou') await interaction.reply({ content: '✅ Presença confirmada!', ephemeral: true });
-        if (interaction.customId === 'nao_vou') await interaction.reply({ content: '❌ Ausência registrada.', ephemeral: true });
-        if (interaction.customId === 'suplente') await interaction.reply({ content: '🟡 Registrado como suplente.', ephemeral: true });
+                await interaction.reply({ embeds: [embed], components: [row] });
+            }
 
-        if (interaction.customId === 'entregar_meta') {
-            await adicionarPontosGuerra(interaction.user.id, 100);
-            await interaction.reply({ content: '🎯 **+100 pontos** de meta entregues com sucesso e salvos no Firebase!', ephemeral: true });
+            else if (interaction.commandName === 'painel-meta') {
+                const embed = new EmbedBuilder()
+                    .setTitle('📥 ENTREGA DE METAS DE GUERRA')
+                    .setDescription('Clique no botão abaixo para registrar seus pontos na nuvem da guilda.')
+                    .setColor('#0055FF');
+
+                const row = new ActionRowBuilder().addComponents(
+                    new ButtonBuilder().setCustomId('entregar_meta').setLabel('🎯 Entregar Pontos de Meta').setStyle(ButtonStyle.Primary)
+                );
+
+                await interaction.reply({ embeds: [embed], components: [row] });
+            }
+
+            else if (interaction.commandName === 'painel-admin') {
+                await interaction.deferReply({ ephemeral: true });
+                const { guerraMap } = await buscarDadosMembros();
+                const lista = Array.from(guerraMap.entries())
+                    .map(([id, pts]) => `• <@${id}>: **${pts} pts**`)
+                    .join('\n') || 'Nenhum registro.';
+
+                const embedAdmin = new EmbedBuilder()
+                    .setTitle('🛠️ PAINEL ADMINISTRATIVO')
+                    .setDescription(`Pontuações salvas no Firebase:\n\n${lista}`)
+                    .setColor('#FF0000');
+
+                await interaction.editReply({ embeds: [embedAdmin] });
+            }
+
+            else if (interaction.commandName === 'salatreino') {
+                const senha = Math.floor(1000 + Math.random() * 9000);
+                await interaction.reply({ content: `🎮 **Sala de Treino Gerada!**\n🔑 Senha: \`${senha}\`` });
+            }
         }
 
-        if (interaction.customId === 'mudar_pagina') {
-            configPainel.paginaAtual = configPainel.paginaAtual === 'call' ? 'guerra' : 'call';
-            const { embed, row } = await gerarPainelProfissional();
-            await interaction.update({ embeds: [embed], components: [row] });
+        // BOTÕES INTERATIVOS
+        if (interaction.isButton()) {
+            if (interaction.customId === 'mudar_pagina') {
+                // Notifica o Discord na hora que a interatividade começou
+                await interaction.deferUpdate();
+                configPainel.paginaAtual = configPainel.paginaAtual === 'call' ? 'guerra' : 'call';
+                const { embed, row } = await gerarPainelProfissional();
+                await interaction.editReply({ embeds: [embed], components: [row] });
+            }
+
+            else if (interaction.customId === 'entregar_meta') {
+                await interaction.deferReply({ ephemeral: true });
+                await adicionarPontosGuerra(interaction.user.id, 100);
+                await interaction.editReply({ content: '🎯 **+100 pontos** de meta entregues com sucesso e salvos no Firebase!' });
+            }
+
+            else if (interaction.customId === 'vou') {
+                await interaction.reply({ content: '✅ Presença confirmada!', ephemeral: true });
+            } else if (interaction.customId === 'nao_vou') {
+                await interaction.reply({ content: '❌ Ausência registrada.', ephemeral: true });
+            } else if (interaction.customId === 'suplente') {
+                await interaction.reply({ content: '🟡 Registrado como suplente.', ephemeral: true });
+            }
         }
-    }
-
-    if (interaction.isChatInputCommand() && interaction.commandName === 'painel-meta') {
-        const embed = new EmbedBuilder()
-            .setTitle('📥 ENTREGA DE METAS DE GUERRA')
-            .setDescription('Clique no botão abaixo para registrar seus pontos na nuvem da guilda.')
-            .setColor('#0055FF');
-
-        const row = new ActionRowBuilder().addComponents(
-            new ButtonBuilder().setCustomId('entregar_meta').setLabel('🎯 Entregar Pontos de Meta').setStyle(ButtonStyle.Primary)
-        );
-
-        await interaction.reply({ embeds: [embed], components: [row] });
-    }
-
-    if (interaction.isChatInputCommand() && interaction.commandName === 'iniciar-ranking-automatico') {
-        configPainel.canalRankingId = interaction.channelId;
-        const { embed, row } = await gerarPainelProfissional();
-        const msg = await interaction.channel.send({ embeds: [embed], components: [row] });
-        configPainel.mensagemRankingId = msg.id;
-
-        await interaction.reply({ content: '✅ Painel profissional ativado com sucesso!', ephemeral: true });
-    }
-
-    if (interaction.isChatInputCommand() && interaction.commandName === 'painel-admin') {
-        const { guerraMap } = await buscarDadosMembros();
-        const lista = Array.from(guerraMap.entries())
-            .map(([id, pts]) => `• <@${id}>: **${pts} pts**`)
-            .join('\n') || 'Nenhum registro.';
-
-        const embedAdmin = new EmbedBuilder()
-            .setTitle('🛠️ PAINEL ADMINISTRATIVO')
-            .setDescription(`Pontuações salvas no Firebase:\n\n${lista}`)
-            .setColor('#FF0000');
-
-        await interaction.reply({ embeds: [embedAdmin], ephemeral: true });
-    }
-
-    if (interaction.isChatInputCommand() && interaction.commandName === 'salatreino') {
-        const senha = Math.floor(1000 + Math.random() * 9000);
-        await interaction.reply(`🎮 **Sala de Treino Gerada!**\n🔑 Senha: \`${senha}\``);
+    } catch (err) {
+        console.error('Erro na interatividade:', err);
     }
 });
 
+// Servidor para manter o Render ligado
 http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Bot online!');
