@@ -1,385 +1,1049 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR" class="dark scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>L7 ESPORTS - Dashboard Executivo</title>
+    <title>L7 ESPORTS | Guilda Pro de Free Fire</title>
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: { extend: { colors: { brand: { 500: '#0055FF', 600: '#0044cc' } } } }
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: '#00FF66',
+                            greenDark: '#00cc52',
+                            neonGlow: '#00ff6680',
+                            purple: '#7928CA',
+                            darkBg: '#0A0C10',
+                            cardBg: '#121620',
+                            cardBorder: '#1E2638'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'neon': '0 0 20px rgba(0, 255, 102, 0.35)',
+                        'neon-lg': '0 0 35px rgba(0, 255, 102, 0.55)',
+                        'purple-glow': '0 0 25px rgba(121, 40, 202, 0.4)'
+                    }
+                }
+            }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Fontes Google & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,800;0,900;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        * { font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: #030712; color: #f3f4f6; }
-        .glass-panel { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.07); box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5); }
-        .sidebar-item { transition: all 0.25s ease; cursor: pointer; text-align: left; width: 100%; position: relative; }
-        .sidebar-item:hover, .sidebar-item.ativo { background: linear-gradient(90deg, rgba(0, 85, 255, 0.18) 0%, rgba(0, 85, 255, 0.02) 100%); color: #60a5fa; }
-        .sidebar-item.ativo::before { content: ''; position: absolute; left: 0; top: 20%; height: 60%; width: 4px; background: #0055FF; border-radius: 0 4px 4px 0; }
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: #030712; }
-        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 9999px; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0A0C10;
+            color: #F3F4F6;
+            overflow-x: hidden;
+        }
+
+        /* Scanline Effect overlay */
+        .scanline {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0, 0, 0, 0.3) 50%,
+                rgba(0, 0, 0, 0.3)
+            );
+            background-size: 100% 4px;
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(18, 22, 32, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Text Stroke for Neon title */
+        .text-stroke {
+            -webkit-text-stroke: 1px #00FF66;
+            color: transparent;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0C10;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E2638;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00FF66;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 4s infinite ease-in-out;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col md:flex-row selection:bg-blue-600 selection:text-white">
+<body class="selection:bg-brand-green selection:text-black">
 
-    <!-- MENU MOBILE HEADER -->
-    <div class="md:hidden flex items-center justify-between p-4 bg-[#080d1a] border-b border-gray-800/80 sticky top-0 z-40">
-        <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-extrabold flex items-center justify-center text-sm">L7</div>
-            <div>
-                <h2 class="font-extrabold text-xs text-white">L7 ESPORTS™</h2>
-                <span class="text-[10px] text-emerald-400 flex items-center gap-1 font-medium">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Firestore Active
-                </span>
-            </div>
-        </div>
-        <button onclick="toggleMobileMenu()" class="p-2 rounded-xl bg-gray-900 border border-gray-800 text-gray-300">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-        </button>
-    </div>
+    <!-- OVERLAY BACKGROUND GLOWS -->
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-brand-green/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-1/3 right-10 w-96 h-96 bg-brand-purple/15 rounded-full blur-[140px] pointer-events-none z-0"></div>
 
-    <!-- SIDEBAR -->
-    <aside id="mobile-sidebar" class="fixed inset-y-0 left-0 z-50 w-72 bg-[#080d1a] border-r border-gray-800/80 flex flex-col justify-between transform -translate-x-full md:translate-x-0 transition-transform duration-300 md:static shrink-0">
-        <div>
-            <div class="p-5 border-b border-gray-800/60 hidden md:block">
-                <div class="glass-panel rounded-2xl p-4 flex items-center gap-3.5">
-                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-extrabold flex items-center justify-center text-base shadow-lg shadow-blue-600/30">L7</div>
-                    <div>
-                        <h2 class="font-extrabold text-sm text-white">L7 ESPORTS™</h2>
-                        <span class="text-[11px] text-emerald-400 flex items-center gap-1 mt-0.5"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Firebase Live</span>
+    <!-- HEADER / NAVIGATION -->
+    <header class="fixed top-0 left-0 w-full z-40 transition-all duration-300 glass-panel border-b border-white/5" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- BRAND LOGO -->
+                <a href="#inicio" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 bg-black border-2 border-brand-green rounded-xl flex items-center justify-center shadow-neon group-hover:scale-105 transition-transform duration-300">
+                        <span class="text-2xl font-black italic tracking-wider text-brand-green">L7</span>
                     </div>
-                </div>
-            </div>
-
-            <nav class="px-3 pt-6 space-y-1.5 text-xs font-semibold">
-                <button onclick="mudarAba('home')" id="nav-home" class="sidebar-item ativo flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-blue-400 font-bold">
-                    <span>📊</span> Visão Geral
-                </button>
-                <button onclick="mudarAba('recrutamento')" id="nav-recrutamento" class="sidebar-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-gray-400">
-                    <span>📝</span> Recrutamento (Fichas)
-                </button>
-                <button onclick="mudarAba('tickets')" id="nav-tickets" class="sidebar-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-gray-400">
-                    <span>🎫</span> Central de Tickets
-                </button>
-                <button onclick="mudarAba('justificativas')" id="nav-justificativas" class="sidebar-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-gray-400">
-                    <span>📑</span> Justificativas de Guerra
-                </button>
-                <button onclick="mudarAba('membros')" id="nav-membros" class="sidebar-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-gray-400">
-                    <span>⚔️</span> Ranking & Membros
-                </button>
-                <button onclick="mudarAba('embed')" id="nav-embed" class="sidebar-item flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-gray-400">
-                    <span>🎨</span> Bot Personalizer
-                </button>
-            </nav>
-        </div>
-
-        <div class="p-4 m-3 rounded-2xl bg-gray-950/60 border border-gray-800/80 flex items-center justify-between text-xs text-gray-400">
-            <span class="font-medium text-gray-300">TL STUDIO</span>
-            <span class="text-[10px] font-mono text-gray-400">v3.0 Executive</span>
-        </div>
-    </aside>
-
-    <div id="sidebar-overlay" onclick="toggleMobileMenu()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden md:hidden"></div>
-
-    <!-- MAIN CONTENT -->
-    <main class="flex-1 flex flex-col min-w-0">
-        <header class="h-20 border-b border-gray-800/60 items-center justify-between px-8 bg-[#080d1a]/80 backdrop-blur-2xl sticky top-0 z-20 hidden md:flex">
-            <div class="flex items-center gap-3 text-xs text-gray-400">
-                <span class="text-gray-200 font-bold">L7 ESPORTS™</span> / 
-                <span id="breadcrumb-atual" class="text-blue-400 font-bold bg-blue-500/10 px-2.5 py-1 rounded-lg border border-blue-500/20">Visão Geral</span>
-            </div>
-            <div class="flex items-center gap-4">
-                <div id="status-firebase" class="text-xs px-4 py-1.5 rounded-full bg-gray-900 border border-gray-800 text-emerald-400 font-semibold flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Conectado
-                </div>
-                <div class="flex items-center gap-3 pl-4 border-l border-gray-800">
-                    <div class="text-right">
-                        <div class="text-xs font-extrabold text-white">TLZ (Túlio)</div>
-                        <div class="text-[10px] text-blue-400 font-semibold">CEO & Fundador</div>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-black tracking-widest text-white uppercase italic leading-none group-hover:text-brand-green transition-colors">L7 <span class="text-brand-green">ESPORTS</span></span>
+                        <span class="text-[9px] font-semibold tracking-widest text-gray-400 uppercase">Free Fire Division</span>
                     </div>
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-extrabold flex items-center justify-center text-xs shadow-md">TLZ</div>
-                </div>
-            </div>
-        </header>
+                </a>
 
-        <div class="p-4 sm:p-8 space-y-6 overflow-y-auto flex-1 max-w-7xl w-full mx-auto">
-            
-            <!-- ABA 1: HOME -->
-            <div id="conteudo-home" class="space-y-6">
-                <div class="glass-panel p-6 sm:p-8 rounded-3xl relative overflow-hidden border border-blue-500/20">
-                    <h1 class="text-2xl sm:text-4xl font-black text-white">Painel Executivo da Guilda</h1>
-                    <p class="text-xs sm:text-sm text-gray-400 mt-1">Gerencie inscrições, tickets, presenças e a infraestrutura completa do bot do Discord.</p>
-                </div>
+                <!-- DESKTOP MENU -->
+                <nav class="hidden md:flex items-center space-x-8 text-sm font-bold tracking-wider">
+                    <a href="#inicio" class="hover:text-brand-green transition-colors text-white uppercase py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-green hover:after:w-full after:transition-all">Início</a>
+                    <a href="#elenco" class="hover:text-brand-green transition-colors text-gray-300 hover:text-white uppercase py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-green hover:after:w-full after:transition-all">Elenco Pro</a>
+                    <a href="#conquistas" class="hover:text-brand-green transition-colors text-gray-300 hover:text-white uppercase py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-green hover:after:w-full after:transition-all">Títulos</a>
+                    <a href="#loja" class="hover:text-brand-green transition-colors text-gray-300 hover:text-white uppercase py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-green hover:after:w-full after:transition-all">Loja</a>
+                    <a href="#noticias" class="hover:text-brand-green transition-colors text-gray-300 hover:text-white uppercase py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-brand-green hover:after:w-full after:transition-all">Notícias</a>
+                </nav>
 
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="glass-panel p-5 rounded-2xl">
-                        <span class="text-xs font-bold text-gray-400 uppercase">Membros Registrados</span>
-                        <div id="stat-membros" class="text-3xl font-black text-white mt-1">0</div>
-                    </div>
-                    <div class="glass-panel p-5 rounded-2xl">
-                        <span class="text-xs font-bold text-gray-400 uppercase">Pontos de Guerra</span>
-                        <div id="stat-pontos" class="text-3xl font-black text-blue-400 mt-1">0 pts</div>
-                    </div>
-                    <div class="glass-panel p-5 rounded-2xl">
-                        <span class="text-xs font-bold text-gray-400 uppercase">Fichas de Recrutamento</span>
-                        <div id="stat-fichas" class="text-3xl font-black text-emerald-400 mt-1">0</div>
-                    </div>
-                    <div class="glass-panel p-5 rounded-2xl">
-                        <span class="text-xs font-bold text-gray-400 uppercase">Tickets Abertos</span>
-                        <div id="stat-tickets" class="text-3xl font-black text-purple-400 mt-1">0</div>
-                    </div>
-                </div>
-            </div>
+                <!-- USER / CART / MOBILE ACTIONS -->
+                <div class="flex items-center gap-4">
+                    <!-- Carrinho Button -->
+                    <button id="cartBtn" class="relative p-2.5 rounded-lg bg-brand-cardBg border border-brand-cardBorder hover:border-brand-green text-gray-200 hover:text-brand-green transition-all">
+                        <i class="fa-solid fa-cart-shopping text-lg"></i>
+                        <span id="cartCount" class="absolute -top-1.5 -right-1.5 bg-brand-green text-black font-black text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                    </button>
 
-            <!-- ABA 2: RECRUTAMENTO -->
-            <div id="conteudo-recrutamento" class="space-y-6 hidden">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-2xl font-black text-white">Fichas de Recrutamento Recebidas</h2>
-                        <p class="text-xs text-gray-400">Formulários preenchidos no Discord com Nome, Idade e Posição.</p>
+                    <!-- Auth Button Container -->
+                    <div id="authContainer">
+                        <button onclick="openAuthModal()" class="px-5 py-2.5 rounded-lg bg-brand-green text-black font-black uppercase text-xs tracking-wider hover:bg-white hover:shadow-neon transition-all flex items-center gap-2 transform active:scale-95">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Entrar</span>
+                        </button>
                     </div>
-                </div>
-                <div class="glass-panel rounded-3xl overflow-hidden border border-gray-800">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs text-gray-300">
-                            <thead class="bg-gray-950/80 text-gray-400 uppercase font-bold text-[10px] border-b border-gray-800">
-                                <tr>
-                                    <th class="py-4 px-6">Jogador (Discord)</th>
-                                    <th class="py-4 px-6">Nome / Nick</th>
-                                    <th class="py-4 px-6">Idade</th>
-                                    <th class="py-4 px-6">Posição</th>
-                                    <th class="py-4 px-6">Data</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabela-recrutamento" class="divide-y divide-gray-800/40">
-                                <tr><td colspan="5" class="py-8 text-center text-gray-500">Nenhuma ficha enviada ainda...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
 
-            <!-- ABA 3: TICKETS -->
-            <div id="conteudo-tickets" class="space-y-6 hidden">
-                <div>
-                    <h2 class="text-2xl font-black text-white">Atendimentos & Tickets</h2>
-                    <p class="text-xs text-gray-400">Histórico de chamados abertos no estilo Ticket King.</p>
-                </div>
-                <div class="glass-panel rounded-3xl overflow-hidden border border-gray-800">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs text-gray-300">
-                            <thead class="bg-gray-950/80 text-gray-400 uppercase font-bold text-[10px] border-b border-gray-800">
-                                <tr>
-                                    <th class="py-4 px-6">ID Ticket</th>
-                                    <th class="py-4 px-6">Usuário</th>
-                                    <th class="py-4 px-6">Assunto</th>
-                                    <th class="py-4 px-6">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabela-tickets" class="divide-y divide-gray-800/40">
-                                <tr><td colspan="4" class="py-8 text-center text-gray-500">Nenhum ticket registrado...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ABA 4: JUSTIFICATIVAS DE GUERRA -->
-            <div id="conteudo-justificativas" class="space-y-6 hidden">
-                <div>
-                    <h2 class="text-2xl font-black text-white">Justificativas de Ausência</h2>
-                    <p class="text-xs text-gray-400">Motivos enviados pelos jogadores que clicaram em "Justificar" no painel de escalação.</p>
-                </div>
-                <div class="glass-panel rounded-3xl overflow-hidden border border-gray-800">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs text-gray-300">
-                            <thead class="bg-gray-950/80 text-gray-400 uppercase font-bold text-[10px] border-b border-gray-800">
-                                <tr>
-                                    <th class="py-4 px-6">Membro</th>
-                                    <th class="py-4 px-6">ID Discord</th>
-                                    <th class="py-4 px-6">Motivo da Ausência</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabela-justificativas" class="divide-y divide-gray-800/40">
-                                <tr><td colspan="3" class="py-8 text-center text-gray-500">Nenhuma justificativa recente...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ABA 5: MEMBROS -->
-            <div id="conteudo-membros" class="space-y-6 hidden">
-                <div>
-                    <h2 class="text-2xl font-black text-white">Ranking e Gestão de Pontos</h2>
-                    <p class="text-xs text-gray-400">Ajuste os pontos de guerra manualmente.</p>
-                </div>
-                <div class="glass-panel rounded-3xl overflow-hidden border border-gray-800">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs text-gray-300">
-                            <thead class="bg-gray-950/80 text-gray-400 uppercase font-bold text-[10px] border-b border-gray-800">
-                                <tr>
-                                    <th class="py-4 px-6">Jogador</th>
-                                    <th class="py-4 px-6">ID Discord</th>
-                                    <th class="py-4 px-6">Pontos</th>
-                                    <th class="py-4 px-6 text-right">Ação</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabela-membros" class="divide-y divide-gray-800/40">
-                                <tr><td colspan="4" class="py-8 text-center text-gray-500">A carregar membros...</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ABA 6: BOT PERSONALIZER -->
-            <div id="conteudo-embed" class="space-y-6 hidden">
-                <div class="glass-panel p-8 rounded-3xl border border-gray-800 space-y-6">
-                    <h2 class="text-xl font-bold text-white">Configurações Gerais dos Painéis</h2>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-400 mb-2">Título dos Painéis Oficiais</label>
-                            <input type="text" id="input-titulo" value="L7 ESPORTS™ - PAINEL OFICIAL" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-xs text-white">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-gray-400 mb-2">ID do Cargo Automático de Aprovado no Recrutamento</label>
-                            <input type="text" id="input-cargo-aprovado" placeholder="Ex: 123456789012345678" class="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-xs text-white">
-                        </div>
-                    </div>
-                    <button onclick="salvarConfigs()" class="w-full py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl text-xs">
-                        🚀 Salvar Configurações no Firebase
+                    <!-- Mobile Menu Trigger -->
+                    <button id="mobileMenuBtn" class="md:hidden text-2xl text-white hover:text-brand-green p-2 focus:outline-none">
+                        <i class="fa-solid fa-bars"></i>
                     </button>
                 </div>
             </div>
+        </div>
+
+        <!-- MOBILE MENU DROPDOWN -->
+        <div id="mobileMenu" class="hidden md:hidden glass-panel border-b border-brand-cardBorder px-6 py-6 space-y-4">
+            <a href="#inicio" onclick="toggleMobileMenu()" class="block text-white hover:text-brand-green font-bold uppercase tracking-wider">Início</a>
+            <a href="#elenco" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-brand-green font-bold uppercase tracking-wider">Elenco Pro</a>
+            <a href="#conquistas" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-brand-green font-bold uppercase tracking-wider">Títulos</a>
+            <a href="#loja" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-brand-green font-bold uppercase tracking-wider">Loja</a>
+            <a href="#noticias" onclick="toggleMobileMenu()" class="block text-gray-300 hover:text-brand-green font-bold uppercase tracking-wider">Notícias</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="inicio" class="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden">
+        <!-- Hero Background Canvas Grid / Dynamic Graphic -->
+        <div class="absolute inset-0 z-0 opacity-40">
+            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1920&auto=format&fit=crop" alt="Free Fire Tournament BG" class="w-full h-full object-cover filter brightness-50 contrast-125">
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-darkBg via-brand-darkBg/70 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-brand-darkBg via-transparent to-brand-darkBg"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+            
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-brand-green/30 text-brand-green font-extrabold text-xs uppercase tracking-widest mb-6 animate-bounce">
+                <span class="w-2 h-2 rounded-full bg-brand-green animate-ping"></span>
+                Organização Profissional LBFF & CPN
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-5xl sm:text-7xl md:text-8xl font-black uppercase italic tracking-tighter text-white leading-none mb-6">
+                DOMINANDO O <br>
+                <span class="text-brand-green drop-shadow-[0_0_25px_rgba(0,255,102,0.6)]">MAPA DA GLÓRIA</span>
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-gray-300 text-base sm:text-lg font-medium mb-10 leading-relaxed">
+                A <strong class="text-white">L7 ESPORTS</strong> é a guilda de Free Fire de alta performance focada em tática, agressividade e troféus. O topo é o nosso habitat natural.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-16">
+                <a href="#elenco" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-brand-green text-black font-black uppercase tracking-wider hover:bg-white hover:shadow-neon transition-all transform hover:-translate-y-1 text-center">
+                    <i class="fa-solid fa-users mr-2"></i> Conhecer Elenco
+                </a>
+                <a href="#noticias" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-panel border border-white/20 text-white hover:border-brand-green font-black uppercase tracking-wider hover:text-brand-green transition-all text-center">
+                    <i class="fa-solid fa-newspaper mr-2"></i> Últimas Notícias
+                </a>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div class="p-6 rounded-2xl glass-panel border border-brand-cardBorder text-center transform hover:scale-105 transition-transform">
+                    <p class="text-3xl sm:text-4xl font-black text-brand-green tracking-tight">+18</p>
+                    <p class="text-xs uppercase font-bold text-gray-400 mt-1">Títulos Oficiais</p>
+                </div>
+                <div class="p-6 rounded-2xl glass-panel border border-brand-cardBorder text-center transform hover:scale-105 transition-transform">
+                    <p class="text-3xl sm:text-4xl font-black text-white tracking-tight">2.5M+</p>
+                    <p class="text-xs uppercase font-bold text-gray-400 mt-1">Fãs & Torcida</p>
+                </div>
+                <div class="p-6 rounded-2xl glass-panel border border-brand-cardBorder text-center transform hover:scale-105 transition-transform">
+                    <p class="text-3xl sm:text-4xl font-black text-brand-green tracking-tight">82%</p>
+                    <p class="text-xs uppercase font-bold text-gray-400 mt-1">Taxa de Booyah</p>
+                </div>
+                <div class="p-6 rounded-2xl glass-panel border border-brand-cardBorder text-center transform hover:scale-105 transition-transform">
+                    <p class="text-3xl sm:text-4xl font-black text-white tracking-tight">#1</p>
+                    <p class="text-xs uppercase font-bold text-gray-400 mt-1">Ranking das Guildas</p>
+                </div>
+            </div>
 
         </div>
-    </main>
+    </section>
 
-    <!-- FIREBASE SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <!-- ROSTER / ELENCO SECTION -->
+    <section id="elenco" class="py-24 relative z-10 bg-black/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-brand-green font-black uppercase tracking-widest text-xs">Line-up Profissional</span>
+                    <h2 class="text-4xl sm:text-5xl font-black italic uppercase text-white tracking-tight mt-1">
+                        ELENCO <span class="text-brand-green">PRO FREE FIRE</span>
+                    </h2>
+                </div>
+                <!-- Role Filter Buttons -->
+                <div class="flex flex-wrap gap-2 mt-4 md:mt-0" id="rosterFilter">
+                    <button data-filter="all" class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider bg-brand-green text-black transition-all">Todos</button>
+                    <button data-filter="Rusher" class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider bg-brand-cardBg text-gray-300 hover:text-white border border-brand-cardBorder transition-all">Rusher</button>
+                    <button data-filter="IGL" class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider bg-brand-cardBg text-gray-300 hover:text-white border border-brand-cardBorder transition-all">IGL / Cap</button>
+                    <button data-filter="Suporte" class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider bg-brand-cardBg text-gray-300 hover:text-white border border-brand-cardBorder transition-all">Suporte</button>
+                    <button data-filter="Coach" class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider bg-brand-cardBg text-gray-300 hover:text-white border border-brand-cardBorder transition-all">Coach</button>
+                </div>
+            </div>
 
+            <!-- Player Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="playersGrid">
+                <!-- Players will be injected dynamically via Javascript -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ACHIEVEMENTS / TITLES SECTION -->
+    <section id="conquistas" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-green font-black uppercase tracking-widest text-xs">Legado de Booyahs</span>
+                <h2 class="text-4xl sm:text-5xl font-black italic uppercase text-white tracking-tight mt-1">
+                    GALERIA DE <span class="text-brand-green">TROFÉUS & CONQUISTAS</span>
+                </h2>
+                <p class="text-gray-400 text-sm mt-3">A trajetória vitoriosa que consagrou a L7 ESPORTS como uma das organizações mais temidas do cenário competitivo.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div class="glass-panel p-8 rounded-2xl border border-brand-cardBorder hover:border-brand-green/50 transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-brand-green/10 rounded-full blur-2xl group-hover:bg-brand-green/20 transition-all"></div>
+                    <div class="w-16 h-16 rounded-xl bg-brand-green/10 border border-brand-green/30 flex items-center justify-center text-brand-green text-3xl mb-6 shadow-neon">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <span class="text-xs font-black uppercase tracking-widest text-brand-green">Campeonato Pro 2026</span>
+                    <h3 class="text-2xl font-black uppercase italic text-white mt-1 mb-3">Liga Booyah Master</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">1º Lugar Geral com recorde de 142 abates em 12 quedas no mapa Bermudas e Purgatório.</p>
+                    <div class="flex items-center gap-4 text-xs font-bold text-gray-300 border-t border-white/5 pt-4">
+                        <span><i class="fa-solid fa-medal text-brand-green mr-1"></i> MVP: L7_NOBRU_STYLE</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl border border-brand-cardBorder hover:border-brand-green/50 transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-brand-purple/20 rounded-full blur-2xl transition-all"></div>
+                    <div class="w-16 h-16 rounded-xl bg-brand-purple/20 border border-brand-purple/40 flex items-center justify-center text-purple-400 text-3xl mb-6 shadow-purple-glow">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <span class="text-xs font-black uppercase tracking-widest text-purple-400">Torneio das Guildas</span>
+                    <h3 class="text-2xl font-black uppercase italic text-white mt-1 mb-3">Copa Freepass Elite</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">Bi-campeões invictos com controle impecável de rotação e finalização agressiva nas pontas de gás.</p>
+                    <div class="flex items-center gap-4 text-xs font-bold text-gray-300 border-t border-white/5 pt-4">
+                        <span><i class="fa-solid fa-fire text-purple-400 mr-1"></i> Premium Cup Champion</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 rounded-2xl border border-brand-cardBorder hover:border-brand-green/50 transition-all duration-300 group hover:-translate-y-2 relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-brand-green/10 rounded-full blur-2xl group-hover:bg-brand-green/20 transition-all"></div>
+                    <div class="w-16 h-16 rounded-xl bg-brand-green/10 border border-brand-green/30 flex items-center justify-center text-brand-green text-3xl mb-6 shadow-neon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <span class="text-xs font-black uppercase tracking-widest text-brand-green">Showmatch Internacional</span>
+                    <h3 class="text-2xl font-black uppercase italic text-white mt-1 mb-3">Desafio LATAM FF</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">Vitória contra as maiores organizações da América Latina em uma final emocionante em 7 quedas.</p>
+                    <div class="flex items-center gap-4 text-xs font-bold text-gray-300 border-t border-white/5 pt-4">
+                        <span><i class="fa-solid fa-globe text-brand-green mr-1"></i> TOP 1 Américas</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- STORE / MERCH OFFICIAL SECTION -->
+    <section id="loja" class="py-24 relative z-10 bg-black/50 border-t border-b border-brand-cardBorder">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-brand-green font-black uppercase tracking-widest text-xs">L7 Official Merch</span>
+                    <h2 class="text-4xl sm:text-5xl font-black italic uppercase text-white tracking-tight mt-1">
+                        UNIFORMES & <span class="text-brand-green">EQUIPAMENTOS</span>
+                    </h2>
+                </div>
+                <p class="text-gray-400 text-sm max-w-md mt-2 md:mt-0">Vista a armadura oficial da L7 ESPORTS. Produtos exclusivos desenvolvidos com tecido de alta performance para gamers.</p>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="storeGrid">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWS / FEED SECTION -->
+    <section id="noticias" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-green font-black uppercase tracking-widest text-xs">Fique por dentro</span>
+                <h2 class="text-4xl sm:text-5xl font-black italic uppercase text-white tracking-tight mt-1">
+                    ÚLTIMAS <span class="text-brand-green">NOTÍCIAS & UPDATES</span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- News Card 1 -->
+                <article class="glass-panel rounded-2xl overflow-hidden border border-brand-cardBorder hover:border-brand-green/40 transition-all group">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800&auto=format&fit=crop" alt="L7 na LBFF" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-4 left-4 bg-brand-green text-black font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-md">Campeonatos</span>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-gray-400 font-semibold">28 de Outubro, 2026</span>
+                        <h3 class="text-xl font-black uppercase italic text-white mt-2 mb-3 group-hover:text-brand-green transition-colors">L7 ESPORTS garante classificação para a Grande Final!</h3>
+                        <p class="text-gray-400 text-sm line-clamp-2 leading-relaxed">Após um dia incrível de rodadas com 3 Booyahs consecutivos, a guilda lidera a tabela geral de pontos.</p>
+                    </div>
+                </article>
+
+                <!-- News Card 2 -->
+                <article class="glass-panel rounded-2xl overflow-hidden border border-brand-cardBorder hover:border-brand-green/40 transition-all group">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=800&auto=format&fit=crop" alt="Novo Jogador L7" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-4 left-4 bg-brand-purple text-white font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-md">Reforço Pro</span>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-gray-400 font-semibold">22 de Outubro, 2026</span>
+                        <h3 class="text-xl font-black uppercase italic text-white mt-2 mb-3 group-hover:text-brand-green transition-colors">Bem-vindo L7_CAPA! Novo Sniper da Lineup</h3>
+                        <p class="text-gray-400 text-sm line-clamp-2 leading-relaxed">Conheça o novo reforço que chega para dominar a longa distância e trazer mais precisão para a equipe.</p>
+                    </div>
+                </article>
+
+                <!-- News Card 3 -->
+                <article class="glass-panel rounded-2xl overflow-hidden border border-brand-cardBorder hover:border-brand-green/40 transition-all group">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop" alt="Uniforme Novo L7" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-4 left-4 bg-brand-green text-black font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-md">Lançamento</span>
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs text-gray-400 font-semibold">15 de Outubro, 2026</span>
+                        <h3 class="text-xl font-black uppercase italic text-white mt-2 mb-3 group-hover:text-brand-green transition-colors">Nova Manta Jersey Season 2026/27 Lançada</h3>
+                        <p class="text-gray-400 text-sm line-clamp-2 leading-relaxed">Design futurista, iluminação reflexiva e máxima respirabilidade para a torcida vestir as cores do time.</p>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="glass-panel border-t border-brand-cardBorder pt-16 pb-12 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                
+                <!-- Brand Info -->
+                <div class="md:col-span-1 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-black border-2 border-brand-green rounded-xl flex items-center justify-center shadow-neon">
+                            <span class="text-xl font-black italic text-brand-green">L7</span>
+                        </div>
+                        <span class="text-xl font-black tracking-widest text-white uppercase italic">L7 <span class="text-brand-green">ESPORTS</span></span>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">A elite do Free Fire competitivo. Paixão, precisão e o verdadeiro espírito da guilda.</p>
+                </div>
+
+                <!-- Navigation Links -->
+                <div>
+                    <h4 class="text-white font-black uppercase text-sm tracking-wider mb-4 border-l-2 border-brand-green pl-2">Navegação</h4>
+                    <ul class="space-y-2 text-sm text-gray-400 font-semibold">
+                        <li><a href="#inicio" class="hover:text-brand-green transition-colors">Início</a></li>
+                        <li><a href="#elenco" class="hover:text-brand-green transition-colors">Elenco Pro</a></li>
+                        <li><a href="#conquistas" class="hover:text-brand-green transition-colors">Títulos e Conquistas</a></li>
+                        <li><a href="#loja" class="hover:text-brand-green transition-colors">Loja Oficial</a></li>
+                    </ul>
+                </div>
+
+                <!-- Redes Sociais -->
+                <div>
+                    <h4 class="text-white font-black uppercase text-sm tracking-wider mb-4 border-l-2 border-brand-green pl-2">Redes Sociais</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="#" class="w-10 h-10 rounded-lg glass-panel border border-brand-cardBorder hover:border-brand-green text-white hover:text-brand-green flex items-center justify-center transition-all">
+                            <i class="fa-brands fa-instagram text-lg"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg glass-panel border border-brand-cardBorder hover:border-brand-green text-white hover:text-brand-green flex items-center justify-center transition-all">
+                            <i class="fa-brands fa-youtube text-lg"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg glass-panel border border-brand-cardBorder hover:border-brand-green text-white hover:text-brand-green flex items-center justify-center transition-all">
+                            <i class="fa-brands fa-discord text-lg"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg glass-panel border border-brand-cardBorder hover:border-brand-green text-white hover:text-brand-green flex items-center justify-center transition-all">
+                            <i class="fa-brands fa-tiktok text-lg"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg glass-panel border border-brand-cardBorder hover:border-brand-green text-white hover:text-brand-green flex items-center justify-center transition-all">
+                            <i class="fa-brands fa-twitch text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-white font-black uppercase text-sm tracking-wider mb-4 border-l-2 border-brand-green pl-2">Newsletter</h4>
+                    <p class="text-xs text-gray-400 mb-3">Receba anúncios de peneiras, cupons da loja e comunicados em primeira mão.</p>
+                    <form onsubmit="handleNewsletter(event)" class="flex gap-2">
+                        <input type="email" required placeholder="Seu e-mail" class="w-full bg-brand-darkBg border border-brand-cardBorder rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-green">
+                        <button type="submit" class="bg-brand-green text-black font-black px-4 rounded-lg text-xs hover:bg-white transition-colors">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="border-t border-white/5 pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 font-medium gap-4">
+                <p>&copy; 2026 L7 ESPORTS. Todos os direitos reservados. Não afiliado diretamente à Garena Free Fire.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-brand-green transition-colors">Termos de Uso</a>
+                    <a href="#" class="hover:text-brand-green transition-colors">Política de Privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DE LOGIN / REGISTRO -->
+    <div id="authModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden px-4">
+        <div class="glass-panel w-full max-w-md p-8 rounded-3xl border border-brand-green/30 relative shadow-neon-lg animate-fade-in">
+            <!-- Close Button -->
+            <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Tabs Header -->
+            <div class="flex border-b border-white/10 mb-6">
+                <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="flex-1 pb-3 text-center font-black uppercase text-sm border-b-2 border-brand-green text-brand-green">Login</button>
+                <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="flex-1 pb-3 text-center font-black uppercase text-sm border-b-2 border-transparent text-gray-400 hover:text-white">Cadastrar-se</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-300 mb-1">E-mail ou Nick</label>
+                    <input type="text" id="loginUser" required placeholder="ex: pro_player@l7.gg" class="w-full bg-brand-darkBg border border-brand-cardBorder focus:border-brand-green rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-300 mb-1">Senha</label>
+                    <input type="password" id="loginPass" required placeholder="••••••••" class="w-full bg-brand-darkBg border border-brand-cardBorder focus:border-brand-green rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
+                </div>
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-green text-black font-black uppercase tracking-wider text-xs hover:bg-white hover:shadow-neon transition-all">Entrar na Conta</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-300 mb-1">Nick no Free Fire</label>
+                    <input type="text" id="regNick" required placeholder="ex: L7_MITO" class="w-full bg-brand-darkBg border border-brand-cardBorder focus:border-brand-green rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-300 mb-1">E-mail</label>
+                    <input type="email" id="regEmail" required placeholder="seuemail@gmail.com" class="w-full bg-brand-darkBg border border-brand-cardBorder focus:border-brand-green rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-300 mb-1">Senha</label>
+                    <input type="password" id="regPass" required placeholder="••••••••" class="w-full bg-brand-darkBg border border-brand-cardBorder focus:border-brand-green rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
+                </div>
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-green text-black font-black uppercase tracking-wider text-xs hover:bg-white hover:shadow-neon transition-all">Criar Conta na Guilda</button>
+            </form>
+
+            <!-- Social Login Divider -->
+            <div class="relative my-6 text-center">
+                <span class="bg-brand-cardBg px-3 text-[10px] uppercase font-bold text-gray-500 relative z-10">ou acesse com</span>
+                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="handleSocialAuth('Discord')" class="py-2.5 rounded-xl bg-[#5865F2] hover:opacity-90 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-brands fa-discord"></i> Discord
+                </button>
+                <button onclick="handleSocialAuth('Google')" class="py-2.5 rounded-xl bg-white hover:bg-gray-100 text-black font-bold text-xs flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-brands fa-google"></i> Google
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAINEL DE PERFIL DO MEMBRO (Modal/Drawer) -->
+    <div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md hidden px-4">
+        <div class="glass-panel w-full max-w-2xl p-8 rounded-3xl border border-brand-green/30 relative shadow-neon-lg">
+            <button onclick="closeProfileModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex flex-col sm:flex-row items-center gap-6 pb-6 border-b border-white/10">
+                <div class="relative">
+                    <div class="w-24 h-24 rounded-2xl bg-gradient-to-tr from-brand-green to-brand-purple p-1 shadow-neon">
+                        <img id="userAvatar" src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover rounded-xl" alt="User Avatar">
+                    </div>
+                    <span class="absolute -bottom-2 -right-2 bg-brand-green text-black font-black text-[10px] px-2 py-0.5 rounded-md uppercase">Membro VIP</span>
+                </div>
+                <div class="text-center sm:text-left">
+                    <h3 id="userName" class="text-2xl font-black uppercase text-white tracking-tight">L7_PRO_PLAYER</h3>
+                    <p id="userEmail" class="text-xs text-gray-400">player@l7.gg</p>
+                    <div class="mt-3 flex flex-wrap gap-2 justify-center sm:justify-start">
+                        <span class="px-3 py-1 rounded-full bg-brand-green/10 text-brand-green border border-brand-green/30 text-xs font-bold">Nível 42 na Guilda</span>
+                        <span class="px-3 py-1 rounded-full bg-brand-purple/20 text-purple-300 border border-brand-purple/40 text-xs font-bold">Patente: Mestre</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats do Membro -->
+            <div class="grid grid-cols-3 gap-4 my-6 text-center">
+                <div class="bg-brand-darkBg/60 p-4 rounded-xl border border-white/5">
+                    <p class="text-2xl font-black text-brand-green">1,480</p>
+                    <p class="text-[10px] uppercase font-bold text-gray-400">Abates no FF</p>
+                </div>
+                <div class="bg-brand-darkBg/60 p-4 rounded-xl border border-white/5">
+                    <p class="text-2xl font-black text-white">4.25</p>
+                    <p class="text-[10px] uppercase font-bold text-gray-400">Taxa K/D</p>
+                </div>
+                <div class="bg-brand-darkBg/60 p-4 rounded-xl border border-white/5">
+                    <p class="text-2xl font-black text-brand-green">34</p>
+                    <p class="text-[10px] uppercase font-bold text-gray-400">Booyahs</p>
+                </div>
+            </div>
+
+            <!-- Conquistas do Membro -->
+            <h4 class="text-xs font-black uppercase tracking-wider text-gray-400 mb-3">Conquistas Desbloqueadas</h4>
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-brand-cardBg border border-brand-cardBorder">
+                    <i class="fa-solid fa-fire text-brand-green text-xl"></i>
+                    <div>
+                        <p class="text-xs font-bold text-white">Paredão de Gelo</p>
+                        <p class="text-[10px] text-gray-400">Sobreviveu 50 vezes na zona final</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-brand-cardBg border border-brand-cardBorder">
+                    <i class="fa-solid fa-crosshair text-brand-purple text-xl"></i>
+                    <div>
+                        <p class="text-xs font-bold text-white">Capa Master</p>
+                        <p class="text-[10px] text-gray-400">60% de Headshot Rate</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center pt-4 border-t border-white/10">
+                <button onclick="handleLogout()" class="px-5 py-2 rounded-xl bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white font-bold text-xs transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sair da Conta
+                </button>
+                <button onclick="closeProfileModal()" class="px-6 py-2 rounded-xl bg-brand-green text-black font-black text-xs uppercase hover:bg-white transition-all">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CART DRAWER LATERAL -->
+    <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-brand-cardBg border-l border-brand-cardBorder z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-6 border-b border-white/10 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-bag-shopping text-brand-green text-xl"></i>
+                <h3 class="font-black text-lg uppercase italic text-white">Carrinho da Guilda</h3>
+            </div>
+            <button id="closeCartBtn" class="text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-6 space-y-4" id="cartItemsList">
+            <!-- Injected dynamically -->
+        </div>
+
+        <div class="p-6 border-t border-white/10 glass-panel">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-sm font-bold text-gray-400 uppercase">Total do Pedido:</span>
+                <span id="cartTotal" class="text-2xl font-black text-brand-green">R$ 0,00</span>
+            </div>
+            <button onclick="checkoutCart()" class="w-full py-4 rounded-xl bg-brand-green text-black font-black uppercase tracking-wider text-xs hover:bg-white hover:shadow-neon transition-all">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST CONTAINER -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-3 pointer-events-none"></div>
+
+    <!-- JAVASCRIPT LOGIC -->
     <script>
+        /* --- DADOS DO ELENCO (PRO PLAYERS) --- */
+        const rosterData = [
+            {
+                id: 1,
+                nick: "L7_NOBRU_STYLE",
+                name: "Gabriel Santos",
+                role: "Rusher",
+                kd: "5.8",
+                kills: "2,420",
+                matches: "410",
+                image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=600&auto=format&fit=crop",
+                social: { instagram: "#", youtube: "#" }
+            },
+            {
+                id: 2,
+                nick: "L7_CAPA",
+                name: "Lucas Mendes",
+                role: "Suporte",
+                kd: "4.9",
+                kills: "1,980",
+                matches: "395",
+                image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600&auto=format&fit=crop",
+                social: { instagram: "#", twitch: "#" }
+            },
+            {
+                id: 3,
+                nick: "L7_RUSH",
+                name: "Matheus Silva",
+                role: "Rusher",
+                kd: "6.1",
+                kills: "2,890",
+                matches: "430",
+                image: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=600&auto=format&fit=crop",
+                social: { instagram: "#", twitter: "#" }
+            },
+            {
+                id: 4,
+                nick: "L7_CAPITAO",
+                name: "Felipe Costa",
+                role: "IGL",
+                kd: "4.2",
+                kills: "1,650",
+                matches: "450",
+                image: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=600&auto=format&fit=crop",
+                social: { instagram: "#", youtube: "#" }
+            },
+            {
+                id: 5,
+                nick: "L7_COACH_ZÉ",
+                name: "Eduardo Rocha",
+                role: "Coach",
+                kd: "N/A",
+                kills: "N/A",
+                matches: "520",
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop",
+                social: { instagram: "#", twitter: "#" }
+            }
+        ];
+
+        /* --- DADOS DA LOJA --- */
+        const storeProducts = [
+            {
+                id: 101,
+                name: "Uniforme Oficial Pro L7 2026",
+                category: "Vestuário",
+                price: 189.90,
+                image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: 102,
+                name: "Moletom Cyber Neon L7 ESPORTS",
+                category: "Vestuário",
+                price: 249.90,
+                image: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: 103,
+                name: "Boné Snapback Pro Guilda",
+                category: "Acessórios",
+                price: 89.90,
+                image: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=600&auto=format&fit=crop"
+            },
+            {
+                id: 104,
+                name: "Mousepad Gamer XL L7 (90x40cm)",
+                category: "Periféricos",
+                price: 119.90,
+                image: "https://images.unsplash.com/photo-1616588589676-62b3bd4ff6d2?q=80&w=600&auto=format&fit=crop"
+            }
+        ];
+
+        /* --- ESTADO GLOBAL DA APLICAÇÃO --- */
+        let currentUser = null;
+        let cart = [];
+
+        /* --- INICIALIZAÇÃO DA PÁGINA --- */
+        window.addEventListener('DOMContentLoaded', () => {
+            renderPlayers('all');
+            renderStore();
+            setupCartEventListeners();
+
+            // Navbar Scroll Effect
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    nav.classList.add('py-1', 'bg-brand-darkBg/95');
+                } else {
+                    nav.classList.remove('py-1', 'bg-brand-darkBg/95');
+                }
+            });
+        });
+
+        /* --- RENDERIZAR JOGADORES DO ELENCO --- */
+        function renderPlayers(filter = 'all') {
+            const grid = document.getElementById('playersGrid');
+            grid.innerHTML = '';
+
+            const filtered = filter === 'all' 
+                ? rosterData 
+                : rosterData.filter(p => p.role.toLowerCase() === filter.toLowerCase());
+
+            filtered.forEach(player => {
+                const card = document.createElement('div');
+                card.className = "glass-panel rounded-2xl overflow-hidden border border-brand-cardBorder hover:border-brand-green/60 transition-all duration-300 group hover:-translate-y-2";
+                
+                card.innerHTML = `
+                    <div class="relative h-72 overflow-hidden bg-gradient-to-b from-brand-darkBg to-black">
+                        <img src="${player.image}" alt="${player.nick}" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500 filter contrast-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-cardBg via-transparent to-transparent"></div>
+                        <span class="absolute top-4 left-4 bg-brand-green text-black font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-md shadow-neon">${player.role}</span>
+                    </div>
+                    <div class="p-6 relative">
+                        <h3 class="text-xl font-black uppercase italic text-white tracking-tight group-hover:text-brand-green transition-colors">${player.nick}</h3>
+                        <p class="text-xs text-gray-400 font-semibold mb-4">${player.name}</p>
+                        
+                        <!-- Stats Grid -->
+                        <div class="grid grid-cols-3 gap-2 bg-brand-darkBg/80 p-3 rounded-xl border border-white/5 text-center mb-4">
+                            <div>
+                                <span class="block text-[9px] uppercase font-bold text-gray-400">K/D Ratio</span>
+                                <span class="text-sm font-black text-brand-green">${player.kd}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[9px] uppercase font-bold text-gray-400">Abates</span>
+                                <span class="text-sm font-black text-white">${player.kills}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[9px] uppercase font-bold text-gray-400">Partidas</span>
+                                <span class="text-sm font-black text-white">${player.matches}</span>
+                            </div>
+                        </div>
+
+                        <!-- Social Icons -->
+                        <div class="flex gap-3 text-gray-400 text-sm">
+                            <a href="#" class="hover:text-brand-green transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" class="hover:text-brand-green transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                            <a href="#" class="hover:text-brand-green transition-colors"><i class="fa-brands fa-twitch"></i></a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Event Listeners Filtros de Elenco
+        document.querySelectorAll('#rosterFilter button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('#rosterFilter button').forEach(b => {
+                    b.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider bg-brand-cardBg text-gray-300 hover:text-white border border-brand-cardBorder transition-all";
+                });
+                e.target.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider bg-brand-green text-black transition-all shadow-neon";
+                
+                const filter = e.target.getAttribute('data-filter');
+                renderPlayers(filter);
+            });
+        });
+
+        /* --- RENDERIZAR LOJA OFICIAL --- */
+        function renderStore() {
+            const grid = document.getElementById('storeGrid');
+            grid.innerHTML = '';
+
+            storeProducts.forEach(prod => {
+                const item = document.createElement('div');
+                item.className = "glass-panel rounded-2xl overflow-hidden border border-brand-cardBorder hover:border-brand-green/50 transition-all duration-300 flex flex-col justify-between group";
+                
+                item.innerHTML = `
+                    <div>
+                        <div class="relative h-60 overflow-hidden bg-black">
+                            <img src="${prod.image}" alt="${prod.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-brand-darkBg/80 text-gray-300 font-bold text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-md border border-white/10">${prod.category}</span>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-base font-black uppercase italic text-white line-clamp-1">${prod.name}</h3>
+                            <p class="text-xl font-black text-brand-green mt-2">R$ ${prod.price.toFixed(2).replace('.', ',')}</p>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0">
+                        <button onclick="addToCart(${prod.id})" class="w-full py-3 rounded-xl bg-brand-cardBg border border-brand-cardBorder hover:border-brand-green hover:bg-brand-green hover:text-black font-black uppercase text-xs tracking-wider transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-cart-plus"></i> Adicionar ao Carrinho
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(item);
+            });
+        }
+
+        /* --- CARRINHO DE COMPRAS LOGIC --- */
+        function setupCartEventListeners() {
+            const cartBtn = document.getElementById('cartBtn');
+            const closeCartBtn = document.getElementById('closeCartBtn');
+            const cartDrawer = document.getElementById('cartDrawer');
+
+            cartBtn.addEventListener('click', () => {
+                cartDrawer.classList.remove('translate-x-full');
+            });
+
+            closeCartBtn.addEventListener('click', () => {
+                cartDrawer.classList.add('translate-x-full');
+            });
+        }
+
+        function addToCart(productId) {
+            const product = storeProducts.find(p => p.id === productId);
+            if (!product) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            showToast(`"${product.name}" adicionado ao carrinho!`);
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cartItemsList');
+            const count = document.getElementById('cartCount');
+            const total = document.getElementById('cartTotal');
+
+            list.innerHTML = '';
+            let totalSum = 0;
+            let totalItems = 0;
+
+            if (cart.length === 0) {
+                list.innerHTML = `<div class="text-center py-12 text-gray-500 font-bold text-sm">Seu carrinho está vazio.</div>`;
+            } else {
+                cart.forEach(item => {
+                    totalSum += item.price * item.quantity;
+                    totalItems += item.quantity;
+
+                    const row = document.createElement('div');
+                    row.className = "flex items-center gap-4 bg-brand-darkBg/60 p-3 rounded-xl border border-white/5";
+                    row.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-lg">
+                        <div class="flex-1">
+                            <h4 class="text-xs font-bold text-white line-clamp-1">${item.name}</h4>
+                            <p class="text-xs text-brand-green font-black mt-1">R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</p>
+                            <span class="text-[10px] text-gray-400">Qtd: ${item.quantity}</span>
+                        </div>
+                        <button onclick="removeFromCart(${item.id})" class="text-gray-500 hover:text-red-400 p-2">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    `;
+                    list.appendChild(row);
+                });
+            }
+
+            count.innerText = totalItems;
+            total.innerText = `R$ ${totalSum.toFixed(2).replace('.', ',')}`;
+        }
+
+        function checkoutCart() {
+            if (cart.length === 0) {
+                showToast("Seu carrinho está vazio!", "error");
+                return;
+            }
+            showToast("Pedido realizado com sucesso! OBRIGADO POR APOIAR A L7!");
+            cart = [];
+            updateCartUI();
+            document.getElementById('cartDrawer').classList.add('translate-x-full');
+        }
+
+        /* --- AUTHENTICATION MODAL LOGIC --- */
+        function openAuthModal() {
+            if (currentUser) {
+                document.getElementById('profileModal').classList.remove('hidden');
+            } else {
+                document.getElementById('authModal').classList.remove('hidden');
+            }
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        function closeProfileModal() {
+            document.getElementById('profileModal').classList.add('hidden');
+        }
+
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const regForm = document.getElementById('registerForm');
+            const tabLoginBtn = document.getElementById('tabLoginBtn');
+            const tabRegisterBtn = document.getElementById('tabRegisterBtn');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                tabLoginBtn.className = "flex-1 pb-3 text-center font-black uppercase text-sm border-b-2 border-brand-green text-brand-green";
+                tabRegisterBtn.className = "flex-1 pb-3 text-center font-black uppercase text-sm border-b-2 border-transparent text-gray-400 hover:text-white";
+            } else {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                tabRegisterBtn.className = "flex-1 pb-3 text-center font-black uppercase text-sm border-b-2 border-brand-green text-brand-green";
+                tabLoginBtn.className = "flex-1 pb-3 text-center font-black uppercase text-sm border-b-2 border-transparent text-gray-400 hover:text-white";
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const userVal = document.getElementById('loginUser').value;
+            currentUser = {
+                nick: userVal || "L7_PRO_PLAYER",
+                email: "membro@l7esports.gg",
+                avatar: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=200&auto=format&fit=crop"
+            };
+            updateUserHeader();
+            closeAuthModal();
+            showToast(`Bem-vindo de volta, ${currentUser.nick}!`);
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const nickVal = document.getElementById('regNick').value;
+            const emailVal = document.getElementById('regEmail').value;
+            currentUser = {
+                nick: nickVal,
+                email: emailVal,
+                avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop"
+            };
+            updateUserHeader();
+            closeAuthModal();
+            showToast(`Cadastro realizado! Bem-vindo à guilda L7 ESPORTS, ${currentUser.nick}!`);
+        }
+
+        function handleSocialAuth(provider) {
+            currentUser = {
+                nick: `L7_${provider.toUpperCase()}_GAMER`,
+                email: `user@${provider.toLowerCase()}.com`,
+                avatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop"
+            };
+            updateUserHeader();
+            closeAuthModal();
+            showToast(`Autenticado com ${provider}!`);
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            const container = document.getElementById('authContainer');
+            container.innerHTML = `
+                <button onclick="openAuthModal()" class="px-5 py-2.5 rounded-lg bg-brand-green text-black font-black uppercase text-xs tracking-wider hover:bg-white hover:shadow-neon transition-all flex items-center gap-2 transform active:scale-95">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Entrar</span>
+                </button>
+            `;
+            closeProfileModal();
+            showToast("Você saiu da sua conta.");
+        }
+
+        function updateUserHeader() {
+            if (!currentUser) return;
+            const container = document.getElementById('authContainer');
+            
+            // Atualiza modal de perfil
+            document.getElementById('userName').innerText = currentUser.nick;
+            document.getElementById('userEmail').innerText = currentUser.email;
+            document.getElementById('userAvatar').src = currentUser.avatar;
+
+            container.innerHTML = `
+                <button onclick="openAuthModal()" class="flex items-center gap-3 p-1.5 pr-4 rounded-xl bg-brand-cardBg border border-brand-green/40 hover:border-brand-green transition-all">
+                    <img src="${currentUser.avatar}" alt="Avatar" class="w-8 h-8 rounded-lg object-cover">
+                    <span class="text-xs font-black text-white uppercase italic tracking-wider">${currentUser.nick}</span>
+                </button>
+            `;
+        }
+
+        /* --- OTHER INTERACTION UTILS --- */
         function toggleMobileMenu() {
-            document.getElementById('mobile-sidebar').classList.toggle('-translate-x-full');
-            document.getElementById('sidebar-overlay').classList.toggle('hidden');
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
         }
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBu2FCLdG1sLygZW1tHHmk0-5We80x7r9I",
-            authDomain: "bot-l7esports.firebaseapp.com",
-            projectId: "bot-l7esports",
-            storageBucket: "bot-l7esports.firebasestorage.app",
-            messagingSenderId: "575806582902",
-            appId: "1:575806582902:web:fbaffd16059e5b50526f57"
-        };
+        document.getElementById('mobileMenuBtn').addEventListener('click', toggleMobileMenu);
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        // OUVIR RECRUTAMENTO
-        db.collection('recrutamento').onSnapshot(snapshot => {
-            const tbody = document.getElementById('tabela-recrutamento');
-            tbody.innerHTML = '';
-            document.getElementById('stat-fichas').textContent = snapshot.size;
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-800/30">
-                        <td class="py-4 px-6 font-bold text-white">${data.userTag || doc.id}</td>
-                        <td class="py-4 px-6 text-blue-400 font-bold">${data.nome}</td>
-                        <td class="py-4 px-6">${data.idade} anos</td>
-                        <td class="py-4 px-6 font-semibold text-emerald-400">${data.posicao}</td>
-                        <td class="py-4 px-6 text-gray-500">${data.data ? new Date(data.data.seconds*1000).toLocaleDateString() : 'Recente'}</td>
-                    </tr>
-                `;
-            });
-        });
-
-        // OUVIR TICKETS
-        db.collection('tickets').onSnapshot(snapshot => {
-            const tbody = document.getElementById('tabela-tickets');
-            tbody.innerHTML = '';
-            document.getElementById('stat-tickets').textContent = snapshot.size;
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-800/30">
-                        <td class="py-4 px-6 font-mono text-gray-400">#${doc.id.slice(-5)}</td>
-                        <td class="py-4 px-6 font-bold text-white">${data.userTag || data.userId}</td>
-                        <td class="py-4 px-6">${data.assunto || 'Atendimento'}</td>
-                        <td class="py-4 px-6"><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">Aberto</span></td>
-                    </tr>
-                `;
-            });
-        });
-
-        // OUVIR JUSTIFICATIVAS
-        db.collection('justificativas').onSnapshot(snapshot => {
-            const tbody = document.getElementById('tabela-justificativas');
-            tbody.innerHTML = '';
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-800/30">
-                        <td class="py-4 px-6 font-bold text-white">${data.userTag}</td>
-                        <td class="py-4 px-6 font-mono text-gray-400">${data.userId}</td>
-                        <td class="py-4 px-6 text-amber-400 font-medium">${data.motivo}</td>
-                    </tr>
-                `;
-            });
-        });
-
-        // OUVIR MEMBROS
-        db.collection('guilda').doc('membros').collection('usuarios').onSnapshot(snapshot => {
-            const tbody = document.getElementById('tabela-membros');
-            tbody.innerHTML = '';
-            let totalPontos = 0;
-            document.getElementById('stat-membros').textContent = snapshot.size;
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const pts = data.pontosGuerra || 0;
-                totalPontos += pts;
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-800/30">
-                        <td class="py-4 px-6 font-bold text-white">${data.nome || doc.id}</td>
-                        <td class="py-4 px-6 font-mono text-gray-400">${doc.id}</td>
-                        <td class="py-4 px-6 font-black text-blue-400">${pts} pts</td>
-                        <td class="py-4 px-6 text-right">
-                            <button onclick="editarPontos('${doc.id}', ${pts})" class="px-3 py-1 bg-gray-800 hover:bg-blue-600 text-white rounded font-bold">Editar</button>
-                        </td>
-                    </tr>
-                `;
-            });
-            document.getElementById('stat-pontos').textContent = `${totalPontos} pts`;
-        });
-
-        function editarPontos(id, pts) {
-            const n = prompt("Novo valor de pontos:", pts);
-            if(n !== null) db.collection('guilda').doc('membros').collection('usuarios').doc(id).set({ pontosGuerra: parseInt(n, 10) }, { merge: true });
+        function handleNewsletter(e) {
+            e.preventDefault();
+            showToast("Obrigado por se inscrever na nossa Newsletter!");
+            e.target.reset();
         }
 
-        function salvarConfigs() {
-            const titulo = document.getElementById('input-titulo').value;
-            const cargo = document.getElementById('input-cargo-aprovado').value;
-            db.collection('configuracoes').doc('painel').set({ tituloPainel: titulo, cargoAprovado: cargo }, { merge: true })
-                .then(() => alert("Configurações salvas no Firebase!"));
-        }
+        function showToast(message, type = "success") {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            toast.className = `glass-panel px-5 py-3 rounded-xl border ${type === 'error' ? 'border-red-500/50 text-red-400' : 'border-brand-green/50 text-brand-green'} font-bold text-xs flex items-center gap-3 shadow-neon pointer-events-auto transition-all transform translate-y-5 opacity-0`;
+            toast.innerHTML = `
+                <i class="${type === 'error' ? 'fa-solid fa-triangle-exclamation' : 'fa-solid fa-circle-check'} text-base"></i>
+                <span>${message}</span>
+            `;
 
-        function mudarAba(aba) {
-            ['home', 'recrutamento', 'tickets', 'justificativas', 'membros', 'embed'].forEach(a => {
-                document.getElementById(`conteudo-${a}`).classList.add('hidden');
-                document.getElementById(`nav-${a}`).classList.remove('ativo', 'text-blue-400', 'font-bold');
-            });
-            document.getElementById(`conteudo-${aba}`).classList.remove('hidden');
-            document.getElementById(`nav-${aba}`).classList.add('ativo', 'text-blue-400', 'font-bold');
-            document.getElementById('breadcrumb-atual').textContent = aba.toUpperCase();
-            if(window.innerWidth < 768) toggleMobileMenu();
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-5', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-5');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
         }
     </script>
 </body>
