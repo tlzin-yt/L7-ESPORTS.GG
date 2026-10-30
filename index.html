@@ -39,7 +39,7 @@
     <!-- Fontes Google & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,800;0,900;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,800;0,900;1,900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -48,6 +48,10 @@
             background-color: #0A0C10;
             color: #F3F4F6;
             overflow-x: hidden;
+        }
+
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
         }
 
         /* Scanline Effect overlay */
@@ -112,15 +116,16 @@
             <div class="flex items-center justify-between h-20">
                 
                 <!-- BRAND LOGO -->
-                <a href="#inicio" class="flex items-center gap-3 group">
-                    <div class="w-12 h-12 bg-black border-2 border-brand-green rounded-xl flex items-center justify-center shadow-neon group-hover:scale-105 transition-transform duration-300">
-                        <span class="text-2xl font-black italic tracking-wider text-brand-green">L7</span>
-                    </div>
-                    <div class="flex flex-col">
-                        <span class="text-xl font-black tracking-widest text-white uppercase italic leading-none group-hover:text-brand-green transition-colors">L7 <span class="text-brand-green">ESPORTS</span></span>
-                        <span class="text-[9px] font-semibold tracking-widest text-gray-400 uppercase">Free Fire Division</span>
-                    </div>
-                </a>
+            <!-- Header Logo -->
+            <a href="#inicio" class="flex items-center gap-3 group">
+                <div class="w-12 h-12 bg-black border-2 border-brand-green rounded-xl flex items-center justify-center shadow-neon group-hover:scale-105 transition-transform duration-300">
+                    <span class="text-2xl font-black italic tracking-wider text-brand-green font-orbitron">L7</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-black tracking-widest text-white uppercase italic leading-none group-hover:text-brand-green transition-colors font-orbitron">L7 <span class="text-brand-green">ESPORTS</span></span>
+                    <span class="text-[9px] font-semibold tracking-widest text-gray-400 uppercase">Free Fire Division</span>
+                </div>
+            </a>
 
                 <!-- DESKTOP MENU -->
                 <nav class="hidden md:flex items-center space-x-8 text-sm font-bold tracking-wider">
@@ -184,8 +189,8 @@
 
             <!-- Title -->
             <h1 class="text-5xl sm:text-7xl md:text-8xl font-black uppercase italic tracking-tighter text-white leading-none mb-6">
-                DOMINANDO O <br>
-                <span class="text-brand-green drop-shadow-[0_0_25px_rgba(0,255,102,0.6)]">MAPA DA GLÓRIA</span>
+                O FUTURO DO FREE FIRE É <br>
+                <span class="text-brand-green drop-shadow-[0_0_25px_rgba(0,255,102,0.6)] font-orbitron">VERDE E PRETO</span>
             </h1>
 
             <p class="max-w-2xl mx-auto text-gray-300 text-base sm:text-lg font-medium mb-10 leading-relaxed">
@@ -475,20 +480,22 @@
             <!-- Login Form -->
             <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold uppercase text-gray-300 mb-1">E-mail ou Nick</label>
-                    <input type="text" id="loginUser" required placeholder="ex: pro_player@l7.gg" class="w-full bg-brand-darkBg border border-brand-cardBorder focus:border-brand-green rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
+                    <label class="block text-xs font-bold uppercase text-gray-300 mb-1">E-mail</label>
+                    <input type="email" id="loginEmail" required placeholder="membro@l7esports.gg" class="w-full bg-brand-darkBg border border-brand-cardBorder focus:border-brand-green rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase text-gray-300 mb-1">Senha</label>
                     <input type="password" id="loginPass" required placeholder="••••••••" class="w-full bg-brand-darkBg border border-brand-cardBorder focus:border-brand-green rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
                 </div>
-                <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-green text-black font-black uppercase tracking-wider text-xs hover:bg-white hover:shadow-neon transition-all">Entrar na Conta</button>
+                <button type="submit" id="btnLoginSubmit" class="w-full py-3.5 rounded-xl bg-brand-green text-black font-black uppercase tracking-wider text-xs hover:bg-white hover:shadow-neon transition-all flex items-center justify-center gap-2">
+                    <span>Entrar na Conta</span>
+                </button>
             </form>
 
             <!-- Register Form -->
             <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-4 hidden">
                 <div>
-                    <label class="block text-xs font-bold uppercase text-gray-300 mb-1">Nick no Free Fire</label>
+                    <label class="block text-xs font-bold uppercase text-gray-300 mb-1">Nick no Free Fire / Guilda</label>
                     <input type="text" id="regNick" required placeholder="ex: L7_MITO" class="w-full bg-brand-darkBg border border-brand-cardBorder focus:border-brand-green rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
                 </div>
                 <div>
@@ -496,10 +503,12 @@
                     <input type="email" id="regEmail" required placeholder="seuemail@gmail.com" class="w-full bg-brand-darkBg border border-brand-cardBorder focus:border-brand-green rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold uppercase text-gray-300 mb-1">Senha</label>
-                    <input type="password" id="regPass" required placeholder="••••••••" class="w-full bg-brand-darkBg border border-brand-cardBorder focus:border-brand-green rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
+                    <label class="block text-xs font-bold uppercase text-gray-300 mb-1">Senha (Mín. 6 caracteres)</label>
+                    <input type="password" id="regPass" required minlength="6" placeholder="••••••••" class="w-full bg-brand-darkBg border border-brand-cardBorder focus:border-brand-green rounded-xl px-4 py-3 text-sm text-white focus:outline-none">
                 </div>
-                <button type="submit" class="w-full py-3.5 rounded-xl bg-brand-green text-black font-black uppercase tracking-wider text-xs hover:bg-white hover:shadow-neon transition-all">Criar Conta na Guilda</button>
+                <button type="submit" id="btnRegisterSubmit" class="w-full py-3.5 rounded-xl bg-brand-green text-black font-black uppercase tracking-wider text-xs hover:bg-white hover:shadow-neon transition-all flex items-center justify-center gap-2">
+                    <span>Criar Conta na Guilda</span>
+                </button>
             </form>
 
             <!-- Social Login Divider -->
@@ -508,18 +517,15 @@
                 <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
             </div>
 
-            <div class="grid grid-cols-2 gap-3">
-                <button onclick="handleSocialAuth('Discord')" class="py-2.5 rounded-xl bg-[#5865F2] hover:opacity-90 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all">
-                    <i class="fa-brands fa-discord"></i> Discord
-                </button>
-                <button onclick="handleSocialAuth('Google')" class="py-2.5 rounded-xl bg-white hover:bg-gray-100 text-black font-bold text-xs flex items-center justify-center gap-2 transition-all">
-                    <i class="fa-brands fa-google"></i> Google
+            <div>
+                <button type="button" onclick="handleGoogleAuth()" class="w-full py-3 rounded-xl bg-white hover:bg-gray-100 text-black font-extrabold text-xs flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-brands fa-google text-base"></i> Entrar com Conta Google
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- PAINEL DE PERFIL DO MEMBRO (Modal/Drawer) -->
+    <!-- PAINEL DE PERFIL DO MEMBRO -->
     <div id="profileModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md hidden px-4">
         <div class="glass-panel w-full max-w-2xl p-8 rounded-3xl border border-brand-green/30 relative shadow-neon-lg">
             <button onclick="closeProfileModal()" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl">
@@ -531,13 +537,14 @@
                     <div class="w-24 h-24 rounded-2xl bg-gradient-to-tr from-brand-green to-brand-purple p-1 shadow-neon">
                         <img id="userAvatar" src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=200&auto=format&fit=crop" class="w-full h-full object-cover rounded-xl" alt="User Avatar">
                     </div>
-                    <span class="absolute -bottom-2 -right-2 bg-brand-green text-black font-black text-[10px] px-2 py-0.5 rounded-md uppercase">Membro VIP</span>
+                    <span class="absolute -bottom-2 -right-2 bg-brand-green text-black font-black text-[9px] px-2 py-0.5 rounded-md uppercase">L7 Autêntico</span>
                 </div>
                 <div class="text-center sm:text-left">
                     <h3 id="userName" class="text-2xl font-black uppercase text-white tracking-tight">L7_PRO_PLAYER</h3>
                     <p id="userEmail" class="text-xs text-gray-400">player@l7.gg</p>
+                    <p id="userId" class="text-[10px] text-gray-500 font-mono mt-1">UID: -</p>
                     <div class="mt-3 flex flex-wrap gap-2 justify-center sm:justify-start">
-                        <span class="px-3 py-1 rounded-full bg-brand-green/10 text-brand-green border border-brand-green/30 text-xs font-bold">Nível 42 na Guilda</span>
+                        <span class="px-3 py-1 rounded-full bg-brand-green/10 text-brand-green border border-brand-green/30 text-xs font-bold"><i class="fa-solid fa-shield-check mr-1"></i> Membro Verificado L7</span>
                         <span class="px-3 py-1 rounded-full bg-brand-purple/20 text-purple-300 border border-brand-purple/40 text-xs font-bold">Patente: Mestre</span>
                     </div>
                 </div>
@@ -615,7 +622,164 @@
     <!-- NOTIFICATION TOAST CONTAINER -->
     <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-3 pointer-events-none"></div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- FIREBASE SDK MODULAR IMPORTS & APPLICATION LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword, 
+            signOut, 
+            onAuthStateChanged, 
+            GoogleAuthProvider, 
+            signInWithPopup, 
+            updateProfile 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // Configuração exata fornecida
+        const firebaseConfig = {
+            apiKey: "AIzaSyDTnfevGDY7naxK_CTwr69flY_r9MEAhx4",
+            authDomain: "l7-esports.firebaseapp.com",
+            projectId: "l7-esports",
+            storageBucket: "l7-esports.firebasestorage.app",
+            messagingSenderId: "28086326903",
+            appId: "1:28086326903:web:bb24b597fa738cc1d91872",
+            measurementId: "G-5JQ7VSBT9Z"
+        };
+
+        // Inicializar Firebase e Auth
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        let currentUser = null;
+
+        // Monitorar alteração no estado de autenticação em tempo real
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                updateUserHeader(user);
+            } else {
+                currentUser = null;
+                resetUserHeader();
+            }
+        });
+
+        // Funções de login expostas no escopo window
+        window.handleLogin = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPass').value;
+            const btn = document.getElementById('btnLoginSubmit');
+
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Entrando...`;
+            btn.disabled = true;
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+                showToast(`Bem-vindo de volta, ${userCredential.user.displayName || 'Membro L7'}!`);
+                closeAuthModal();
+            } catch (error) {
+                console.error("Erro no login:", error);
+                let msg = "Falha ao realizar login.";
+                if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                    msg = "E-mail ou senha incorretos.";
+                } else if (error.code === 'auth/invalid-email') {
+                    msg = "E-mail em formato inválido.";
+                }
+                showToast(msg, "error");
+            } finally {
+                btn.innerHTML = `<span>Entrar na Conta</span>`;
+                btn.disabled = false;
+            }
+        };
+
+        window.handleRegister = async (e) => {
+            e.preventDefault();
+            const nick = document.getElementById('regNick').value;
+            const email = document.getElementById('regEmail').value;
+            const pass = document.getElementById('regPass').value;
+            const btn = document.getElementById('btnRegisterSubmit');
+
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Cadastrando...`;
+            btn.disabled = true;
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                await updateProfile(userCredential.user, {
+                    displayName: nick,
+                    photoURL: `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(nick)}`
+                });
+
+                showToast(`Conta criada com sucesso! Bem-vindo à L7 ESPORTS, ${nick}!`);
+                closeAuthModal();
+            } catch (error) {
+                console.error("Erro no registro:", error);
+                let msg = "Erro ao criar conta.";
+                if (error.code === 'auth/email-already-in-use') {
+                    msg = "Este e-mail já está em uso na guilda.";
+                } else if (error.code === 'auth/weak-password') {
+                    msg = "A senha deve conter no mínimo 6 caracteres.";
+                }
+                showToast(msg, "error");
+            } finally {
+                btn.innerHTML = `<span>Criar Conta na Guilda</span>`;
+                btn.disabled = false;
+            }
+        };
+
+        window.handleGoogleAuth = async () => {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                showToast(`Login com Google realizado! Olá, ${result.user.displayName}!`);
+                closeAuthModal();
+            } catch (error) {
+                console.error("Erro no Google Auth:", error);
+                showToast("Erro ao autenticar com o Google.", "error");
+            }
+        };
+
+        window.handleLogout = async () => {
+            try {
+                await signOut(auth);
+                closeProfileModal();
+                showToast("Você desconectou da sua conta da guilda.");
+            } catch (error) {
+                console.error("Erro ao sair:", error);
+            }
+        };
+
+        function updateUserHeader(user) {
+            const container = document.getElementById('authContainer');
+            const displayName = user.displayName || user.email.split('@')[0];
+            const photoURL = user.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(displayName)}`;
+
+            // Atualiza campos do Modal de Perfil
+            document.getElementById('userName').innerText = displayName;
+            document.getElementById('userEmail').innerText = user.email;
+            document.getElementById('userId').innerText = `UID: ${user.uid}`;
+            document.getElementById('userAvatar').src = photoURL;
+
+            container.innerHTML = `
+                <button onclick="openAuthModal()" class="flex items-center gap-3 p-1.5 pr-4 rounded-xl bg-brand-cardBg border border-brand-green/40 hover:border-brand-green transition-all shadow-neon">
+                    <img src="${photoURL}" alt="Avatar" class="w-8 h-8 rounded-lg object-cover bg-black border border-brand-green">
+                    <span class="text-xs font-black text-white uppercase italic tracking-wider font-orbitron">${displayName}</span>
+                </button>
+            `;
+        }
+
+        function resetUserHeader() {
+            const container = document.getElementById('authContainer');
+            container.innerHTML = `
+                <button onclick="openAuthModal()" class="px-5 py-2.5 rounded-lg bg-brand-green text-black font-black uppercase text-xs tracking-wider hover:bg-white hover:shadow-neon transition-all flex items-center gap-2 transform active:scale-95">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Entrar</span>
+                </button>
+            `;
+        }
+    </script>
+
+    <!-- JAVASCRIPT LOCAL (INTERACTION / UI LOGIC) -->
     <script>
         /* --- DADOS DO ELENCO (PRO PLAYERS) --- */
         const rosterData = [
@@ -627,8 +791,7 @@
                 kd: "5.8",
                 kills: "2,420",
                 matches: "410",
-                image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=600&auto=format&fit=crop",
-                social: { instagram: "#", youtube: "#" }
+                image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=600&auto=format&fit=crop"
             },
             {
                 id: 2,
@@ -638,8 +801,7 @@
                 kd: "4.9",
                 kills: "1,980",
                 matches: "395",
-                image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600&auto=format&fit=crop",
-                social: { instagram: "#", twitch: "#" }
+                image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600&auto=format&fit=crop"
             },
             {
                 id: 3,
@@ -649,8 +811,7 @@
                 kd: "6.1",
                 kills: "2,890",
                 matches: "430",
-                image: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=600&auto=format&fit=crop",
-                social: { instagram: "#", twitter: "#" }
+                image: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=600&auto=format&fit=crop"
             },
             {
                 id: 4,
@@ -660,8 +821,7 @@
                 kd: "4.2",
                 kills: "1,650",
                 matches: "450",
-                image: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=600&auto=format&fit=crop",
-                social: { instagram: "#", youtube: "#" }
+                image: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=600&auto=format&fit=crop"
             },
             {
                 id: 5,
@@ -671,8 +831,7 @@
                 kd: "N/A",
                 kills: "N/A",
                 matches: "520",
-                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop",
-                social: { instagram: "#", twitter: "#" }
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop"
             }
         ];
 
@@ -708,17 +867,13 @@
             }
         ];
 
-        /* --- ESTADO GLOBAL DA APLICAÇÃO --- */
-        let currentUser = null;
         let cart = [];
 
-        /* --- INICIALIZAÇÃO DA PÁGINA --- */
         window.addEventListener('DOMContentLoaded', () => {
             renderPlayers('all');
             renderStore();
             setupCartEventListeners();
 
-            // Navbar Scroll Effect
             window.addEventListener('scroll', () => {
                 const nav = document.getElementById('navbar');
                 if (window.scrollY > 50) {
@@ -729,7 +884,6 @@
             });
         });
 
-        /* --- RENDERIZAR JOGADORES DO ELENCO --- */
         function renderPlayers(filter = 'all') {
             const grid = document.getElementById('playersGrid');
             grid.innerHTML = '';
@@ -749,10 +903,9 @@
                         <span class="absolute top-4 left-4 bg-brand-green text-black font-black text-[10px] uppercase tracking-wider px-3 py-1 rounded-md shadow-neon">${player.role}</span>
                     </div>
                     <div class="p-6 relative">
-                        <h3 class="text-xl font-black uppercase italic text-white tracking-tight group-hover:text-brand-green transition-colors">${player.nick}</h3>
+                        <h3 class="text-xl font-black uppercase italic text-white tracking-tight group-hover:text-brand-green transition-colors font-orbitron">${player.nick}</h3>
                         <p class="text-xs text-gray-400 font-semibold mb-4">${player.name}</p>
                         
-                        <!-- Stats Grid -->
                         <div class="grid grid-cols-3 gap-2 bg-brand-darkBg/80 p-3 rounded-xl border border-white/5 text-center mb-4">
                             <div>
                                 <span class="block text-[9px] uppercase font-bold text-gray-400">K/D Ratio</span>
@@ -768,7 +921,6 @@
                             </div>
                         </div>
 
-                        <!-- Social Icons -->
                         <div class="flex gap-3 text-gray-400 text-sm">
                             <a href="#" class="hover:text-brand-green transition-colors"><i class="fa-brands fa-instagram"></i></a>
                             <a href="#" class="hover:text-brand-green transition-colors"><i class="fa-brands fa-youtube"></i></a>
@@ -780,7 +932,6 @@
             });
         }
 
-        // Event Listeners Filtros de Elenco
         document.querySelectorAll('#rosterFilter button').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('#rosterFilter button').forEach(b => {
@@ -793,7 +944,6 @@
             });
         });
 
-        /* --- RENDERIZAR LOJA OFICIAL --- */
         function renderStore() {
             const grid = document.getElementById('storeGrid');
             grid.innerHTML = '';
@@ -810,7 +960,7 @@
                         </div>
                         <div class="p-5">
                             <h3 class="text-base font-black uppercase italic text-white line-clamp-1">${prod.name}</h3>
-                            <p class="text-xl font-black text-brand-green mt-2">R$ ${prod.price.toFixed(2).replace('.', ',')}</p>
+                            <p class="text-xl font-black text-brand-green mt-2 font-orbitron">R$ ${prod.price.toFixed(2).replace('.', ',')}</p>
                         </div>
                     </div>
                     <div class="p-5 pt-0">
@@ -823,7 +973,6 @@
             });
         }
 
-        /* --- CARRINHO DE COMPRAS LOGIC --- */
         function setupCartEventListeners() {
             const cartBtn = document.getElementById('cartBtn');
             const closeCartBtn = document.getElementById('closeCartBtn');
@@ -906,9 +1055,10 @@
             document.getElementById('cartDrawer').classList.add('translate-x-full');
         }
 
-        /* --- AUTHENTICATION MODAL LOGIC --- */
         function openAuthModal() {
-            if (currentUser) {
+            // Verifica se tem elemento indicativo no dom de logado
+            const isUserLoggedIn = document.getElementById('userId').innerText !== 'UID: -';
+            if (isUserLoggedIn) {
                 document.getElementById('profileModal').classList.remove('hidden');
             } else {
                 document.getElementById('authModal').classList.remove('hidden');
@@ -942,75 +1092,6 @@
             }
         }
 
-        function handleLogin(e) {
-            e.preventDefault();
-            const userVal = document.getElementById('loginUser').value;
-            currentUser = {
-                nick: userVal || "L7_PRO_PLAYER",
-                email: "membro@l7esports.gg",
-                avatar: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=200&auto=format&fit=crop"
-            };
-            updateUserHeader();
-            closeAuthModal();
-            showToast(`Bem-vindo de volta, ${currentUser.nick}!`);
-        }
-
-        function handleRegister(e) {
-            e.preventDefault();
-            const nickVal = document.getElementById('regNick').value;
-            const emailVal = document.getElementById('regEmail').value;
-            currentUser = {
-                nick: nickVal,
-                email: emailVal,
-                avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop"
-            };
-            updateUserHeader();
-            closeAuthModal();
-            showToast(`Cadastro realizado! Bem-vindo à guilda L7 ESPORTS, ${currentUser.nick}!`);
-        }
-
-        function handleSocialAuth(provider) {
-            currentUser = {
-                nick: `L7_${provider.toUpperCase()}_GAMER`,
-                email: `user@${provider.toLowerCase()}.com`,
-                avatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop"
-            };
-            updateUserHeader();
-            closeAuthModal();
-            showToast(`Autenticado com ${provider}!`);
-        }
-
-        function handleLogout() {
-            currentUser = null;
-            const container = document.getElementById('authContainer');
-            container.innerHTML = `
-                <button onclick="openAuthModal()" class="px-5 py-2.5 rounded-lg bg-brand-green text-black font-black uppercase text-xs tracking-wider hover:bg-white hover:shadow-neon transition-all flex items-center gap-2 transform active:scale-95">
-                    <i class="fa-solid fa-user"></i>
-                    <span>Entrar</span>
-                </button>
-            `;
-            closeProfileModal();
-            showToast("Você saiu da sua conta.");
-        }
-
-        function updateUserHeader() {
-            if (!currentUser) return;
-            const container = document.getElementById('authContainer');
-            
-            // Atualiza modal de perfil
-            document.getElementById('userName').innerText = currentUser.nick;
-            document.getElementById('userEmail').innerText = currentUser.email;
-            document.getElementById('userAvatar').src = currentUser.avatar;
-
-            container.innerHTML = `
-                <button onclick="openAuthModal()" class="flex items-center gap-3 p-1.5 pr-4 rounded-xl bg-brand-cardBg border border-brand-green/40 hover:border-brand-green transition-all">
-                    <img src="${currentUser.avatar}" alt="Avatar" class="w-8 h-8 rounded-lg object-cover">
-                    <span class="text-xs font-black text-white uppercase italic tracking-wider">${currentUser.nick}</span>
-                </button>
-            `;
-        }
-
-        /* --- OTHER INTERACTION UTILS --- */
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
             menu.classList.toggle('hidden');
