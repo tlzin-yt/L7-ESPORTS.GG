@@ -83,9 +83,9 @@
             <div class="flex items-center justify-between h-16">
                 
                 <!-- LOGO L7 FUTURISTA -->
-                <a href="#" class="flex items-center gap-1 group font-display font-black tracking-tighter text-2xl text-white">
+                <a href="#" class="flex items-center gap-1 group font-display font-black tracking-tighter text-xl sm:text-2xl text-white">
                     <span class="tracking-widest">L7</span>
-                    <svg class="w-6 h-6 text-white fill-current group-hover:text-brand-green transition-colors" viewBox="0 0 24 24">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white fill-current group-hover:text-brand-green transition-colors" viewBox="0 0 24 24">
                         <path d="M8 5v14l11-7z"/>
                     </svg>
                 </a>
@@ -114,32 +114,32 @@
                 </nav>
 
                 <!-- RIGHT ACTION ICONS -->
-                <div class="flex items-center gap-4 text-white">
-                    <a href="#parcerias" class="hover:text-brand-green transition-colors" title="Informações & Parcerias">
-                        <i class="fa-regular fa-circle-question text-lg"></i>
+                <div class="flex items-center gap-2.5 sm:gap-4 text-white">
+                    <a href="#parcerias" class="hover:text-brand-green transition-colors hidden sm:inline-block" title="Informações & Parcerias">
+                        <i class="fa-regular fa-circle-question text-base sm:text-lg"></i>
                     </a>
 
                     <div id="authContainer">
                         <button onclick="openAuthModal('login')" class="hover:text-brand-green transition-colors" title="Conta">
-                            <i class="fa-regular fa-user text-lg"></i>
+                            <i class="fa-regular fa-user text-base sm:text-lg"></i>
                         </button>
                     </div>
 
-                    <button onclick="showToast('Busca ativada!')" class="hover:text-brand-green transition-colors" title="Buscar no site">
-                        <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                    <button onclick="showToast('Busca ativada!')" class="hover:text-brand-green transition-colors hidden sm:inline-block" title="Buscar no site">
+                        <i class="fa-solid fa-magnifying-glass text-base sm:text-lg"></i>
                     </button>
 
                     <button id="openCartBtn" class="relative hover:text-brand-green transition-colors flex items-center gap-1" title="Sacola de Compras">
-                        <i class="fa-solid fa-bag-shopping text-lg"></i>
+                        <i class="fa-solid fa-bag-shopping text-base sm:text-lg"></i>
                         <span id="cartBadge" class="bg-white text-black font-extrabold text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-mono">0</span>
                     </button>
 
                     <button id="adminPanelBtn" onclick="openAdminModal()" class="hidden bg-purple-600 hover:bg-purple-500 text-white font-display font-bold px-2 py-1 rounded text-[10px] flex items-center gap-1 border border-purple-400 transition-all">
                         <i class="fa-solid fa-user-gear"></i>
-                        <span>ADMIN</span>
+                        <span class="hidden sm:inline">ADMIN</span>
                     </button>
 
-                    <button id="mobileMenuBtn" class="lg:hidden text-white hover:text-brand-green text-xl">
+                    <button id="mobileMenuBtn" class="lg:hidden text-white hover:text-brand-green text-xl p-1">
                         <i class="fa-solid fa-bars"></i>
                     </button>
                 </div>
@@ -148,162 +148,162 @@
 
         <!-- MOBILE MENU -->
         <div id="mobileMenu" class="hidden lg:hidden bg-[#181818] border-b border-white/10 px-4 pt-2 pb-6 space-y-3 font-display font-extrabold uppercase text-xs text-white">
-            <a href="#loja" class="block py-2 hover:text-brand-green">SHOP</a>
-            <a href="#loja" class="block py-2 hover:text-brand-green">COLEÇÕES</a>
-            <a href="#noticias" class="block py-2 hover:text-brand-green">NEWS</a>
-            <a href="#conquistas" class="block py-2 hover:text-brand-green">CONQUISTAS</a>
-            <a href="#sobre" class="block py-2 hover:text-brand-green">SOBRE A L7</a>
+            <a href="#loja" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-green border-b border-white/5">SHOP</a>
+            <a href="#loja" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-green border-b border-white/5">COLEÇÕES</a>
+            <a href="#noticias" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-green border-b border-white/5">NEWS</a>
+            <a href="#conquistas" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-green border-b border-white/5">CONQUISTAS</a>
+            <a href="#sobre" onclick="toggleMobileMenu()" class="block py-2 hover:text-brand-green border-b border-white/5">SOBRE A L7</a>
             <button onclick="openTryoutModal(); toggleMobileMenu();" class="block w-full text-left py-2 hover:text-brand-green">RASTREIE SEU PEDIDO</button>
         </div>
     </header>
 
     <!-- HERO SECTION -->
-    <section id="home" class="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-20">
+    <section id="home" class="relative min-h-[75vh] sm:min-h-[85vh] flex items-center justify-center overflow-hidden py-12 sm:py-20">
         <div id="heroBg" class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-500" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1920&auto=format&fit=crop');">
             <div class="absolute inset-0 bg-gradient-to-t from-brand-bg via-brand-bg/80 to-brand-bg/40"></div>
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#08080a_100%)]"></div>
         </div>
 
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
-            <div class="inline-flex items-center gap-2 bg-brand-card/80 border border-brand-green/30 px-4 py-1.5 rounded-full text-brand-green text-xs font-mono mb-6 backdrop-blur-md">
+            <div class="inline-flex items-center gap-2 bg-brand-card/80 border border-brand-green/30 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-brand-green text-[10px] sm:text-xs font-mono mb-4 sm:mb-6 backdrop-blur-md">
                 <span class="w-2 h-2 rounded-full bg-brand-green animate-ping"></span>
                 <span>TEMPORADA 2026 • GUILDA PROFISSIONAL FF</span>
             </div>
 
-            <h1 id="heroTitle" class="font-display font-black text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white uppercase mb-4 leading-none">
+            <h1 id="heroTitle" class="font-display font-black text-3xl sm:text-6xl lg:text-7xl tracking-tight text-white uppercase mb-3 sm:mb-4 leading-tight sm:leading-none">
                 O FUTURO DO FREE FIRE É A <span class="text-brand-green text-glow">L7 ESPORTS</span>
             </h1>
 
-            <p id="heroSubtitle" class="max-w-2xl mx-auto text-gray-300 text-base sm:text-xl mb-10 font-sans font-normal leading-relaxed">
+            <p id="heroSubtitle" class="max-w-2xl mx-auto text-gray-300 text-sm sm:text-xl mb-6 sm:mb-10 font-sans font-normal leading-relaxed px-2">
                 A L7 ESPORTS é a organização elite de Free Fire. Foco em alta performance, competições oficiais da LBFF e formação de pro players lendários.
             </p>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button onclick="openTryoutModal()" class="w-full sm:w-auto bg-brand-green hover:bg-brand-darkGreen text-black font-display font-black px-8 py-4 clip-button text-base tracking-wider uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,255,102,0.5)] flex items-center justify-center gap-3">
-                    <i class="fa-solid fa-trophy text-lg"></i>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-2">
+                <button onclick="openTryoutModal()" class="w-full sm:w-auto bg-brand-green hover:bg-brand-darkGreen text-black font-display font-black px-6 py-3.5 sm:px-8 sm:py-4 clip-button text-sm sm:text-base tracking-wider uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,255,102,0.5)] flex items-center justify-center gap-2 sm:gap-3">
+                    <i class="fa-solid fa-trophy text-base sm:text-lg"></i>
                     <span>Inscrever-se na Seletiva</span>
                 </button>
-                <a href="#elenco" class="w-full sm:w-auto bg-brand-card hover:bg-brand-card/80 text-white font-display font-bold px-8 py-4 clip-button text-base tracking-wider uppercase border border-brand-border hover:border-brand-green transition-all duration-300 flex items-center justify-center gap-3">
+                <a href="#elenco" class="w-full sm:w-auto bg-brand-card hover:bg-brand-card/80 text-white font-display font-bold px-6 py-3.5 sm:px-8 sm:py-4 clip-button text-sm sm:text-base tracking-wider uppercase border border-brand-border hover:border-brand-green transition-all duration-300 flex items-center justify-center gap-2 sm:gap-3">
                     <i class="fa-solid fa-users"></i>
                     <span>Ver Elenco Pro</span>
                 </a>
             </div>
 
             <!-- STATS EDITÁVEIS NO ADMIN -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-16 pt-10 border-t border-brand-border/60">
-                <div class="bg-brand-card/50 border border-brand-border p-4 rounded-lg backdrop-blur-sm">
-                    <span id="statVal1" class="font-display font-bold text-3xl text-brand-green block">#1</span>
-                    <span id="statLabel1" class="text-xs text-gray-400 uppercase font-semibold">Ranking de Guildas</span>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto mt-10 sm:mt-16 pt-6 sm:pt-10 border-t border-brand-border/60">
+                <div class="bg-brand-card/50 border border-brand-border p-3 sm:p-4 rounded-lg backdrop-blur-sm">
+                    <span id="statVal1" class="font-display font-bold text-2xl sm:text-3xl text-brand-green block">#1</span>
+                    <span id="statLabel1" class="text-[9px] sm:text-xs text-gray-400 uppercase font-semibold">Ranking de Guildas</span>
                 </div>
-                <div class="bg-brand-card/50 border border-brand-border p-4 rounded-lg backdrop-blur-sm">
-                    <span id="statVal2" class="font-display font-bold text-3xl text-white block">15+</span>
-                    <span id="statLabel2" class="text-xs text-gray-400 uppercase font-semibold">Títulos Oficiais</span>
+                <div class="bg-brand-card/50 border border-brand-border p-3 sm:p-4 rounded-lg backdrop-blur-sm">
+                    <span id="statVal2" class="font-display font-bold text-2xl sm:text-3xl text-white block">15+</span>
+                    <span id="statLabel2" class="text-[9px] sm:text-xs text-gray-400 uppercase font-semibold">Títulos Oficiais</span>
                 </div>
-                <div class="bg-brand-card/50 border border-brand-border p-4 rounded-lg backdrop-blur-sm">
-                    <span id="statVal3" class="font-display font-bold text-3xl text-brand-green block">85%</span>
-                    <span id="statLabel3" class="text-xs text-gray-400 uppercase font-semibold">Taxa de Booyah</span>
+                <div class="bg-brand-card/50 border border-brand-border p-3 sm:p-4 rounded-lg backdrop-blur-sm">
+                    <span id="statVal3" class="font-display font-bold text-2xl sm:text-3xl text-brand-green block">85%</span>
+                    <span id="statLabel3" class="text-[9px] sm:text-xs text-gray-400 uppercase font-semibold">Taxa de Booyah</span>
                 </div>
-                <div class="bg-brand-card/50 border border-brand-border p-4 rounded-lg backdrop-blur-sm">
-                    <span id="statVal4" class="font-display font-bold text-3xl text-white block">500K+</span>
-                    <span id="statLabel4" class="text-xs text-gray-400 uppercase font-semibold">Torcida Apaixonada</span>
+                <div class="bg-brand-card/50 border border-brand-border p-3 sm:p-4 rounded-lg backdrop-blur-sm">
+                    <span id="statVal4" class="font-display font-bold text-2xl sm:text-3xl text-white block">500K+</span>
+                    <span id="statLabel4" class="text-[9px] sm:text-xs text-gray-400 uppercase font-semibold">Torcida Apaixonada</span>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ELENCO FREE FIRE SECTION -->
-    <section id="elenco" class="py-20 border-t border-brand-border bg-brand-bg relative">
+    <section id="elenco" class="py-12 sm:py-20 border-t border-brand-border bg-brand-bg relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12">
                 <div>
-                    <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// LINE-UP OFICIAL</span>
-                    <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight">ELENCO <span class="text-brand-green text-glow">PRO FF</span></h2>
+                    <span class="text-brand-green font-mono text-xs sm:text-sm uppercase tracking-widest block mb-1 sm:mb-2">// LINE-UP OFICIAL</span>
+                    <h2 class="font-display font-black text-3xl sm:text-5xl text-white uppercase tracking-tight">ELENCO <span class="text-brand-green text-glow">PRO FF</span></h2>
                 </div>
-                <p class="text-gray-400 text-sm max-w-md mt-2 md:mt-0">
+                <p class="text-gray-400 text-xs sm:text-sm max-w-md mt-2 md:mt-0">
                     Conheça os atletas profissionais que representam a L7 ESPORTS nos maiores torneios de Free Fire do país.
                 </p>
             </div>
 
-            <div id="playersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div id="playersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 <!-- Loaded Dynamically via JS -->
             </div>
         </div>
     </section>
 
     <!-- SOBRE A L7, PARCERIAS E REDES -->
-    <section id="sobre" class="py-20 border-t border-brand-border bg-brand-card/20 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+    <section id="sobre" class="py-12 sm:py-20 border-t border-brand-border bg-brand-card/20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 items-center">
                 <div>
-                    <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// NOSSA HISTÓRIA & PROPÓSITO</span>
-                    <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight mb-4">
+                    <span class="text-brand-green font-mono text-xs sm:text-sm uppercase tracking-widest block mb-1 sm:mb-2">// NOSSA HISTÓRIA & PROPÓSITO</span>
+                    <h2 class="font-display font-black text-3xl sm:text-5xl text-white uppercase tracking-tight mb-4">
                         A MENTALIDADE <span class="text-brand-green text-glow">L7 ESPORTS</span>
                     </h2>
                     <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-4">
                         Fundada com o objetivo de revolucionar o cenário competitivo de Free Fire, a <strong class="text-white">L7 ESPORTS</strong> é mais do que uma guilda: é um ecossistema de alto rendimento.
                     </p>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                    <p class="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6">
                         Combinando análise tática avançada, treinos intensivos e infraestrutura de ponta, preparamos nossos atletas para dominar tanto o cenário de emuladores quanto as ligas móbiles oficiais.
                     </p>
-                    <div class="flex gap-4">
-                        <div class="bg-black/60 border border-brand-border p-4 rounded clip-button min-w-[140px]">
-                            <span class="font-display font-bold text-2xl text-brand-green block">100%</span>
-                            <span class="text-[10px] text-gray-400 uppercase font-semibold">Foco no Competitivo</span>
+                    <div class="flex gap-3 sm:gap-4">
+                        <div class="bg-black/60 border border-brand-border p-3 sm:p-4 rounded clip-button min-w-[120px] sm:min-w-[140px]">
+                            <span class="font-display font-bold text-xl sm:text-2xl text-brand-green block">100%</span>
+                            <span class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold">Foco no Competitivo</span>
                         </div>
-                        <div class="bg-black/60 border border-brand-border p-4 rounded clip-button min-w-[140px]">
-                            <span class="font-display font-bold text-2xl text-white block">TOP 1</span>
-                            <span class="text-[10px] text-gray-400 uppercase font-semibold">Meta Constante</span>
+                        <div class="bg-black/60 border border-brand-border p-3 sm:p-4 rounded clip-button min-w-[120px] sm:min-w-[140px]">
+                            <span class="font-display font-bold text-xl sm:text-2xl text-white block">TOP 1</span>
+                            <span class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-semibold">Meta Constante</span>
                         </div>
                     </div>
                 </div>
-                <div class="relative rounded-xl overflow-hidden border border-brand-border shadow-2xl h-80 bg-black">
+                <div class="relative rounded-xl overflow-hidden border border-brand-border shadow-2xl h-60 sm:h-80 bg-black">
                     <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop" alt="Arena L7 ESPORTS" class="w-full h-full object-cover filter brightness-90">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                 </div>
             </div>
 
             <!-- PARCERIAS -->
-            <div id="parcerias" class="pt-10 border-t border-brand-border/60">
-                <div class="text-center max-w-2xl mx-auto mb-8">
+            <div id="parcerias" class="pt-8 sm:pt-10 border-t border-brand-border/60">
+                <div class="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
                     <span class="text-brand-green font-mono text-xs uppercase tracking-widest block mb-1">// PATROCINADORES & PARCERIAS</span>
-                    <h3 class="font-display font-black text-3xl text-white uppercase">SEJA UM PARCEIRO <span class="text-brand-green">L7 ESPORTS</span></h3>
+                    <h3 class="font-display font-black text-2xl sm:text-3xl text-white uppercase">SEJA UM PARCEIRO <span class="text-brand-green">L7 ESPORTS</span></h3>
                     <p class="text-gray-400 text-xs mt-2">Sua marca junto da maior guilda de Free Fire. Abra propostas diretamente no nosso Discord oficial.</p>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
-                        <i class="fa-solid fa-microchip text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
-                        <span class="font-display font-bold text-sm text-white uppercase">CYBER TECH</span>
-                        <span class="text-[10px] text-gray-500 uppercase">Hardware & Gear</span>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+                    <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-4 sm:p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
+                        <i class="fa-solid fa-microchip text-2xl sm:text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
+                        <span class="font-display font-bold text-xs sm:text-sm text-white uppercase">CYBER TECH</span>
+                        <span class="text-[9px] sm:text-[10px] text-gray-500 uppercase">Hardware & Gear</span>
                     </div>
-                    <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
-                        <i class="fa-solid fa-bolt text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
-                        <span class="font-display font-bold text-sm text-white uppercase">ENERGY RUSH</span>
-                        <span class="text-[10px] text-gray-500 uppercase">Energéticos Gamer</span>
+                    <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-4 sm:p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
+                        <i class="fa-solid fa-bolt text-2xl sm:text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
+                        <span class="font-display font-bold text-xs sm:text-sm text-white uppercase">ENERGY RUSH</span>
+                        <span class="text-[9px] sm:text-[10px] text-gray-500 uppercase">Energéticos Gamer</span>
                     </div>
-                    <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
-                        <i class="fa-solid fa-headset text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
-                        <span class="font-display font-bold text-sm text-white uppercase">AUDIO PRO</span>
-                        <span class="text-[10px] text-gray-500 uppercase">Periféricos de Som</span>
+                    <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-4 sm:p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
+                        <i class="fa-solid fa-headset text-2xl sm:text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
+                        <span class="font-display font-bold text-xs sm:text-sm text-white uppercase">AUDIO PRO</span>
+                        <span class="text-[9px] sm:text-[10px] text-gray-500 uppercase">Periféricos de Som</span>
                     </div>
-                    <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
-                        <i class="fa-solid fa-wifi text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
-                        <span class="font-display font-bold text-sm text-white uppercase">FIBRA ULTRA</span>
-                        <span class="text-[10px] text-gray-500 uppercase">Conexão 1Gbps</span>
+                    <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-4 sm:p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
+                        <i class="fa-solid fa-wifi text-2xl sm:text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
+                        <span class="font-display font-bold text-xs sm:text-sm text-white uppercase">FIBRA ULTRA</span>
+                        <span class="text-[9px] sm:text-[10px] text-gray-500 uppercase">Conexão 1Gbps</span>
                     </div>
                 </div>
 
-                <div class="bg-gradient-to-r from-indigo-950/60 via-brand-card to-black border border-indigo-500/40 p-6 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-lg bg-indigo-600/30 border border-indigo-400 flex items-center justify-center text-indigo-300 text-2xl flex-shrink-0">
+                <div class="bg-gradient-to-r from-indigo-950/60 via-brand-card to-black border border-indigo-500/40 p-4 sm:p-6 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+                    <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-indigo-600/30 border border-indigo-400 flex items-center justify-center text-indigo-300 text-xl sm:text-2xl flex-shrink-0">
                             <i class="fa-brands fa-discord"></i>
                         </div>
                         <div>
-                            <h4 class="font-display font-bold text-white text-base uppercase">Quer patrocinar a L7 ESPORTS?</h4>
+                            <h4 class="font-display font-bold text-white text-sm sm:text-base uppercase">Quer patrocinar a L7 ESPORTS?</h4>
                             <p class="text-gray-300 text-xs">Abra um ticket na aba <strong>#parcerias</strong> do nosso Discord para falar com a diretoria.</p>
                         </div>
                     </div>
-                    <a href="https://discord.gg" target="_blank" rel="noopener noreferrer" class="whitespace-nowrap bg-indigo-600 hover:bg-indigo-500 text-white font-display font-bold px-6 py-3 clip-button text-xs uppercase transition-all flex items-center gap-2">
+                    <a href="https://discord.gg" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto whitespace-nowrap bg-indigo-600 hover:bg-indigo-500 text-white font-display font-bold px-5 py-3 clip-button text-xs uppercase transition-all flex items-center justify-center gap-2">
                         <i class="fa-brands fa-discord text-base"></i>
                         <span>Abrir Ticket no Discord</span>
                     </a>
@@ -311,48 +311,48 @@
             </div>
 
             <!-- REDES SOCIAIS -->
-            <div id="redes" class="pt-10 border-t border-brand-border/60">
-                <div class="text-center max-w-2xl mx-auto mb-10">
+            <div id="redes" class="pt-8 sm:pt-10 border-t border-brand-border/60">
+                <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
                     <span class="text-brand-green font-mono text-xs uppercase tracking-widest block mb-1">// COMUNIDADE & MÍDIA</span>
-                    <h3 class="font-display font-black text-3xl text-white uppercase">NOSSAS <span class="text-brand-green">REDES SOCIAIS</span></h3>
+                    <h3 class="font-display font-black text-2xl sm:text-3xl text-white uppercase">NOSSAS <span class="text-brand-green">REDES SOCIAIS</span></h3>
                     <p class="text-gray-400 text-xs mt-2">Acompanhe treinos, bastidores, clips e avisos de peneiras em tempo real.</p>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-4 group transition-all">
-                        <div class="w-12 h-12 rounded bg-black flex items-center justify-center text-brand-green group-hover:bg-brand-green group-hover:text-black transition-colors flex-shrink-0">
-                            <i class="fa-brands fa-instagram text-2xl"></i>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-3.5 sm:p-4 rounded-lg flex items-center gap-4 group transition-all">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded bg-black flex items-center justify-center text-brand-green group-hover:bg-brand-green group-hover:text-black transition-colors flex-shrink-0">
+                            <i class="fa-brands fa-instagram text-xl sm:text-2xl"></i>
                         </div>
                         <div>
-                            <span class="font-display font-bold text-sm text-white block">Instagram</span>
-                            <span class="text-xs text-gray-400">@l7esports.ff</span>
+                            <span class="font-display font-bold text-xs sm:text-sm text-white block">Instagram</span>
+                            <span class="text-[11px] sm:text-xs text-gray-400">@l7esports.ff</span>
                         </div>
                     </a>
-                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-4 group transition-all">
-                        <div class="w-12 h-12 rounded bg-black flex items-center justify-center text-red-500 group-hover:bg-red-500 group-hover:text-black transition-colors flex-shrink-0">
-                            <i class="fa-brands fa-youtube text-2xl"></i>
+                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-3.5 sm:p-4 rounded-lg flex items-center gap-4 group transition-all">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded bg-black flex items-center justify-center text-red-500 group-hover:bg-red-500 group-hover:text-black transition-colors flex-shrink-0">
+                            <i class="fa-brands fa-youtube text-xl sm:text-2xl"></i>
                         </div>
                         <div>
-                            <span class="font-display font-bold text-sm text-white block">YouTube</span>
-                            <span class="text-xs text-gray-400">L7 Esports Oficial</span>
+                            <span class="font-display font-bold text-xs sm:text-sm text-white block">YouTube</span>
+                            <span class="text-[11px] sm:text-xs text-gray-400">L7 Esports Oficial</span>
                         </div>
                     </a>
-                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-4 group transition-all">
-                        <div class="w-12 h-12 rounded bg-black flex items-center justify-center text-indigo-400 group-hover:bg-indigo-400 group-hover:text-black transition-colors flex-shrink-0">
-                            <i class="fa-brands fa-discord text-2xl"></i>
+                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-3.5 sm:p-4 rounded-lg flex items-center gap-4 group transition-all">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded bg-black flex items-center justify-center text-indigo-400 group-hover:bg-indigo-400 group-hover:text-black transition-colors flex-shrink-0">
+                            <i class="fa-brands fa-discord text-xl sm:text-2xl"></i>
                         </div>
                         <div>
-                            <span class="font-display font-bold text-sm text-white block">Discord</span>
-                            <span class="text-xs text-gray-400">Comunidade L7</span>
+                            <span class="font-display font-bold text-xs sm:text-sm text-white block">Discord</span>
+                            <span class="text-[11px] sm:text-xs text-gray-400">Comunidade L7</span>
                         </div>
                     </a>
-                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-4 group transition-all">
-                        <div class="w-12 h-12 rounded bg-black flex items-center justify-center text-cyan-400 group-hover:bg-cyan-400 group-hover:text-black transition-colors flex-shrink-0">
-                            <i class="fa-brands fa-tiktok text-2xl"></i>
+                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-3.5 sm:p-4 rounded-lg flex items-center gap-4 group transition-all">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded bg-black flex items-center justify-center text-cyan-400 group-hover:bg-cyan-400 group-hover:text-black transition-colors flex-shrink-0">
+                            <i class="fa-brands fa-tiktok text-xl sm:text-2xl"></i>
                         </div>
                         <div>
-                            <span class="font-display font-bold text-sm text-white block">TikTok</span>
-                            <span class="text-xs text-gray-400">Clips & Highlights</span>
+                            <span class="font-display font-bold text-xs sm:text-sm text-white block">TikTok</span>
+                            <span class="text-[11px] sm:text-xs text-gray-400">Clips & Highlights</span>
                         </div>
                     </a>
                 </div>
@@ -362,77 +362,77 @@
     </section>
 
     <!-- NOTÍCIAS SECTION -->
-    <section id="noticias" class="py-20 border-t border-brand-border bg-brand-card/30">
+    <section id="noticias" class="py-12 sm:py-20 border-t border-brand-border bg-brand-card/30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12">
                 <div>
-                    <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// FEED DE COMUNICADOS</span>
-                    <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight">ÚLTIMAS <span class="text-brand-green">NOTÍCIAS</span></h2>
+                    <span class="text-brand-green font-mono text-xs sm:text-sm uppercase tracking-widest block mb-1 sm:mb-2">// FEED DE COMUNICADOS</span>
+                    <h2 class="font-display font-black text-3xl sm:text-5xl text-white uppercase tracking-tight">ÚLTIMAS <span class="text-brand-green">NOTÍCIAS</span></h2>
                 </div>
             </div>
 
             <!-- NEWS GRID -->
-            <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
                 <!-- Loaded Dynamically via JS -->
             </div>
         </div>
     </section>
 
     <!-- CONQUISTAS SECTION -->
-    <section id="conquistas" class="py-20 border-t border-brand-border bg-brand-bg">
+    <section id="conquistas" class="py-12 sm:py-20 border-t border-brand-border bg-brand-bg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12">
                 <div>
-                    <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// GALERIA DE TROFÉUS</span>
-                    <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight">CONQUISTAS <span class="text-brand-green text-glow">& TÍTULOS</span></h2>
+                    <span class="text-brand-green font-mono text-xs sm:text-sm uppercase tracking-widest block mb-1 sm:mb-2">// GALERIA DE TROFÉUS</span>
+                    <h2 class="font-display font-black text-3xl sm:text-5xl text-white uppercase tracking-tight">CONQUISTAS <span class="text-brand-green text-glow">& TÍTULOS</span></h2>
                 </div>
-                <p class="text-gray-400 text-sm max-w-md mt-2 md:mt-0">
+                <p class="text-gray-400 text-xs sm:text-sm max-w-md mt-2 md:mt-0">
                     Nossa trajetória vitoriosa nos principais campeonatos e ligas competitivas de Free Fire.
                 </p>
             </div>
 
-            <div id="trophiesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div id="trophiesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <!-- Loaded Dynamically via JS -->
             </div>
         </div>
     </section>
 
     <!-- LOJA SECTION -->
-    <section id="loja" class="py-20 border-t border-brand-border bg-brand-card/40">
+    <section id="loja" class="py-12 sm:py-20 border-t border-brand-border bg-brand-card/40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8">
                 <div>
-                    <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// LOJA & TREINAMENTOS PRO</span>
-                    <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight">LOJA & <span class="text-brand-green">CURSOS L7</span></h2>
+                    <span class="text-brand-green font-mono text-xs sm:text-sm uppercase tracking-widest block mb-1 sm:mb-2">// LOJA & TREINAMENTOS PRO</span>
+                    <h2 class="font-display font-black text-3xl sm:text-5xl text-white uppercase tracking-tight">LOJA & <span class="text-brand-green">CURSOS L7</span></h2>
                 </div>
-                <p class="text-gray-400 text-sm max-w-md mt-2 md:mt-0">
+                <p class="text-gray-400 text-xs sm:text-sm max-w-md mt-2 md:mt-0">
                     Aprenda com os pro players da L7 ESPORTS ou garanta a pré-venda da nossa linha oficial de uniforme e equipamentos.
                 </p>
             </div>
 
-            <div class="flex flex-wrap gap-2 mb-8" id="shopFilterContainer">
-                <button onclick="filterShopCategory('all')" class="shop-filter-btn px-4 py-2 bg-brand-green text-black font-display font-bold text-xs uppercase clip-button transition-all">Todos os Produtos</button>
-                <button onclick="filterShopCategory('Curso')" class="shop-filter-btn px-4 py-2 bg-black/60 hover:bg-brand-card text-gray-300 hover:text-brand-green border border-brand-border font-display font-bold text-xs uppercase clip-button transition-all flex items-center gap-1.5">
+            <div class="flex flex-wrap gap-2 mb-6 sm:mb-8" id="shopFilterContainer">
+                <button onclick="filterShopCategory('all')" class="shop-filter-btn px-3 py-1.5 sm:px-4 sm:py-2 bg-brand-green text-black font-display font-bold text-[11px] sm:text-xs uppercase clip-button transition-all">Todos os Produtos</button>
+                <button onclick="filterShopCategory('Curso')" class="shop-filter-btn px-3 py-1.5 sm:px-4 sm:py-2 bg-black/60 hover:bg-brand-card text-gray-300 hover:text-brand-green border border-brand-border font-display font-bold text-[11px] sm:text-xs uppercase clip-button transition-all flex items-center gap-1.5">
                     <i class="fa-solid fa-graduation-cap text-brand-green"></i> Cursos & Mentoria
                 </button>
-                <button onclick="filterShopCategory('Vestuário')" class="shop-filter-btn px-4 py-2 bg-black/60 hover:bg-brand-card text-gray-300 hover:text-brand-green border border-brand-border font-display font-bold text-xs uppercase clip-button transition-all flex items-center gap-1.5">
+                <button onclick="filterShopCategory('Vestuário')" class="shop-filter-btn px-3 py-1.5 sm:px-4 sm:py-2 bg-black/60 hover:bg-brand-card text-gray-300 hover:text-brand-green border border-brand-border font-display font-bold text-[11px] sm:text-xs uppercase clip-button transition-all flex items-center gap-1.5">
                     <i class="fa-solid fa-shirt"></i> Vestuário
                 </button>
-                <button onclick="filterShopCategory('Equipamento')" class="shop-filter-btn px-4 py-2 bg-black/60 hover:bg-brand-card text-gray-300 hover:text-brand-green border border-brand-border font-display font-bold text-xs uppercase clip-button transition-all flex items-center gap-1.5">
+                <button onclick="filterShopCategory('Equipamento')" class="shop-filter-btn px-3 py-1.5 sm:px-4 sm:py-2 bg-black/60 hover:bg-brand-card text-gray-300 hover:text-brand-green border border-brand-border font-display font-bold text-[11px] sm:text-xs uppercase clip-button transition-all flex items-center gap-1.5">
                     <i class="fa-solid fa-gamepad"></i> Equipamentos
                 </button>
             </div>
 
-            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 <!-- Loaded Dynamically via JS -->
             </div>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="bg-black border-t border-brand-border pt-16 pb-12">
+    <footer class="bg-black border-t border-brand-border pt-12 sm:pt-16 pb-8 sm:pb-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-brand-border/60">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-10 pb-8 sm:pb-12 border-b border-brand-border/60">
                 <div class="space-y-4">
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-black border-2 border-brand-green flex items-center justify-center font-display font-black text-xl text-brand-green clip-cyber">
@@ -446,7 +446,7 @@
                 </div>
 
                 <div>
-                    <h4 class="font-display font-bold text-white text-sm uppercase tracking-wider mb-4 text-brand-green">Navegação</h4>
+                    <h4 class="font-display font-bold text-white text-xs sm:text-sm uppercase tracking-wider mb-3 sm:mb-4 text-brand-green">Navegação</h4>
                     <ul class="space-y-2 text-xs text-gray-400 font-medium">
                         <li><a href="#home" class="hover:text-white transition-colors">Início</a></li>
                         <li><a href="#elenco" class="hover:text-white transition-colors">Elenco Profissional</a></li>
@@ -456,7 +456,7 @@
                 </div>
 
                 <div>
-                    <h4 class="font-display font-bold text-white text-sm uppercase tracking-wider mb-4 text-brand-green">Redes Sociais</h4>
+                    <h4 class="font-display font-bold text-white text-xs sm:text-sm uppercase tracking-wider mb-3 sm:mb-4 text-brand-green">Redes Sociais</h4>
                     <div class="flex gap-3">
                         <a href="#" class="w-9 h-9 bg-brand-card border border-brand-border rounded flex items-center justify-center text-gray-300 hover:text-brand-green hover:border-brand-green transition-all"><i class="fa-brands fa-instagram"></i></a>
                         <a href="#" class="w-9 h-9 bg-brand-card border border-brand-border rounded flex items-center justify-center text-gray-300 hover:text-brand-green hover:border-brand-green transition-all"><i class="fa-brands fa-youtube"></i></a>
@@ -466,13 +466,13 @@
                 </div>
 
                 <div>
-                    <h4 class="font-display font-bold text-white text-sm uppercase tracking-wider mb-4 text-brand-green">Contato da Guilda</h4>
+                    <h4 class="font-display font-bold text-white text-xs sm:text-sm uppercase tracking-wider mb-3 sm:mb-4 text-brand-green">Contato da Guilda</h4>
                     <p class="text-gray-400 text-xs mb-2"><i class="fa-solid fa-envelope text-brand-green mr-2"></i> contato@l7esports.gg</p>
                     <p class="text-gray-400 text-xs"><i class="fa-solid fa-shield-halved text-brand-green mr-2"></i> Peneira Oficial: Ativa no Discord</p>
                 </div>
             </div>
 
-            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500">
+            <div class="pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 text-center sm:text-left gap-2">
                 <p>&copy; 2026 L7 ESPORTS. Todos os direitos reservados. Não afiliado oficialmente à Garena Inc.</p>
             </div>
         </div>
@@ -481,26 +481,26 @@
     <!-- CART SIDEBAR DRAWER -->
     <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeCart()"></div>
-        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
-            <div class="w-screen max-w-md bg-brand-card border-l border-brand-border p-6 flex flex-col justify-between shadow-2xl">
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-6 sm:pl-10">
+            <div class="w-screen max-w-md bg-brand-card border-l border-brand-border p-4 sm:p-6 flex flex-col justify-between shadow-2xl">
                 <div>
                     <div class="flex items-center justify-between pb-4 border-b border-brand-border">
-                        <h3 class="font-display font-bold text-xl text-white uppercase flex items-center gap-2">
+                        <h3 class="font-display font-bold text-lg sm:text-xl text-white uppercase flex items-center gap-2">
                             <i class="fa-solid fa-bag-shopping text-brand-green"></i>
                             <span>Meu Carrinho</span>
                         </h3>
-                        <button onclick="closeCart()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+                        <button onclick="closeCart()" class="text-gray-400 hover:text-white p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
                     </div>
-                    <div id="cartItemsContainer" class="py-4 space-y-4 max-h-[60vh] overflow-y-auto">
+                    <div id="cartItemsContainer" class="py-4 space-y-3 sm:space-y-4 max-h-[60vh] overflow-y-auto">
                         <!-- Cart Items -->
                     </div>
                 </div>
                 <div class="pt-4 border-t border-brand-border">
-                    <div class="flex justify-between items-center text-lg font-bold text-white mb-4">
+                    <div class="flex justify-between items-center text-base sm:text-lg font-bold text-white mb-4">
                         <span>Total:</span>
                         <span id="cartTotal" class="text-brand-green">R$ 0,00</span>
                     </div>
-                    <button onclick="checkout()" class="w-full bg-brand-green text-black font-display font-bold py-3 uppercase tracking-wider clip-button hover:bg-brand-darkGreen transition-colors">
+                    <button onclick="checkout()" class="w-full bg-brand-green text-black font-display font-bold py-3 uppercase tracking-wider clip-button hover:bg-brand-darkGreen transition-colors text-xs sm:text-sm">
                         Finalizar Compra
                     </button>
                 </div>
@@ -1540,6 +1540,11 @@
 
         window.closeNewsArticleModal = function() {
             document.getElementById('newsArticleModal').classList.add('hidden');
+        };
+
+        window.toggleMobileMenu = function() {
+            const menu = document.getElementById('mobileMenu');
+            if (menu) menu.classList.toggle('hidden');
         };
 
         // ADMIN: MODAL E NAVEGAÇÃO
