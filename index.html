@@ -1038,19 +1038,26 @@ onSnapshot(docRef, (docSnap) => {
     if (typeof window.renderAllContent === 'function') window.renderAllContent();
 });
 
-        window.saveDataToFirebase = async function(data) {
-            try {
-                window.siteData = data;
-                localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
-                await setDoc(docRef, data);
-                showToast('Alterações salvas no banco de dados!', 'success');
-            } catch (e) {
-                console.error("Erro ao salvar dados no Firebase:", e);
-                showToast('Salvo localmente no seu navegador!', 'info');
-            }
-            if (typeof window.renderAllContent === 'function') window.renderAllContent();
-            if (typeof window.renderAdminLists === 'function') window.renderAdminLists();
-        };
+window.saveDataToFirebase = async function(data) {
+    try {
+        window.siteData = data;
+        localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
+        
+        // Envia para o Firestore
+        if (typeof setDoc !== 'undefined' && typeof docRef !== 'undefined') {
+            await setDoc(docRef, data);
+        }
+        
+        showToast('Dados salvos com sucesso!', 'success');
+    } catch (e) {
+        console.error("Erro ao salvar:", e);
+        showToast('Erro ao sincronizar com a nuvem', 'error');
+    }
+
+    // Atualiza a tela e as listas do Admin
+    if (typeof window.renderAllContent === 'function') window.renderAllContent();
+    if (typeof window.renderAdminLists === 'function') window.renderAdminLists();
+};
 
         onAuthStateChanged(auth, (user) => {
             window.currentUser = user;
@@ -1162,34 +1169,48 @@ onSnapshot(docRef, (docSnap) => {
         };
 
         // NOTÍCIAS: FORMULÁRIO E AÇÕES
-        window.openNewsForm = function() { 
-            document.getElementById('nIndex').value = '';
-            document.getElementById('nTitle').value = '';
-            document.getElementById('nTag').value = '';
-            document.getElementById('nSummary').value = '';
-            document.getElementById('nContent').value = '';
-            document.getElementById('nImg').value = '';
-            document.getElementById('newsFormTitle').innerText = 'Nova Notícia';
-            document.getElementById('newsForm').classList.remove('hidden'); 
-        };
+  // ABRIR/FECHAR FORMULÁRIO DE NOTÍCIAS
+window.openNewsForm = function() {
+    document.getElementById('nIndex').value = '';
+    document.getElementById('nTitle').value = '';
+    document.getElementById('nTag').value = '';
+    document.getElementById('nSummary').value = '';
+    document.getElementById('nContent').value = '';
+    document.getElementById('nImg').value = '';
+    document.getElementById('newsFormTitle').innerText = 'Nova Notícia';
+    document.getElementById('newsForm').classList.remove('hidden');
+};
 
-        window.closeNewsForm = function() { document.getElementById('newsForm').classList.add('hidden'); };
+window.closeNewsForm = function() {
+    document.getElementById('newsForm').classList.add('hidden');
+};
 
-        window.editNews = function(index) {
-            const data = getSiteData();
-            if (!data.news || !data.news[index]) return;
-            const news = data.news[index];
+// EDITAR NOTÍCIA
+window.editNews = function(index) {
+    const data = getSiteData();
+    if (!data.news || !data.news[index]) return;
+    const news = data.news[index];
 
-            document.getElementById('nIndex').value = index;
-            document.getElementById('nTitle').value = news.title || '';
-            document.getElementById('nTag').value = news.tag || '';
-            document.getElementById('nSummary').value = news.summary || '';
-            document.getElementById('nContent').value = news.content || news.summary || '';
-            document.getElementById('nImg').value = news.img || '';
+    document.getElementById('nIndex').value = index;
+    document.getElementById('nTitle').value = news.title || '';
+    document.getElementById('nTag').value = news.tag || '';
+    document.getElementById('nSummary').value = news.summary || '';
+    document.getElementById('nContent').value = news.content || news.summary || '';
+    document.getElementById('nImg').value = news.img || '';
 
-            document.getElementById('newsFormTitle').innerText = 'Editar Notícia';
-            document.getElementById('newsForm').classList.remove('hidden');
-        };
+    document.getElementById('newsFormTitle').innerText = 'Editar Notícia';
+    document.getElementById('newsForm').classList.remove('hidden');
+};
+
+// EXCLUIR NOTÍCIA
+window.deleteNews = function(idx) {
+    const data = getSiteData();
+    if (data.news && data.news[idx]) {
+        data.news.splice(idx, 1);
+        window.saveDataToFirebase(data);
+        showToast('Notícia removida!', 'info');
+    }
+};
 
         window.saveNews = function() {
             const data = getSiteData();
@@ -1618,33 +1639,29 @@ onSnapshot(docRef, (docSnap) => {
             }
 
             // Renderizar Notícias no Admin
-            const nList = document.getElementById('adminNewsList');
-            if (nList && data.news) {
-                if (data.news.length === 0) {
-                    nList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhuma notícia publicada.</div>`;
-                } else {
-                    nList.innerHTML = data.news.map((n, idx) => `
-                        <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border hover:border-brand-green/40 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <img src="${n.img}" class="w-12 h-12 object-cover rounded bg-black">
-                                <div>
-                                    <span class="font-bold text-xs text-white uppercase block line-clamp-1">${n.title}</span>
-                                    <span class="text-[10px] text-brand-green font-mono">${n.tag || 'NOTÍCIA'}</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button onclick="editNews(${idx})" class="bg-purple-600/30 hover:bg-purple-600 text-purple-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
-                                    <i class="fa-solid fa-pen"></i> Editar
-                                </button>
-                                <button onclick="deleteNews(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
-                                    <i class="fa-solid fa-trash"></i> Excluir
-                                </button>
-                            </div>
+        const nList = document.getElementById('adminNewsList');
+    if (nList && data.news) {
+        if (data.news.length === 0) {
+            nList.innerHTML = `<div class="bg-black/40 border border-brand-border p-4 rounded text-center text-gray-500 text-xs">Nenhuma notícia.</div>`;
+        } else {
+            nList.innerHTML = data.news.map((n, idx) => `
+                <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border">
+                    <div class="flex items-center gap-3">
+                        <img src="${n.img}" class="w-10 h-10 object-cover rounded">
+                        <div>
+                            <span class="font-bold text-xs text-white uppercase block line-clamp-1">${n.title}</span>
+                            <span class="text-[10px] text-brand-green font-mono">${n.tag || 'NOTÍCIA'}</span>
                         </div>
-                    `).join('');
-                }
-            }
-        };
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="window.editNews(${idx})" class="bg-purple-600/40 hover:bg-purple-600 text-white text-xs font-bold py-1 px-2.5 rounded">Editar</button>
+                        <button onclick="window.deleteNews(${idx})" class="bg-red-900/40 hover:bg-red-700 text-white text-xs font-bold py-1 px-2.5 rounded">Excluir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    }
+};
 
         // AÇÕES DO HERO BANNER
         window.saveHeroChanges = function() {
