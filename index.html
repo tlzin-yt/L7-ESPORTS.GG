@@ -74,82 +74,77 @@
             background: #00FF66;
         }
     </style>
-</head>
-<body class="font-sans antialiased selection:bg-brand-green selection:text-black">
-
-    <!-- TOP ANNOUNCEMENT BAR -->
-    <div class="bg-brand-green text-black text-xs font-bold py-1 px-4 text-center tracking-wider uppercase flex items-center justify-center gap-2">
-        <i class="fa-solid font-black fa-fire text-black animate-bounce"></i>
-        <span>L7 ESPORTS NA LBFF 2026 • SEJA MEMBRO DA GUILDA E COMPITA NO MISTO E LIGAS OFICIAIS</span>
-        <i class="fa-solid font-black fa-fire text-black animate-bounce"></i>
-    </div>
-
-    <!-- HEADER / NAVIGATION -->
-    <header class="sticky top-0 z-40 bg-brand-bg/90 backdrop-blur-md border-b border-brand-border">
+    <!-- HEADER / NAVIGATION INSPIRADO NA LOUD -->
+    <header class="sticky top-0 z-40 bg-[#121212] border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+            <div class="flex items-center justify-between h-16">
                 
-                <!-- LOGO L7 ESPORTS -->
-                <a href="#" class="flex items-center gap-3 group">
-                    <div class="w-12 h-12 bg-black border-2 border-brand-green flex items-center justify-center font-display font-black text-2xl text-brand-green clip-cyber group-hover:scale-105 transition-transform duration-300">
-                        L7
-                    </div>
-                    <div>
-                        <span class="font-display font-black text-2xl tracking-wider text-white block leading-none">L7 <span class="text-brand-green">ESPORTS</span></span>
-                        <span class="text-[10px] text-gray-400 tracking-widest font-semibold uppercase">Free Fire Pro Guild</span>
-                    </div>
+                <!-- LOGO L7 FUTURISTA LIMPA (ESTILO LOUD) -->
+                <a href="#" class="flex items-center gap-1 group font-display font-black tracking-tighter text-2xl text-white">
+                    <span class="tracking-widest">L7</span>
+                    <svg class="w-6 h-6 text-white fill-current group-hover:text-brand-green transition-colors" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
                 </a>
 
-                <!-- DESKTOP NAV LINKS -->
-                <nav class="hidden md:flex items-center gap-8 font-display font-semibold tracking-wide text-sm uppercase">
-                    <a href="#home" class="hover:text-brand-green transition-colors text-white">Início</a>
-                    <!-- MENU INSTITUCIONAL COM DROPDOWN -->
+                <!-- DESKTOP NAV LINKS (EXTREMAS LETRAS EM NEGRITO - ESTILO LOUD) -->
+                <nav class="hidden lg:flex items-center gap-6 font-display font-extrabold tracking-wider text-xs uppercase text-white">
+                    <a href="#loja" class="hover:text-brand-green transition-colors">SHOP</a>
+                    <a href="#loja" class="hover:text-brand-green transition-colors">COLEÇÕES</a>
+                    <a href="#loja" class="hover:text-brand-green transition-colors">COMBOS</a>
+                    <a href="#loja" class="text-brand-green hover:underline">SALE</a>
+                    <a href="#noticias" class="hover:text-brand-green transition-colors">NEWS</a>
+                    
+                    <!-- DROPDOWN SOBRE A L7 -->
                     <div class="relative group py-2">
-                        <button class="hover:text-brand-green transition-colors text-gray-300 flex items-center gap-1">
-                            <span>Sobre a L7</span>
-                            <i class="fa-solid fa-chevron-down text-[10px] group-hover:rotate-180 transition-transform"></i>
+                        <button class="hover:text-brand-green transition-colors uppercase flex items-center gap-1">
+                            <span>SOBRE A L7</span>
+                            <i class="fa-solid fa-chevron-down text-[8px] group-hover:rotate-180 transition-transform"></i>
                         </button>
-                        <div class="absolute top-full left-0 w-48 bg-brand-card border border-brand-border rounded-lg shadow-2xl p-2 hidden group-hover:block transition-all z-50">
-                            <a href="#home" class="block px-3 py-2 text-xs text-gray-300 hover:text-brand-green hover:bg-black/40 rounded">Sobre a L7</a>
-                            <a href="#noticias" class="block px-3 py-2 text-xs text-gray-300 hover:text-brand-green hover:bg-black/40 rounded">Parcerias</a>
-                            <a href="#loja" class="block px-3 py-2 text-xs text-gray-300 hover:text-brand-green hover:bg-black/40 rounded">Redes Sociais</a>
+                        <div class="absolute top-full left-0 w-48 bg-[#181818] border border-white/10 rounded shadow-2xl p-2 hidden group-hover:block transition-all z-50">
+                            <a href="#sobre" class="block px-3 py-2 text-xs text-gray-300 hover:text-brand-green hover:bg-black/40 rounded">História da Guilda</a>
+                            <a href="#parcerias" class="block px-3 py-2 text-xs text-gray-300 hover:text-brand-green hover:bg-black/40 rounded">Parcerias & Discord</a>
+                            <a href="#redes" class="block px-3 py-2 text-xs text-gray-300 hover:text-brand-green hover:bg-black/40 rounded">Redes Sociais</a>
                         </div>
                     </div>
-                    <a href="#elenco" class="hover:text-brand-green transition-colors text-gray-300">Elenco FF</a>
-                    <button onclick="openTryoutModal()" class="text-brand-green hover:text-white transition-colors flex items-center gap-1.5 font-bold">
-                        <i class="fa-solid fa-fire animate-pulse text-xs"></i> Seletiva
-                    </button>
-                    <a href="#noticias" class="hover:text-brand-green transition-colors text-gray-300">Notícias</a>
-                    <a href="#conquistas" class="hover:text-brand-green transition-colors text-gray-300">Conquistas</a>
-                    <a href="#loja" class="hover:text-brand-green transition-colors text-gray-300">Loja Merch</a>
+
+                    <button onclick="openTryoutModal()" class="hover:text-brand-green transition-colors">RASTREIE SEU PEDIDO</button>
                 </nav>
 
-                <!-- RIGHT ACTION BUTTONS -->
-                <div class="flex items-center gap-4">
+                <!-- RIGHT ACTION ICONS (ESTILO LOUD: INFO, USER, SEARCH, CART) -->
+                <div class="flex items-center gap-4 text-white">
                     
-                    <!-- CART BUTTON -->
-                    <button id="openCartBtn" class="relative p-2 text-gray-300 hover:text-brand-green transition-colors">
-                        <i class="fa-solid fa-cart-shopping text-xl"></i>
-                        <span id="cartBadge" class="absolute -top-1 -right-1 bg-brand-green text-black font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
-                    </button>
+                    <!-- INFO ICON -->
+                    <a href="#parcerias" class="hover:text-brand-green transition-colors" title="Informações & Parcerias">
+                        <i class="fa-regular fa-circle-question text-lg"></i>
+                    </a>
 
-                    <!-- ADMIN BTN (VISIBLE ONLY TO TULIO FONSECA) -->
-                    <button id="adminPanelBtn" onclick="openAdminModal()" class="hidden bg-purple-600 hover:bg-purple-500 text-white font-display font-bold px-3 py-1.5 rounded text-xs flex items-center gap-1.5 border border-purple-400 animate-pulse transition-all">
-                        <i class="fa-solid fa-user-gear"></i>
-                        <span>PAINEL ADMIN</span>
-                    </button>
-
-                    <!-- USER AUTH CONTAINER -->
+                    <!-- USER AUTH ICON -->
                     <div id="authContainer">
-                        <!-- Loaded dynamically via JS -->
-                        <button onclick="openAuthModal('login')" class="bg-brand-green hover:bg-brand-darkGreen text-black font-display font-bold px-5 py-2.5 clip-button text-sm tracking-wider uppercase transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,102,0.4)] flex items-center gap-2">
-                            <i class="fa-solid fa-user"></i>
-                            <span>Entrar</span>
+                        <button onclick="openAuthModal('login')" class="hover:text-brand-green transition-colors" title="Conta">
+                            <i class="fa-regular fa-user text-lg"></i>
                         </button>
                     </div>
 
+                    <!-- SEARCH ICON -->
+                    <button onclick="showToast('Busca ativada!')" class="hover:text-brand-green transition-colors" title="Buscar no site">
+                        <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                    </button>
+
+                    <!-- CART BUTTON -->
+                    <button id="openCartBtn" class="relative hover:text-brand-green transition-colors flex items-center gap-1" title="Sacola de Compras">
+                        <i class="fa-solid fa-bag-shopping text-lg"></i>
+                        <span id="cartBadge" class="bg-white text-black font-extrabold text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-mono">0</span>
+                    </button>
+
+                    <!-- ADMIN BTN (VISIBLE ONLY TO MASTER) -->
+                    <button id="adminPanelBtn" onclick="openAdminModal()" class="hidden bg-purple-600 hover:bg-purple-500 text-white font-display font-bold px-2 py-1 rounded text-[10px] flex items-center gap-1 border border-purple-400 transition-all">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span>ADMIN</span>
+                    </button>
+
                     <!-- MOBILE MENU TOGGLE -->
-                    <button id="mobileMenuBtn" class="md:hidden text-gray-300 hover:text-brand-green text-2xl">
+                    <button id="mobileMenuBtn" class="lg:hidden text-white hover:text-brand-green text-xl">
                         <i class="fa-solid fa-bars"></i>
                     </button>
                 </div>
@@ -157,13 +152,14 @@
         </div>
 
         <!-- MOBILE MENU -->
-        <div id="mobileMenu" class="hidden md:hidden bg-brand-card border-b border-brand-border px-4 pt-2 pb-6 space-y-3 font-display font-semibold uppercase text-sm">
-            <a href="#home" class="block py-2 text-white hover:text-brand-green">Início</a>
-            <a href="#elenco" class="block py-2 text-gray-300 hover:text-brand-green">Elenco FF</a>
-            <button onclick="openTryoutModal(); toggleMobileMenu();" class="block w-full text-left py-2 text-brand-green font-bold">Seletiva / Inscrição</button>
-            <a href="#noticias" class="block py-2 text-gray-300 hover:text-brand-green">Notícias</a>
-            <a href="#conquistas" class="block py-2 text-gray-300 hover:text-brand-green">Conquistas</a>
-            <a href="#loja" class="block py-2 text-gray-300 hover:text-brand-green">Loja Merch</a>
+        <div id="mobileMenu" class="hidden lg:hidden bg-[#181818] border-b border-white/10 px-4 pt-2 pb-6 space-y-3 font-display font-extrabold uppercase text-xs text-white">
+            <a href="#loja" class="block py-2 hover:text-brand-green">SHOP</a>
+            <a href="#loja" class="block py-2 hover:text-brand-green">COLEÇÕES</a>
+            <a href="#loja" class="block py-2 hover:text-brand-green">COMBOS</a>
+            <a href="#loja" class="block py-2 text-brand-green">SALE</a>
+            <a href="#noticias" class="block py-2 hover:text-brand-green">NEWS</a>
+            <a href="#sobre" class="block py-2 hover:text-brand-green">SOBRE A L7</a>
+            <button onclick="openTryoutModal(); toggleMobileMenu();" class="block w-full text-left py-2 hover:text-brand-green">RASTREIE SEU PEDIDO</button>
         </div>
     </header>
 
@@ -224,9 +220,28 @@
     </section>
 
     <!-- ELENCO FREE FIRE SECTION -->
+    <section id="elenco" class="py-20 border-t border-brand-border bg-brand-bg relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// LINE-UP OFICIAL</span>
+                    <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight">ELENCO <span class="text-brand-green text-glow">PRO FF</span></h2>
+                </div>
+                <p class="text-gray-400 text-sm max-w-md mt-2 md:mt-0">
+                    Conheça os atletas profissionais que representam a L7 ESPORTS nos maiores torneios de Free Fire do país.
+                </p>
+            </div>
+
+            <!-- PLAYERS GRID -->
+            <div id="playersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Loaded Dynamically via JS -->
+            </div>
+        </div>
+    </section>
+
     <!-- SEÇÃO SOBRE A L7, PARCERIAS E REDES SOCIAIS -->
     <section id="sobre" class="py-20 border-t border-brand-border bg-brand-card/20 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
             
             <!-- 1. SOBRE A L7 ESPORTS -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
@@ -242,16 +257,28 @@
                         Combinando análise tática avançada, treinos intensivos e infraestrutura de ponta, preparamos nossos atletas para dominar tanto o cenário de emuladores quanto as ligas móbiles oficiais.
                     </p>
                     <div class="flex gap-4">
-                        <div class="bg-black/60 border border-brand-border p-3 rounded clip-button">
-                            <span class="font-display font-bold text-xl text-brand-green block">100%</span>
-                            <span class="text-[10px] text-gray-400 uppercase">Foco no Competitivo</span>
+                        <div class="bg-black/60 border border-brand-border p-4 rounded clip-button min-w-[140px]">
+                            <span class="font-display font-bold text-2xl text-brand-green block">100%</span>
+                            <span class="text-[10px] text-gray-400 uppercase font-semibold">Foco no Competitivo</span>
                         </div>
+                        <div class="bg-black/60 border border-brand-border p-4 rounded clip-button min-w-[140px]">
+                            <span class="font-display font-bold text-2xl text-white block">TOP 1</span>
+                            <span class="text-[10px] text-gray-400 uppercase font-semibold">Meta Constante</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative rounded-xl overflow-hidden border border-brand-border shadow-2xl h-80 bg-black">
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop" alt="Arena L7 ESPORTS" class="w-full h-full object-cover filter brightness-90">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                </div>
+            </div>
+
             <!-- 2. PARCERIAS & PATROCINADORES COM DISCORD -->
             <div id="parcerias" class="pt-10 border-t border-brand-border/60">
                 <div class="text-center max-w-2xl mx-auto mb-8">
                     <span class="text-brand-green font-mono text-xs uppercase tracking-widest block mb-1">// PATROCINADORES & PARCERIAS</span>
                     <h3 class="font-display font-black text-3xl text-white uppercase">SEJA UM PARCEIRO <span class="text-brand-green">L7 ESPORTS</span></h3>
-                    <p class="text-gray-400 text-xs mt-2">Sua marca junto da maior guilda de Free Fire. Abram propostas diretamente no nosso Discord oficial.</p>
+                    <p class="text-gray-400 text-xs mt-2">Sua marca junto da maior guilda de Free Fire. Abra propostas diretamente no nosso Discord oficial.</p>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
@@ -280,7 +307,7 @@
                 <!-- CARD DE PARCERIA NO DISCORD -->
                 <div class="bg-gradient-to-r from-indigo-950/60 via-brand-card to-black border border-indigo-500/40 p-6 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-lg bg-indigo-600/30 border border-indigo-400 flex items-center justify-center text-indigo-300 text-2xl">
+                        <div class="w-12 h-12 rounded-lg bg-indigo-600/30 border border-indigo-400 flex items-center justify-center text-indigo-300 text-2xl flex-shrink-0">
                             <i class="fa-brands fa-discord"></i>
                         </div>
                         <div>
@@ -303,41 +330,41 @@
                     <p class="text-gray-400 text-xs mt-2">Acompanhe treinos, bastidores, clips e avisos de peneiras em tempo real.</p>
                 </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-3 group transition-all">
-                        <div class="w-10 h-10 rounded bg-black flex items-center justify-center text-brand-green group-hover:bg-brand-green group-hover:text-black transition-colors">
-                            <i class="fa-brands fa-instagram text-xl"></i>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-4 group transition-all">
+                        <div class="w-12 h-12 rounded bg-black flex items-center justify-center text-brand-green group-hover:bg-brand-green group-hover:text-black transition-colors flex-shrink-0">
+                            <i class="fa-brands fa-instagram text-2xl"></i>
                         </div>
                         <div>
                             <span class="font-display font-bold text-sm text-white block">Instagram</span>
-                            <span class="text-[10px] text-gray-400">@l7esports.ff</span>
+                            <span class="text-xs text-gray-400">@l7esports.ff</span>
                         </div>
                     </a>
-                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-3 group transition-all">
-                        <div class="w-10 h-10 rounded bg-black flex items-center justify-center text-red-500 group-hover:bg-red-500 group-hover:text-black transition-colors">
-                            <i class="fa-brands fa-youtube text-xl"></i>
+                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-4 group transition-all">
+                        <div class="w-12 h-12 rounded bg-black flex items-center justify-center text-red-500 group-hover:bg-red-500 group-hover:text-black transition-colors flex-shrink-0">
+                            <i class="fa-brands fa-youtube text-2xl"></i>
                         </div>
                         <div>
                             <span class="font-display font-bold text-sm text-white block">YouTube</span>
-                            <span class="text-[10px] text-gray-400">L7 Esports Oficial</span>
+                            <span class="text-xs text-gray-400">L7 Esports Oficial</span>
                         </div>
                     </a>
-                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-3 group transition-all">
-                        <div class="w-10 h-10 rounded bg-black flex items-center justify-center text-indigo-400 group-hover:bg-indigo-400 group-hover:text-black transition-colors">
-                            <i class="fa-brands fa-discord text-xl"></i>
+                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-4 group transition-all">
+                        <div class="w-12 h-12 rounded bg-black flex items-center justify-center text-indigo-400 group-hover:bg-indigo-400 group-hover:text-black transition-colors flex-shrink-0">
+                            <i class="fa-brands fa-discord text-2xl"></i>
                         </div>
                         <div>
                             <span class="font-display font-bold text-sm text-white block">Discord</span>
-                            <span class="text-[10px] text-gray-400">Comunidade L7</span>
+                            <span class="text-xs text-gray-400">Comunidade L7</span>
                         </div>
                     </a>
-                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-3 group transition-all">
-                        <div class="w-10 h-10 rounded bg-black flex items-center justify-center text-cyan-400 group-hover:bg-cyan-400 group-hover:text-black transition-colors">
-                            <i class="fa-brands fa-tiktok text-xl"></i>
+                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-4 group transition-all">
+                        <div class="w-12 h-12 rounded bg-black flex items-center justify-center text-cyan-400 group-hover:bg-cyan-400 group-hover:text-black transition-colors flex-shrink-0">
+                            <i class="fa-brands fa-tiktok text-2xl"></i>
                         </div>
                         <div>
                             <span class="font-display font-bold text-sm text-white block">TikTok</span>
-                            <span class="text-[10px] text-gray-400">Clips & Highlights</span>
+                            <span class="text-xs text-gray-400">Clips & Highlights</span>
                         </div>
                     </a>
                 </div>
@@ -1190,6 +1217,41 @@
             const data = getSiteData();
             if (!data) return;
 
+            // Render Players Section
+            const playersGrid = document.getElementById('playersGrid');
+            if (playersGrid && data.players) {
+                if (data.players.length === 0) {
+                    playersGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500 text-sm">Nenhum jogador cadastrado no momento.</div>`;
+                } else {
+                    playersGrid.innerHTML = data.players.map(player => `
+                        <div class="bg-brand-card border border-brand-border hover:border-brand-green/60 rounded-xl overflow-hidden group transition-all duration-300 hover:-translate-y-1 shadow-lg">
+                            <div class="h-64 overflow-hidden relative bg-black">
+                                <img src="${player.photo}" alt="${player.nick}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100">
+                                <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
+                                <span class="absolute top-3 left-3 bg-brand-green text-black font-display font-black text-[10px] uppercase px-2.5 py-1 clip-button">
+                                    ${player.role}
+                                </span>
+                            </div>
+                            <div class="p-5 relative -mt-6 z-10">
+                                <h3 class="font-display font-black text-2xl text-white uppercase tracking-wide group-hover:text-brand-green transition-colors">${player.nick}</h3>
+                                <span class="text-xs text-gray-400 block font-medium uppercase mb-4">${player.name}</span>
+                                
+                                <div class="grid grid-cols-2 gap-2 pt-3 border-t border-brand-border/60">
+                                    <div class="bg-black/50 p-2 rounded text-center border border-brand-border/40">
+                                        <span class="text-[9px] text-gray-400 uppercase block font-semibold">K/D Ratio</span>
+                                        <span class="font-display font-bold text-sm text-brand-green">${player.kd}</span>
+                                    </div>
+                                    <div class="bg-black/50 p-2 rounded text-center border border-brand-border/40">
+                                        <span class="text-[9px] text-gray-400 uppercase block font-semibold">Capa %</span>
+                                        <span class="font-display font-bold text-sm text-white">${player.headshot}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
             // Render Shop Products (Cursos e Merch)
             const productsGrid = document.getElementById('productsGrid');
             if (productsGrid && data.shop) {
@@ -1444,65 +1506,29 @@
                     `).join('');
                 }
             }
-        };
 
-        // SUBMETER FORMULÁRIO DE PENEIRA (CANDIDATURA)
-        window.submitTryout = function(e) {
-            e.preventDefault();
-            const data = getSiteData();
-            if (!data.tryouts) data.tryouts = [];
-
-            const category = document.querySelector('input[name="tryCategory"]:checked')?.value || 'Mobile';
-            const nick = document.getElementById('tryNick').value;
-            const ffId = document.getElementById('tryFfId').value;
-            const fullName = document.getElementById('tryFullName').value;
-            const phone = document.getElementById('tryPhone').value;
-            const age = document.getElementById('tryAge').value;
-            const role = document.getElementById('tryRole').value;
-            const rank = document.getElementById('tryRank').value;
-            const video = document.getElementById('tryVideo').value;
-            const history = document.getElementById('tryHistory').value;
-            const reason = document.getElementById('tryReason').value;
-
-            const tryoutEntry = {
-                id: Date.now(),
-                category,
-                nick,
-                ffId,
-                fullName,
-                phone,
-                age,
-                role,
-                rank,
-                video,
-                history,
-                reason,
-                status: 'Pendente',
-                date: new Date().toLocaleDateString('pt-BR')
-            };
-
-            data.tryouts.unshift(tryoutEntry);
-            window.saveDataToFirebase(data);
-
-            document.getElementById('tryoutForm').reset();
-            closeTryoutModal();
-            showToast('Candidatura enviada com sucesso! Os analistas avaliarão sua inscrição.', 'success');
-        };
-
-        // CONTROLE DO MODAL DE INSCRIÇÃO DA PENEIRA
-        window.openTryoutModal = function() {
-            document.getElementById('tryoutModal').classList.remove('hidden');
-        };
-
-        window.closeTryoutModal = function() {
-            document.getElementById('tryoutModal').classList.add('hidden');
-        };
-
-        window.updateTryoutStatus = function(idx, newStatus) {
-            const data = getSiteData();
-            if (data.tryouts && data.tryouts[idx]) {
-                data.tryouts[idx].status = newStatus;
-                window.saveDataToFirebase(data);
+            // Admin Players List
+            const pList = document.getElementById('adminPlayersList');
+            if (pList && data.players) {
+                if (data.players.length === 0) {
+                    pList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhum jogador cadastrado.</div>`;
+                } else {
+                    pList.innerHTML = data.players.map((p, idx) => `
+                        <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border hover:border-brand-green/40 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <img src="${p.photo}" class="w-10 h-10 object-cover rounded-full bg-black">
+                                <div>
+                                    <span class="font-bold text-xs text-white uppercase block">${p.nick} (${p.name})</span>
+                                    <span class="text-[10px] text-brand-green font-mono">${p.role} • K/D: ${p.kd} • Capa: ${p.headshot}</span>
+                                </div>
+                            </div>
+                            <button onclick="deletePlayer(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
+                                <i class="fa-solid fa-trash"></i>
+                                <span>Excluir</span>
+                            </button>
+                        </div>
+                    `).join('');
+                }
             }
         };
 
