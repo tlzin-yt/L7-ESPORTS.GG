@@ -1013,12 +1013,23 @@
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'l7-esports';
         const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'siteContent', 'main');
 
+        // ESCUTA EM TEMPO REAL E MESCLA DADOS SEM APAGAR O LOCALSTORAGE
         onSnapshot(docRef, (docSnap) => {
+            const localData = getSiteDataLocal();
+            
             if (docSnap.exists()) {
-                window.siteData = docSnap.data();
+                const cloudData = docSnap.data();
+                
+                // Se o local tiver dados novos que a nuvem ainda não gravou, mantém o local
+                if (localData && localData.news && localData.news.length > (cloudData.news ? cloudData.news.length : 0)) {
+                    window.siteData = localData;
+                } else {
+                    window.siteData = cloudData;
+                    localStorage.setItem('L7_SITE_DATA', JSON.stringify(cloudData));
+                }
             } else {
-                window.siteData = DEFAULT_DATA;
-                setDoc(docRef, DEFAULT_DATA);
+                window.siteData = localData || DEFAULT_DATA;
+                setDoc(docRef, window.siteData);
             }
             if (typeof window.renderAllContent === 'function') window.renderAllContent();
         }, (err) => {
@@ -1032,10 +1043,10 @@
                 window.siteData = data;
                 localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
                 await setDoc(docRef, data);
-                showToast('Alterações salvas com sucesso!', 'success');
+                showToast('Alterações salvas no banco de dados!', 'success');
             } catch (e) {
                 console.error("Erro ao salvar dados no Firebase:", e);
-                showToast('Salvo localmente com sucesso!', 'info');
+                showToast('Salvo localmente no seu navegador!', 'info');
             }
             if (typeof window.renderAllContent === 'function') window.renderAllContent();
             if (typeof window.renderAdminLists === 'function') window.renderAdminLists();
