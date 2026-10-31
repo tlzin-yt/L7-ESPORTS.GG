@@ -1014,29 +1014,29 @@
         const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'siteContent', 'main');
 
         // ESCUTA EM TEMPO REAL E MESCLA DADOS SEM APAGAR O LOCALSTORAGE
-        onSnapshot(docRef, (docSnap) => {
-            const localData = getSiteDataLocal();
-            
-            if (docSnap.exists()) {
-                const cloudData = docSnap.data();
-                
-                // Se o local tiver dados novos que a nuvem ainda não gravou, mantém o local
-                if (localData && localData.news && localData.news.length > (cloudData.news ? cloudData.news.length : 0)) {
-                    window.siteData = localData;
-                } else {
-                    window.siteData = cloudData;
-                    localStorage.setItem('L7_SITE_DATA', JSON.stringify(cloudData));
-                }
-            } else {
-                window.siteData = localData || DEFAULT_DATA;
-                setDoc(docRef, window.siteData);
-            }
-            if (typeof window.renderAllContent === 'function') window.renderAllContent();
-        }, (err) => {
-            console.warn("Utilizando armazenamento local:", err);
-            window.siteData = getSiteDataLocal();
-            if (typeof window.renderAllContent === 'function') window.renderAllContent();
-        });
+       // ESCUTA EM TEMPO REAL 100% FIRESTORE (NUVEM)
+onSnapshot(docRef, (docSnap) => {
+    if (docSnap.exists()) {
+        const cloudData = docSnap.data();
+        
+        // Atualiza a memória com o que está gravado na NUVEM
+        window.siteData = cloudData;
+        localStorage.setItem('L7_SITE_DATA', JSON.stringify(cloudData));
+    } else {
+        // Se a coleção não existir no Firestore, cria com os dados padrão
+        window.siteData = getSiteDataLocal() || DEFAULT_DATA;
+        setDoc(docRef, window.siteData);
+    }
+    
+    // Atualiza a tela do telemóvel e do PC instantaneamente
+    if (typeof window.renderAllContent === 'function') {
+        window.renderAllContent();
+    }
+}, (err) => {
+    console.error("Erro ao carregar do Firestore:", err);
+    window.siteData = getSiteDataLocal();
+    if (typeof window.renderAllContent === 'function') window.renderAllContent();
+});
 
         window.saveDataToFirebase = async function(data) {
             try {
