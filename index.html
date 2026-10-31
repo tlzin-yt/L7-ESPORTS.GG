@@ -74,12 +74,15 @@
             background: #00FF66;
         }
     </style>
-    <!-- HEADER / NAVIGATION INSPIRADO NA LOUD -->
+</head>
+<body class="bg-[#08080a] text-slate-200">
+
+    <!-- HEADER / NAVIGATION -->
     <header class="sticky top-0 z-40 bg-[#121212] border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 
-                <!-- LOGO L7 FUTURISTA LIMPA (ESTILO LOUD) -->
+                <!-- LOGO L7 FUTURISTA -->
                 <a href="#" class="flex items-center gap-1 group font-display font-black tracking-tighter text-2xl text-white">
                     <span class="tracking-widest">L7</span>
                     <svg class="w-6 h-6 text-white fill-current group-hover:text-brand-green transition-colors" viewBox="0 0 24 24">
@@ -87,7 +90,7 @@
                     </svg>
                 </a>
 
-                <!-- DESKTOP NAV LINKS (EXTREMAS LETRAS EM NEGRITO - ESTILO LOUD) -->
+                <!-- DESKTOP NAV LINKS -->
                 <nav class="hidden lg:flex items-center gap-6 font-display font-extrabold tracking-wider text-xs uppercase text-white">
                     <a href="#loja" class="hover:text-brand-green transition-colors">SHOP</a>
                     <a href="#loja" class="hover:text-brand-green transition-colors">COLEÇÕES</a>
@@ -110,39 +113,32 @@
                     <button onclick="openTryoutModal()" class="hover:text-brand-green transition-colors">RASTREIE SEU PEDIDO</button>
                 </nav>
 
-                <!-- RIGHT ACTION ICONS (ESTILO LOUD: INFO, USER, SEARCH, CART) -->
+                <!-- RIGHT ACTION ICONS -->
                 <div class="flex items-center gap-4 text-white">
-                    
-                    <!-- INFO ICON -->
                     <a href="#parcerias" class="hover:text-brand-green transition-colors" title="Informações & Parcerias">
                         <i class="fa-regular fa-circle-question text-lg"></i>
                     </a>
 
-                    <!-- USER AUTH ICON -->
                     <div id="authContainer">
                         <button onclick="openAuthModal('login')" class="hover:text-brand-green transition-colors" title="Conta">
                             <i class="fa-regular fa-user text-lg"></i>
                         </button>
                     </div>
 
-                    <!-- SEARCH ICON -->
                     <button onclick="showToast('Busca ativada!')" class="hover:text-brand-green transition-colors" title="Buscar no site">
                         <i class="fa-solid fa-magnifying-glass text-lg"></i>
                     </button>
 
-                    <!-- CART BUTTON -->
                     <button id="openCartBtn" class="relative hover:text-brand-green transition-colors flex items-center gap-1" title="Sacola de Compras">
                         <i class="fa-solid fa-bag-shopping text-lg"></i>
                         <span id="cartBadge" class="bg-white text-black font-extrabold text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-mono">0</span>
                     </button>
 
-                    <!-- ADMIN BTN (VISIBLE ONLY TO MASTER) -->
                     <button id="adminPanelBtn" onclick="openAdminModal()" class="hidden bg-purple-600 hover:bg-purple-500 text-white font-display font-bold px-2 py-1 rounded text-[10px] flex items-center gap-1 border border-purple-400 transition-all">
                         <i class="fa-solid fa-user-gear"></i>
                         <span>ADMIN</span>
                     </button>
 
-                    <!-- MOBILE MENU TOGGLE -->
                     <button id="mobileMenuBtn" class="lg:hidden text-white hover:text-brand-green text-xl">
                         <i class="fa-solid fa-bars"></i>
                     </button>
@@ -163,7 +159,6 @@
 
     <!-- HERO SECTION -->
     <section id="home" class="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-20">
-        <!-- BG IMAGE WITH OVERLAY -->
         <div id="heroBg" class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-500" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1920&auto=format&fit=crop');">
             <div class="absolute inset-0 bg-gradient-to-t from-brand-bg via-brand-bg/80 to-brand-bg/40"></div>
             <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#08080a_100%)]"></div>
@@ -175,7 +170,6 @@
                 <span>TEMPORADA 2026 • GUILDA PROFISSIONAL FF</span>
             </div>
 
-            <!-- TÍTULO EDITÁVEL SEM NECESSIDADE DE CODIGO HTML -->
             <h1 id="heroTitle" class="font-display font-black text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white uppercase mb-4 leading-none">
                 O FUTURO DO FREE FIRE É A <span class="text-brand-green text-glow">L7 ESPORTS</span>
             </h1>
@@ -195,7 +189,7 @@
                 </a>
             </div>
 
-            <!-- QUICK STATS EDITÁVEIS NO ADMIN -->
+            <!-- STATS EDITÁVEIS NO ADMIN -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-16 pt-10 border-t border-brand-border/60">
                 <div class="bg-brand-card/50 border border-brand-border p-4 rounded-lg backdrop-blur-sm">
                     <span id="statVal1" class="font-display font-bold text-3xl text-brand-green block">#1</span>
@@ -230,18 +224,15 @@
                 </p>
             </div>
 
-            <!-- PLAYERS GRID -->
             <div id="playersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Loaded Dynamically via JS -->
             </div>
         </div>
     </section>
 
-    <!-- SEÇÃO SOBRE A L7, PARCERIAS E REDES SOCIAIS -->
+    <!-- SOBRE A L7, PARCERIAS E REDES -->
     <section id="sobre" class="py-20 border-t border-brand-border bg-brand-card/20 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
-            
-            <!-- 1. SOBRE A L7 ESPORTS -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div>
                     <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// NOSSA HISTÓRIA & PROPÓSITO</span>
@@ -271,7 +262,7 @@
                 </div>
             </div>
 
-            <!-- 2. PARCERIAS & PATROCINADORES COM DISCORD -->
+            <!-- PARCERIAS -->
             <div id="parcerias" class="pt-10 border-t border-brand-border/60">
                 <div class="text-center max-w-2xl mx-auto mb-8">
                     <span class="text-brand-green font-mono text-xs uppercase tracking-widest block mb-1">// PATROCINADORES & PARCERIAS</span>
@@ -302,7 +293,6 @@
                     </div>
                 </div>
 
-                <!-- CARD DE PARCERIA NO DISCORD -->
                 <div class="bg-gradient-to-r from-indigo-950/60 via-brand-card to-black border border-indigo-500/40 p-6 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-lg bg-indigo-600/30 border border-indigo-400 flex items-center justify-center text-indigo-300 text-2xl flex-shrink-0">
@@ -320,7 +310,7 @@
                 </div>
             </div>
 
-            <!-- 3. REDES SOCIAIS -->
+            <!-- REDES SOCIAIS -->
             <div id="redes" class="pt-10 border-t border-brand-border/60">
                 <div class="text-center max-w-2xl mx-auto mb-10">
                     <span class="text-brand-green font-mono text-xs uppercase tracking-widest block mb-1">// COMUNIDADE & MÍDIA</span>
@@ -371,28 +361,6 @@
         </div>
     </section>
 
-    <!-- BANNER DE INSCRIÇÃO DA PENEIRA (CHAMADA PARA O MODAL) -->
-    <section class="py-16 border-t border-brand-border bg-gradient-to-r from-black via-brand-card to-black relative overflow-hidden">
-        <div class="absolute top-0 right-1/4 w-96 h-96 bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
-            <div>
-                <span class="text-brand-green font-mono text-xs uppercase tracking-widest px-3 py-1 bg-brand-green/10 border border-brand-green/30 rounded-full inline-block mb-3">
-                    <i class="fa-solid fa-shield-halved mr-1"></i> SELETIVA PRO PLAYER ATIVA
-                </span>
-                <h2 class="font-display font-black text-3xl sm:text-4xl text-white uppercase tracking-tight">
-                    QUER ENTRAR PARA A <span class="text-brand-green text-glow">L7 ESPORTS?</span>
-                </h2>
-                <p class="text-gray-400 text-sm mt-2 max-w-xl">
-                    Clique no botão abaixo para abrir o painel de formulário e enviar sua candidatura direto para análise do Dashboard Admin.
-                </p>
-            </div>
-            <button onclick="openTryoutModal()" class="w-full md:w-auto whitespace-nowrap bg-brand-green hover:bg-brand-darkGreen text-black font-display font-black px-8 py-4 clip-button text-sm tracking-wider uppercase transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,255,102,0.5)] flex items-center justify-center gap-2">
-                <i class="fa-solid fa-file-pen text-lg"></i>
-                <span>ABRIR PAINEL DE INSCRIÇÃO</span>
-            </button>
-        </div>
-    </section>
-
     <!-- NOTÍCIAS SECTION -->
     <section id="noticias" class="py-20 border-t border-brand-border bg-brand-card/30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -410,7 +378,7 @@
         </div>
     </section>
 
-    <!-- CONQUISTAS SECTION (TÍTULOS ADQUIRIDOS) -->
+    <!-- CONQUISTAS SECTION -->
     <section id="conquistas" class="py-20 border-t border-brand-border bg-brand-bg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
@@ -423,14 +391,13 @@
                 </p>
             </div>
 
-            <!-- TROPHIES GRID -->
             <div id="trophiesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <!-- Loaded Dynamically via JS -->
             </div>
         </div>
     </section>
 
-    <!-- LOJA MERCH & CURSOS SECTION -->
+    <!-- LOJA SECTION -->
     <section id="loja" class="py-20 border-t border-brand-border bg-brand-card/40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
@@ -443,7 +410,6 @@
                 </p>
             </div>
 
-            <!-- FILTROS DA LOJA (CURSOS / VESTUÁRIO / PERIFÉRICOS) -->
             <div class="flex flex-wrap gap-2 mb-8" id="shopFilterContainer">
                 <button onclick="filterShopCategory('all')" class="shop-filter-btn px-4 py-2 bg-brand-green text-black font-display font-bold text-xs uppercase clip-button transition-all">Todos os Produtos</button>
                 <button onclick="filterShopCategory('Curso')" class="shop-filter-btn px-4 py-2 bg-black/60 hover:bg-brand-card text-gray-300 hover:text-brand-green border border-brand-border font-display font-bold text-xs uppercase clip-button transition-all flex items-center gap-1.5">
@@ -457,7 +423,6 @@
                 </button>
             </div>
 
-            <!-- PRODUCTS GRID -->
             <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Loaded Dynamically via JS -->
             </div>
@@ -543,11 +508,30 @@
         </div>
     </div>
 
-    <!-- MODAL / PAINEL FLUTUANTE DE INSCRIÇÃO NA PENEIRA -->
+    <!-- MODAL DE NOTÍCIA COMPLETA (NOVA PÁGINA EM SOBREPOSIÇÃO) -->
+    <div id="newsArticleModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/90 backdrop-blur-md hidden">
+        <div class="bg-brand-card border-2 border-brand-green w-full max-w-4xl max-h-[92vh] flex flex-col rounded-xl overflow-hidden shadow-2xl relative">
+            <div class="flex items-center justify-between p-4 bg-black/70 border-b border-brand-border">
+                <span id="articleTag" class="bg-brand-green text-black font-display font-black text-xs uppercase px-3 py-1 clip-button">LBFF 2026</span>
+                <button onclick="closeNewsArticleModal()" class="w-8 h-8 bg-brand-card hover:bg-red-900/40 text-gray-400 hover:text-white border border-brand-border rounded flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto space-y-6">
+                <h1 id="articleTitle" class="font-display font-black text-2xl sm:text-4xl text-white uppercase leading-tight"></h1>
+                <div class="relative w-full h-72 sm:h-96 rounded-lg overflow-hidden border border-brand-border bg-black">
+                    <img id="articleImage" src="" class="w-full h-full object-cover">
+                </div>
+                <p id="articleSummary" class="text-brand-green font-bold text-base border-l-2 border-brand-green pl-4 italic"></p>
+                <div id="articleBody" class="text-gray-300 text-sm sm:text-base leading-relaxed whitespace-pre-line space-y-4 font-sans border-t border-brand-border pt-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE SELETIVA -->
     <div id="tryoutModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/90 backdrop-blur-md hidden">
         <div class="bg-brand-card border-2 border-brand-green w-full max-w-3xl max-h-[90vh] flex flex-col rounded-xl overflow-hidden shadow-2xl relative clip-cyber">
-            
-            <!-- HEADER DO PAINEL -->
             <div class="flex items-center justify-between p-4 sm:p-6 bg-black/60 border-b border-brand-border">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded bg-brand-green/20 border border-brand-green flex items-center justify-center text-brand-green font-bold text-lg">
@@ -558,16 +542,13 @@
                         <span class="text-xs text-gray-400">Preencha com atenção. Seus dados serão enviados ao Dashboard Admin.</span>
                     </div>
                 </div>
-                <button onclick="closeTryoutModal()" class="w-9 h-9 bg-brand-card hover:bg-red-900/40 text-gray-400 hover:text-red-400 border border-brand-border hover:border-red-500/50 rounded flex items-center justify-center transition-colors">
+                <button onclick="closeTryoutModal()" class="w-9 h-9 bg-brand-card hover:bg-red-900/40 text-gray-400 hover:text-red-400 border border-brand-border rounded flex items-center justify-center transition-colors">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
-            <!-- CONTEÚDO SCROLLÁVEL DO FORMULÁRIO -->
             <div class="p-4 sm:p-6 flex-1 overflow-y-auto">
                 <form id="tryoutForm" onsubmit="submitTryout(event)" class="space-y-5">
-                    
-                    <!-- 1. CATEGORIA -->
                     <div>
                         <label class="block font-display font-bold text-xs uppercase text-brand-green mb-2">1. Categoria de Atuação *</label>
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -586,7 +567,6 @@
                         </div>
                     </div>
 
-                    <!-- 2. IDENTIFICAÇÃO DO JOGADOR -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Nick de Jogo no Free Fire *</label>
@@ -606,7 +586,6 @@
                         </div>
                     </div>
 
-                    <!-- 3. FUNÇÃO E PATENTE -->
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Idade *</label>
@@ -633,53 +612,44 @@
                         </div>
                     </div>
 
-                    <!-- 4. HIGHLIGHTS E HISTÓRICO -->
                     <div>
-                        <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Link de Vídeo / Highlights (YouTube, TikTok, Drive) *</label>
+                        <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Link de Vídeo / Highlights *</label>
                         <input type="url" id="tryVideo" required placeholder="https://youtube.com/watch?v=..." class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Histórico em Torneios e Ligas (LBFF, CPN, NFA, Copas)</label>
-                        <textarea id="tryHistory" rows="2" placeholder="Descreva os campeonatos que já jogou e posições conquistadas..." class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none"></textarea>
+                        <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Histórico em Torneios</label>
+                        <textarea id="tryHistory" rows="2" placeholder="Descreva os campeonatos que já jogou..." class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none"></textarea>
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Por que a L7 ESPORTS deve te contratar?</label>
-                        <textarea id="tryReason" rows="2" placeholder="Conte um pouco sobre suas metas e rotina de treino..." class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none"></textarea>
+                        <textarea id="tryReason" rows="2" placeholder="Conte sobre suas metas..." class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none"></textarea>
                     </div>
 
-                    <button type="submit" class="w-full bg-brand-green hover:bg-brand-darkGreen text-black font-display font-black py-3.5 clip-button uppercase tracking-wider text-sm transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,255,102,0.5)] flex items-center justify-center gap-2 mt-4">
+                    <button type="submit" class="w-full bg-brand-green hover:bg-brand-darkGreen text-black font-display font-black py-3.5 clip-button uppercase tracking-wider text-sm transition-all flex items-center justify-center gap-2 mt-4">
                         <i class="fa-solid fa-paper-plane text-base"></i>
                         <span>ENVIAR CANDIDATURA PARA O DASHBOARD ADMIN</span>
                     </button>
                 </form>
             </div>
-
         </div>
     </div>
 
-    <!-- AUTHENTICATION MODAL (LOGIN / REGISTER) -->
+    <!-- AUTHENTICATION MODAL -->
     <div id="authModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
         <div class="bg-brand-card border border-brand-border w-full max-w-md p-6 sm:p-8 clip-cyber relative shadow-2xl">
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
 
-            <!-- TAB HEADER -->
             <div class="flex border-b border-brand-border mb-6">
-                <button id="tabLogin" onclick="switchAuthTab('login')" class="flex-1 py-3 font-display font-bold text-center border-b-2 border-brand-green text-white uppercase text-sm">
-                    Entrar
-                </button>
-                <button id="tabRegister" onclick="switchAuthTab('register')" class="flex-1 py-3 font-display font-bold text-center border-b-2 border-transparent text-gray-400 hover:text-white uppercase text-sm">
-                    Criar Conta
-                </button>
+                <button id="tabLogin" onclick="switchAuthTab('login')" class="flex-1 py-3 font-display font-bold text-center border-b-2 border-brand-green text-white uppercase text-sm">Entrar</button>
+                <button id="tabRegister" onclick="switchAuthTab('register')" class="flex-1 py-3 font-display font-bold text-center border-b-2 border-transparent text-gray-400 hover:text-white uppercase text-sm">Criar Conta</button>
             </div>
 
-            <!-- FORM ERROR / SUCCESS MESSAGE -->
             <div id="authAlert" class="hidden mb-4 p-3 rounded text-xs font-semibold"></div>
 
-            <!-- LOGIN FORM -->
             <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-gray-300 uppercase mb-1">E-mail</label>
@@ -689,12 +659,9 @@
                     <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Senha</label>
                     <input type="password" id="loginPassword" required class="w-full bg-black/60 border border-brand-border rounded p-3 text-sm text-white focus:border-brand-green focus:outline-none" placeholder="••••••••">
                 </div>
-                <button type="submit" class="w-full bg-brand-green hover:bg-brand-darkGreen text-black font-display font-bold py-3 uppercase tracking-wider clip-button transition-colors">
-                    Acessar Conta
-                </button>
+                <button type="submit" class="w-full bg-brand-green hover:bg-brand-darkGreen text-black font-display font-bold py-3 uppercase tracking-wider clip-button transition-colors">Acessar Conta</button>
             </form>
 
-            <!-- REGISTER FORM -->
             <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-4 hidden">
                 <div>
                     <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Nick na Guilda / Nome</label>
@@ -708,9 +675,7 @@
                     <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Senha</label>
                     <input type="password" id="regPassword" required minlength="6" class="w-full bg-black/60 border border-brand-border rounded p-3 text-sm text-white focus:border-brand-green focus:outline-none" placeholder="••••••••">
                 </div>
-                <button type="submit" class="w-full bg-brand-green hover:bg-brand-darkGreen text-black font-display font-bold py-3 uppercase tracking-wider clip-button transition-colors">
-                    Cadastrar e Entrar
-                </button>
+                <button type="submit" class="w-full bg-brand-green hover:bg-brand-darkGreen text-black font-display font-bold py-3 uppercase tracking-wider clip-button transition-colors">Cadastrar e Entrar</button>
             </form>
 
             <div class="mt-6 pt-6 border-t border-brand-border">
@@ -722,11 +687,9 @@
         </div>
     </div>
 
-    <!-- ADMIN DASHBOARD MODAL (RESTRICTED TO tuliofonseca00@gmail.com) -->
+    <!-- ADMIN DASHBOARD MODAL -->
     <div id="adminModal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/90 backdrop-blur-xl hidden">
         <div class="bg-brand-card border-2 border-purple-500 w-full max-w-5xl h-[90vh] flex flex-col rounded-xl overflow-hidden shadow-2xl relative">
-            
-            <!-- HEADER DO DASHBOARD COM BOTÃO DE FECHAR (X) -->
             <div class="flex items-center justify-between p-4 bg-black/60 border-b border-brand-border">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded bg-purple-600/30 border border-purple-500 flex items-center justify-center text-purple-400 font-bold text-sm">
@@ -738,15 +701,14 @@
                     </div>
                 </div>
 
-                <!-- BOTÃO FECHAR (X) -->
-                <button onclick="closeAdminModal()" class="w-9 h-9 bg-brand-card hover:bg-red-900/40 text-gray-400 hover:text-red-400 border border-brand-border hover:border-red-500/50 rounded flex items-center justify-center transition-colors" title="Fechar Dashboard">
+                <button onclick="closeAdminModal()" class="w-9 h-9 bg-brand-card hover:bg-red-900/40 text-gray-400 hover:text-red-400 border border-brand-border rounded flex items-center justify-center transition-colors">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
-            <!-- NAVEGAÇÃO DE ABAS DO DASHBOARD -->
+            <!-- TABS -->
             <div class="flex flex-wrap gap-2 p-4 bg-black/30 border-b border-brand-border">
-                <button onclick="switchAdminTab('hero')" class="bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 border border-purple-500/50 font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all">Textos & Hero</button>
+                <button onclick="switchAdminTab('hero')" class="bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 border border-purple-500/50 font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all">Textos & Banner Hero</button>
                 <button onclick="switchAdminTab('tryouts')" class="bg-brand-green/20 hover:bg-brand-green/30 text-brand-green border border-brand-green/50 font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all flex items-center gap-1.5">
                     <i class="fa-solid fa-id-card"></i>
                     <span>Inscrições / Peneira</span>
@@ -758,34 +720,14 @@
                 <button onclick="switchAdminTab('trophies')" class="bg-brand-card hover:bg-brand-card/80 text-gray-300 border border-brand-border font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all">Títulos</button>
             </div>
 
-            <!-- CONTEÚDO SCROLLÁVEL DAS ABAS -->
+            <!-- CONTENT -->
             <div class="p-6 flex-1 overflow-y-auto space-y-6">
-                <!-- TAB RECEBIMENTO DE PENEIRAS / CANDIDATURAS -->
-                <div id="adminContent-tryouts" class="hidden space-y-6">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-brand-border pb-3 gap-2">
-                        <div>
-                            <h3 class="font-display font-bold text-lg text-white uppercase flex items-center gap-2">
-                                <i class="fa-solid fa-users-viewfinder text-brand-green"></i>
-                                <span>Candidaturas da Peneira</span>
-                            </h3>
-                            <p class="text-xs text-gray-400">Inscrições enviadas pelos jogadores no formulário do site.</p>
-                        </div>
-                        <span id="tryoutStatsSummary" class="text-xs font-mono bg-black/60 px-3 py-1 border border-brand-border rounded text-brand-green">
-                            Total: 0 inscrições
-                        </span>
-                    </div>
-
-                    <div id="adminTryoutsList" class="space-y-4">
-                        <!-- Tryout Applications Rendered Here -->
-                    </div>
-                </div>
-
-                <!-- TAB 1: HERO & BANNERS E STATS -->
+                <!-- HERO -->
                 <div id="adminContent-hero" class="space-y-6">
-                    <h3 class="font-display font-bold text-lg text-white border-b border-brand-border pb-2">Editar Textos & Banners (Visual Front-End)</h3>
+                    <h3 class="font-display font-bold text-lg text-white border-b border-brand-border pb-2">Editar Banner Hero & Estatísticas</h3>
                     <div class="grid grid-cols-1 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Título Principal (Digite sem códigos)</label>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Título Principal (HTML Aceito Ex: &lt;span class="text-brand-green"&gt;L7&lt;/span&gt;)</label>
                             <input type="text" id="adminHeroTitle" class="w-full bg-black border border-brand-border rounded p-3 text-sm text-white focus:border-purple-500">
                         </div>
                         <div>
@@ -803,50 +745,66 @@
                             </div>
                         </div>
 
-                        <!-- EDITAR ESTATÍSTICAS DA HERO -->
-                        <h4 class="font-display font-bold text-sm text-brand-green uppercase mt-4">Cards de Estatísticas (Stats Bar)</h4>
+                        <h4 class="font-display font-bold text-sm text-brand-green uppercase mt-4">Cards de Estatísticas</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div class="bg-black/40 p-2 rounded border border-brand-border">
-                                <span class="text-[10px] text-gray-400">Card 1 (Verde)</span>
+                                <span class="text-[10px] text-gray-400">Card 1</span>
                                 <input type="text" id="stV1" placeholder="#1" class="w-full bg-black p-1.5 text-xs text-white rounded mb-1">
                                 <input type="text" id="stL1" placeholder="RANKING DE GUILDAS" class="w-full bg-black p-1.5 text-xs text-white rounded">
                             </div>
                             <div class="bg-black/40 p-2 rounded border border-brand-border">
-                                <span class="text-[10px] text-gray-400">Card 2 (Branco)</span>
+                                <span class="text-[10px] text-gray-400">Card 2</span>
                                 <input type="text" id="stV2" placeholder="15+" class="w-full bg-black p-1.5 text-xs text-white rounded mb-1">
                                 <input type="text" id="stL2" placeholder="TÍTULOS OFICIAIS" class="w-full bg-black p-1.5 text-xs text-white rounded">
                             </div>
                             <div class="bg-black/40 p-2 rounded border border-brand-border">
-                                <span class="text-[10px] text-gray-400">Card 3 (Verde)</span>
+                                <span class="text-[10px] text-gray-400">Card 3</span>
                                 <input type="text" id="stV3" placeholder="85%" class="w-full bg-black p-1.5 text-xs text-white rounded mb-1">
                                 <input type="text" id="stL3" placeholder="TAXA DE BOOYAH" class="w-full bg-black p-1.5 text-xs text-white rounded">
                             </div>
                             <div class="bg-black/40 p-2 rounded border border-brand-border">
-                                <span class="text-[10px] text-gray-400">Card 4 (Branco)</span>
+                                <span class="text-[10px] text-gray-400">Card 4</span>
                                 <input type="text" id="stV4" placeholder="500K+" class="w-full bg-black p-1.5 text-xs text-white rounded mb-1">
                                 <input type="text" id="stL4" placeholder="TORCIDA APAIXONADA" class="w-full bg-black p-1.5 text-xs text-white rounded">
                             </div>
                         </div>
 
                         <button onclick="saveHeroChanges()" class="bg-purple-600 hover:bg-purple-500 text-white font-display font-bold py-3 px-6 rounded uppercase tracking-wider text-xs flex items-center justify-center gap-2 w-fit mt-2">
-                            <i class="fa-solid fa-floppy-disk"></i> Salvar no Firebase
+                            <i class="fa-solid fa-floppy-disk"></i> Salvar e Aplicar Alterações
                         </button>
                     </div>
                 </div>
 
-                <!-- TAB 2: PLAYERS (COM UPLOAD DE GALERIA) -->
+                <!-- PENEIRAS -->
+                <div id="adminContent-tryouts" class="hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-brand-border pb-3 gap-2">
+                        <div>
+                            <h3 class="font-display font-bold text-lg text-white uppercase flex items-center gap-2">
+                                <i class="fa-solid fa-users-viewfinder text-brand-green"></i>
+                                <span>Candidaturas da Peneira</span>
+                            </h3>
+                            <p class="text-xs text-gray-400">Inscrições enviadas pelos jogadores no formulário do site.</p>
+                        </div>
+                        <span id="tryoutStatsSummary" class="text-xs font-mono bg-black/60 px-3 py-1 border border-brand-border rounded text-brand-green">
+                            Total: 0 inscrições
+                        </span>
+                    </div>
+
+                    <div id="adminTryoutsList" class="space-y-4"></div>
+                </div>
+
+                <!-- PLAYERS (GERENCIAMENTO COMPLETO) -->
                 <div id="adminContent-players" class="hidden space-y-6">
                     <div class="flex justify-between items-center border-b border-brand-border pb-2">
-                        <h3 class="font-display font-bold text-lg text-white">Gerenciar Jogadores</h3>
+                        <h3 class="font-display font-bold text-lg text-white">Gerenciar Elenco Pro</h3>
                         <button onclick="openPlayerForm()" class="bg-brand-green text-black font-bold text-xs py-2 px-4 rounded uppercase">
-                            + Adicionar Jogador
+                            + Adicionar Atleta
                         </button>
                     </div>
 
-                    <!-- PLAYER FORM -->
                     <div id="playerForm" class="hidden bg-black/60 p-4 border border-brand-border rounded-lg space-y-3">
-                        <h4 id="playerFormTitle" class="font-bold text-xs uppercase text-brand-green">Novo Jogador</h4>
-                        <input type="hidden" id="pId">
+                        <h4 id="playerFormTitle" class="font-bold text-xs uppercase text-brand-green">Cadastrar Jogador</h4>
+                        <input type="hidden" id="pIndex">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <input type="text" id="pNick" placeholder="Nick (ex: L7_NOBRU)" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
                             <input type="text" id="pName" placeholder="Nome Real" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
@@ -855,7 +813,7 @@
                             <input type="text" id="pHeadshot" placeholder="Capa % (ex: 78%)" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
                             <div>
                                 <div class="flex gap-2">
-                                    <input type="text" id="pPhoto" placeholder="URL da Foto do Jogador" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
+                                    <input type="text" id="pPhoto" placeholder="Foto do Atleta (URL ou Galeria)" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
                                     <label class="bg-brand-green text-black font-bold text-xs px-3 flex items-center justify-center rounded cursor-pointer whitespace-nowrap">
                                         <i class="fa-solid fa-upload mr-1"></i> Galeria
                                         <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'pPhoto')">
@@ -865,16 +823,14 @@
                         </div>
                         <div class="flex gap-2 justify-end">
                             <button onclick="closePlayerForm()" class="text-xs text-gray-400 px-3 py-1.5">Cancelar</button>
-                            <button onclick="savePlayer()" class="text-xs bg-brand-green text-black font-bold px-4 py-1.5 rounded uppercase">Salvar</button>
+                            <button onclick="savePlayer()" class="text-xs bg-brand-green text-black font-bold px-4 py-1.5 rounded uppercase">Salvar Atleta</button>
                         </div>
                     </div>
 
-                    <div id="adminPlayersList" class="space-y-3">
-                        <!-- Admin Players List -->
-                    </div>
+                    <div id="adminPlayersList" class="space-y-3"></div>
                 </div>
 
-                <!-- TAB 3: NEWS -->
+                <!-- NOTÍCIAS (COM TEXTO COMPLETO E GALERIA) -->
                 <div id="adminContent-news" class="hidden space-y-6">
                     <div class="flex justify-between items-center border-b border-brand-border pb-2">
                         <h3 class="font-display font-bold text-lg text-white">Gerenciar Notícias</h3>
@@ -885,15 +841,18 @@
 
                     <div id="newsForm" class="hidden bg-black/60 p-4 border border-brand-border rounded-lg space-y-3">
                         <h4 id="newsFormTitle" class="font-bold text-xs uppercase text-brand-green">Nova Notícia</h4>
-                        <input type="hidden" id="nId">
-                        <input type="text" id="nTitle" placeholder="Título da Notícia" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
-                        <input type="text" id="nTag" placeholder="Categoria/Tag (ex: LBFF, PENEIRA)" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
-                        <textarea id="nSummary" placeholder="Resumo do Comunicado" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white" rows="2"></textarea>
+                        <input type="hidden" id="nIndex">
+                        <input type="text" id="nTitle" placeholder="Título da Notícia *" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
+                        <input type="text" id="nTag" placeholder="Categoria/Tag (ex: LBFF, SELETIVA, ANÚNCIO)" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
                         
-                        <!-- INPUT DE IMAGEM COM BOTÃO DE UPLOAD DE GALERIA LOCAL -->
+                        <textarea id="nSummary" placeholder="Resumo / Descrição Curta (Exibido no card externo do site) *" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white" rows="2"></textarea>
+                        
+                        <textarea id="nContent" placeholder="Texto Completo da Notícia (Exibido dentro da notícia ao abrir) *" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white" rows="5"></textarea>
+                        
                         <div>
+                            <label class="block text-[10px] text-gray-400 uppercase mb-1">Imagem Principal / Banner da Notícia</label>
                             <div class="flex gap-2">
-                                <input type="text" id="nImg" placeholder="URL da Imagem ou escolha da Galeria" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
+                                <input type="text" id="nImg" placeholder="URL da Imagem ou escolha da Galeria do Aparelho" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
                                 <label class="bg-brand-green text-black font-bold text-xs px-3 flex items-center justify-center rounded cursor-pointer whitespace-nowrap hover:bg-brand-darkGreen transition-colors">
                                     <i class="fa-solid fa-image mr-1"></i> Galeria
                                     <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'nImg')">
@@ -903,16 +862,14 @@
 
                         <div class="flex gap-2 justify-end">
                             <button onclick="closeNewsForm()" class="text-xs text-gray-400 px-3 py-1.5">Cancelar</button>
-                            <button onclick="saveNews()" class="text-xs bg-brand-green text-black font-bold px-4 py-1.5 rounded uppercase">Salvar Notícia</button>
+                            <button onclick="saveNews()" class="text-xs bg-brand-green text-black font-bold px-4 py-1.5 rounded uppercase">Publicar Notícia</button>
                         </div>
                     </div>
 
-                    <div id="adminNewsList" class="space-y-3">
-                        <!-- Admin News List -->
-                    </div>
+                    <div id="adminNewsList" class="space-y-3"></div>
                 </div>
 
-                <!-- TAB 4: SHOP -->
+                <!-- SHOP -->
                 <div id="adminContent-shop" class="hidden space-y-6">
                     <div class="flex justify-between items-center border-b border-brand-border pb-2">
                         <h3 class="font-display font-bold text-lg text-white">Gerenciar Produtos & Cursos da Loja</h3>
@@ -935,7 +892,7 @@
                             <input type="text" id="prodTag" placeholder="Tag (ex: CURSO PRO, PRÉ-VENDA)" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
                             <div class="col-span-1 sm:col-span-2">
                                 <div class="flex gap-2">
-                                    <input type="text" id="prodImg" placeholder="URL da Capa do Curso/Produto" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
+                                    <input type="text" id="prodImg" placeholder="URL ou Galeria" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
                                     <label class="bg-brand-green text-black font-bold text-xs px-3 flex items-center justify-center rounded cursor-pointer whitespace-nowrap">
                                         <i class="fa-solid fa-upload mr-1"></i> Galeria
                                         <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'prodImg')">
@@ -949,12 +906,10 @@
                         </div>
                     </div>
 
-                    <div id="adminShopList" class="space-y-3">
-                        <!-- Admin Shop List Rendered via JS -->
-                    </div>
+                    <div id="adminShopList" class="space-y-3"></div>
                 </div>
 
-                <!-- TAB 5: TROPHIES -->
+                <!-- TROPHIES -->
                 <div id="adminContent-trophies" class="hidden space-y-6">
                     <div class="flex justify-between items-center border-b border-brand-border pb-2">
                         <h3 class="font-display font-bold text-lg text-white">Gerenciar Títulos / Troféus</h3>
@@ -965,11 +920,10 @@
 
                     <div id="trophyForm" class="hidden bg-black/60 p-4 border border-brand-border rounded-lg space-y-3">
                         <h4 class="font-bold text-xs uppercase text-brand-green">Novo Título</h4>
-                        <input type="hidden" id="trId">
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                             <input type="text" id="trTitle" placeholder="Nome do Torneio" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
                             <input type="text" id="trYear" placeholder="Ano (ex: 2025)" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
-                            <input type="text" id="trPos" placeholder="Posição (ex: Campeão #1, Top 3)" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
+                            <input type="text" id="trPos" placeholder="Posição (ex: Campeão #1)" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
                         </div>
                         <div class="flex gap-2 justify-end">
                             <button onclick="closeTrophyForm()" class="text-xs text-gray-400 px-3 py-1.5">Cancelar</button>
@@ -977,20 +931,16 @@
                         </div>
                     </div>
 
-                    <div id="adminTrophiesList" class="space-y-3">
-                        <!-- Admin Trophies List -->
-                    </div>
+                    <div id="adminTrophiesList" class="space-y-3"></div>
                 </div>
             </div>
 
-            <!-- FOOTER DO DASHBOARD COM BOTÃO FECHAR -->
             <div class="p-4 bg-black/60 border-t border-brand-border flex justify-end">
                 <button onclick="closeAdminModal()" class="bg-brand-card hover:bg-brand-card/80 text-white border border-brand-border hover:border-gray-400 font-display font-bold px-6 py-2.5 rounded text-xs uppercase tracking-wider transition-colors flex items-center gap-2">
                     <i class="fa-solid fa-check text-brand-green"></i>
                     <span>Concluir e Fechar Painel</span>
                 </button>
             </div>
-
         </div>
     </div>
 
@@ -1010,12 +960,10 @@
         import { 
             getFirestore, 
             doc, 
-            getDoc, 
             setDoc, 
             onSnapshot 
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // DEFAULT DATA DEFINED AT MODULE TOP TO PREVENT REFERENCE ERRORS
         const DEFAULT_DATA = {
             hero: {
                 title: "O FUTURO DO FREE FIRE É A <span class='text-brand-green text-glow'>L7 ESPORTS</span>",
@@ -1031,12 +979,10 @@
                 { id: 2, nick: "L7_CORINGA", name: "Lucas", role: "Rush 1", kd: "5.10", headshot: "89%", photo: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600&auto=format&fit=crop" }
             ],
             news: [
-                { id: 1, title: "L7 ESPORTS AVANÇA PARA A GRANDE FINAL DA LBFF!", tag: "LBFF 2026", summary: "Com uma sequência épica de 3 Booyahs no mapa Bermudas, a equipe garantiu a liderança isolada.", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" }
+                { id: 1, title: "L7 ESPORTS AVANÇA PARA A GRANDE FINAL DA LBFF!", tag: "LBFF 2026", summary: "Com uma sequência épica de 3 Booyahs no mapa Bermudas, a equipe garantiu a liderança isolada.", content: "A equipe da L7 ESPORTS deu um show de tática e agressividade durante as quedas de hoje na LBFF. Com rotações cirúrgicas comandadas pelo nosso IGL e um aproveitamento incrível de abates nas zonas finais, a guilda cravou 3 Booyahs seguidos e garantiu a vaga direta na Grande Final.\n\nFiquem ligados nas nossas redes sociais para acompanhar os bastidores e os horários das transmissões ao vivo. #GoL7", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" }
             ],
             shop: [
                 { id: 101, name: "Curso de IGL & Rotação Pro", price: 97.90, category: "Curso", tag: "CURSO PRO", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop" },
-                { id: 102, name: "Aulas de Rush & Movimentação", price: 67.90, category: "Curso", tag: "CURSO PRO", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" },
-                { id: 103, name: "Masterclass de Sniper AWM & M82B", price: 49.90, category: "Curso", tag: "NOVO", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=600&auto=format&fit=crop" },
                 { id: 104, name: "Manta Oficial L7 Pro 2026", price: 149.90, category: "Vestuário", tag: "PRÉ-VENDA", img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop" }
             ],
             trophies: [
@@ -1046,7 +992,6 @@
         };
         window.DEFAULT_DATA = DEFAULT_DATA;
 
-        // FIREBASE CONFIG SUBMITTED BY CLIENT
         const firebaseConfig = {
             apiKey: "AIzaSyDTnfevGDY7naxK_CTwr69flY_r9MEAhx4",
             authDomain: "l7-esports.firebaseapp.com",
@@ -1068,7 +1013,6 @@
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'l7-esports';
         const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'siteContent', 'main');
 
-        // SINCRONIZAÇÃO EM TEMPO REAL COM FIRESTORE
         onSnapshot(docRef, (docSnap) => {
             if (docSnap.exists()) {
                 window.siteData = docSnap.data();
@@ -1076,34 +1020,26 @@
                 window.siteData = DEFAULT_DATA;
                 setDoc(docRef, DEFAULT_DATA);
             }
-            if (typeof window.renderAllContent === 'function') {
-                window.renderAllContent();
-            }
-            if (document.getElementById('adminModal') && !document.getElementById('adminModal').classList.contains('hidden')) {
-                if (typeof window.loadAdminValues === 'function') window.loadAdminValues();
-            }
+            if (typeof window.renderAllContent === 'function') window.renderAllContent();
         }, (err) => {
-            console.error("Erro no Firestore:", err);
+            console.warn("Utilizando armazenamento local:", err);
             window.siteData = getSiteDataLocal();
-            if (typeof window.renderAllContent === 'function') {
-                window.renderAllContent();
-            }
+            if (typeof window.renderAllContent === 'function') window.renderAllContent();
         });
 
-        // SALVAR NO FIRESTORE
         window.saveDataToFirebase = async function(data) {
             try {
                 window.siteData = data;
                 localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
                 await setDoc(docRef, data);
-                showToast('Dados salvos no Firebase!', 'success');
+                showToast('Alterações salvas com sucesso!', 'success');
             } catch (e) {
-                console.error("Erro ao salvar no Firestore:", e);
-                showToast('Dados salvos localmente.', 'info');
+                console.error("Erro ao salvar dados:", e);
+                showToast('Salvo localmente com sucesso!', 'info');
             }
+            if (typeof window.renderAllContent === 'function') window.renderAllContent();
         };
 
-        // AUTH STATE CHANGE LISTENERS
         onAuthStateChanged(auth, (user) => {
             window.currentUser = user;
             updateUserUI(user);
@@ -1115,11 +1051,8 @@
 
             if (user) {
                 const isAdmin = user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
-                if (isAdmin) {
-                    adminBtn.classList.remove('hidden');
-                } else {
-                    adminBtn.classList.add('hidden');
-                }
+                if (isAdmin) adminBtn.classList.remove('hidden');
+                else adminBtn.classList.add('hidden');
 
                 container.innerHTML = `
                     <div class="flex items-center gap-2">
@@ -1135,7 +1068,7 @@
             } else {
                 adminBtn.classList.add('hidden');
                 container.innerHTML = `
-                    <button onclick="openAuthModal('login')" class="bg-brand-green hover:bg-brand-darkGreen text-black font-display font-bold px-5 py-2.5 clip-button text-sm tracking-wider uppercase transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,102,0.4)] flex items-center gap-2">
+                    <button onclick="openAuthModal('login')" class="bg-brand-green hover:bg-brand-darkGreen text-black font-display font-bold px-5 py-2.5 clip-button text-sm tracking-wider uppercase transition-all duration-300 flex items-center gap-2">
                         <i class="fa-solid fa-user"></i>
                         <span>Entrar</span>
                     </button>
@@ -1143,34 +1076,23 @@
             }
         }
 
-        // AUTH FUNCTIONS EXPOSED GLOBALLY
         window.handleLogin = async (e) => {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const pass = document.getElementById('loginPassword').value;
             try {
-                await signInWithEmailAndPassword(auth, email, pass);
+                await signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value);
                 closeAuthModal();
                 showToast('Login efetuado com sucesso!', 'success');
-            } catch (err) {
-                showAuthAlert(getFirebaseErrorMessage(err.code), 'error');
-            }
+            } catch (err) { showAuthAlert('E-mail ou senha incorretos.', 'error'); }
         };
 
         window.handleRegister = async (e) => {
             e.preventDefault();
-            const nick = document.getElementById('regNick').value;
-            const email = document.getElementById('regEmail').value;
-            const pass = document.getElementById('regPassword').value;
-
             try {
-                const cred = await createUserWithEmailAndPassword(auth, email, pass);
-                await updateProfile(cred.user, { displayName: nick });
+                const cred = await createUserWithEmailAndPassword(auth, document.getElementById('regEmail').value, document.getElementById('regPassword').value);
+                await updateProfile(cred.user, { displayName: document.getElementById('regNick').value });
                 closeAuthModal();
                 showToast('Conta criada! Bem-vindo à L7.', 'success');
-            } catch (err) {
-                showAuthAlert(getFirebaseErrorMessage(err.code), 'error');
-            }
+            } catch (err) { showAuthAlert('Erro ao criar conta. Tente outra senha.', 'error'); }
         };
 
         window.handleGoogleLogin = async () => {
@@ -1178,9 +1100,7 @@
                 await signInWithPopup(auth, googleProvider);
                 closeAuthModal();
                 showToast('Autenticado via Google!', 'success');
-            } catch (err) {
-                showAuthAlert('Falha no login com Google.', 'error');
-            }
+            } catch (err) { showAuthAlert('Falha no login com Google.', 'error'); }
         };
 
         window.handleLogout = async () => {
@@ -1188,25 +1108,18 @@
             showToast('Sessão encerrada.', 'info');
         };
 
-        function getFirebaseErrorMessage(code) {
-            switch (code) {
-                case 'auth/invalid-credential':
-                case 'auth/user-not-found':
-                case 'auth/wrong-password':
-                    return 'E-mail ou senha incorretos.';
-                case 'auth/email-already-in-use':
-                    return 'Este e-mail já está cadastrado.';
-                case 'auth/weak-password':
-                    return 'A senha deve ter pelo menos 6 caracteres.';
-                default:
-                    return 'Erro de autenticação. Tente novamente.';
-            }
+        function showAuthAlert(msg, type) {
+            const el = document.getElementById('authAlert');
+            el.innerText = msg;
+            el.className = `mb-4 p-3 rounded text-xs font-semibold ${type === 'error' ? 'bg-red-900/50 text-red-200 border border-red-700' : 'bg-green-900/50 text-green-200 border border-green-700'}`;
+            el.classList.remove('hidden');
         }
     </script>
 
-    <!-- WEBSITE DATA MANAGEMENT & INTERACTIVITY -->
+    <!-- SCRIPT DE APLICAÇÃO -->
     <script>
         window.siteData = null;
+        window.currentShopCategory = 'all';
 
         function getSiteDataLocal() {
             const stored = localStorage.getItem('L7_SITE_DATA');
@@ -1220,31 +1133,48 @@
             return window.siteData || getSiteDataLocal();
         }
 
-        // UPLOAD DE IMAGENS LOCAL DA GALERIA (BASE64)
         window.handleImageUpload = function(input, targetInputId) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById(targetInputId).value = e.target.result;
-                    showToast('Imagem carregada da galeria!');
+                    showToast('Imagem selecionada da galeria!');
                 };
                 reader.readAsDataURL(input.files[0]);
             }
         };
-
-        // RENDERIZAR TODO O CONTEÚDO DO SITE (EXPOSTO NO ESCOPO GLOBAL)
-        window.currentShopCategory = 'all';
 
         window.filterShopCategory = function(category) {
             window.currentShopCategory = category;
             window.renderAllContent();
         };
 
+        // RENDERIZADOR COMPLETO
         window.renderAllContent = function() {
             const data = getSiteData();
             if (!data) return;
 
-            // Render Players Section
+            // 1. Atualizar Hero Banner e Textos Modificados em tempo real
+            if (data.hero) {
+                const heroTitle = document.getElementById('heroTitle');
+                const heroSubtitle = document.getElementById('heroSubtitle');
+                const heroBg = document.getElementById('heroBg');
+
+                if (heroTitle && data.hero.title) heroTitle.innerHTML = data.hero.title;
+                if (heroSubtitle && data.hero.subtitle) heroSubtitle.innerText = data.hero.subtitle;
+                if (heroBg && data.hero.bg) heroBg.style.backgroundImage = `url('${data.hero.bg}')`;
+
+                if (document.getElementById('statVal1')) document.getElementById('statVal1').innerText = data.hero.stV1 || '#1';
+                if (document.getElementById('statLabel1')) document.getElementById('statLabel1').innerText = data.hero.stL1 || 'Ranking de Guildas';
+                if (document.getElementById('statVal2')) document.getElementById('statVal2').innerText = data.hero.stV2 || '15+';
+                if (document.getElementById('statLabel2')) document.getElementById('statLabel2').innerText = data.hero.stL2 || 'Títulos Oficiais';
+                if (document.getElementById('statVal3')) document.getElementById('statVal3').innerText = data.hero.stV3 || '85%';
+                if (document.getElementById('statLabel3')) document.getElementById('statLabel3').innerText = data.hero.stL3 || 'Taxa de Booyah';
+                if (document.getElementById('statVal4')) document.getElementById('statVal4').innerText = data.hero.stV4 || '500K+';
+                if (document.getElementById('statLabel4')) document.getElementById('statLabel4').innerText = data.hero.stL4 || 'Torcida Apaixonada';
+            }
+
+            // 2. Renderizar Elenco de Jogadores
             const playersGrid = document.getElementById('playersGrid');
             if (playersGrid && data.players) {
                 if (data.players.length === 0) {
@@ -1262,7 +1192,6 @@
                             <div class="p-5 relative -mt-6 z-10">
                                 <h3 class="font-display font-black text-2xl text-white uppercase tracking-wide group-hover:text-brand-green transition-colors">${player.nick}</h3>
                                 <span class="text-xs text-gray-400 block font-medium uppercase mb-4">${player.name}</span>
-                                
                                 <div class="grid grid-cols-2 gap-2 pt-3 border-t border-brand-border/60">
                                     <div class="bg-black/50 p-2 rounded text-center border border-brand-border/40">
                                         <span class="text-[9px] text-gray-400 uppercase block font-semibold">K/D Ratio</span>
@@ -1279,14 +1208,14 @@
                 }
             }
 
-            // Render News Section (Envio em tempo real corrigido)
+            // 3. Renderizar Feed de Notícias (Com clique para abrir notícia completa)
             const newsGrid = document.getElementById('newsGrid');
             if (newsGrid && data.news) {
                 if (data.news.length === 0) {
                     newsGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500 text-sm">Nenhum comunicado publicado no momento.</div>`;
                 } else {
-                    newsGrid.innerHTML = data.news.map(item => `
-                        <article class="bg-brand-card border border-brand-border rounded-xl overflow-hidden group hover:border-brand-green/60 transition-all duration-300 flex flex-col justify-between">
+                    newsGrid.innerHTML = data.news.map((item, index) => `
+                        <article onclick="openNewsArticleModal(${index})" class="bg-brand-card border border-brand-border rounded-xl overflow-hidden group hover:border-brand-green/60 transition-all duration-300 flex flex-col justify-between cursor-pointer">
                             <div>
                                 <div class="h-48 overflow-hidden relative bg-black">
                                     <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90">
@@ -1296,149 +1225,97 @@
                                 </div>
                                 <div class="p-5">
                                     <h3 class="font-display font-bold text-lg text-white uppercase group-hover:text-brand-green transition-colors leading-snug mb-2">${item.title}</h3>
-                                    <p class="text-xs text-gray-400 leading-relaxed">${item.summary}</p>
+                                    <p class="text-xs text-gray-400 leading-relaxed line-clamp-3">${item.summary}</p>
                                 </div>
+                            </div>
+                            <div class="px-5 pb-5 pt-0">
+                                <span class="text-xs text-brand-green font-bold uppercase flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                    Ler notícia completa <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                </span>
                             </div>
                         </article>
                     `).join('');
                 }
             }
 
-            // Render Trophies Section
+            // 4. Renderizar Troféus
             const trophiesGrid = document.getElementById('trophiesGrid');
             if (trophiesGrid && data.trophies) {
-                if (data.trophies.length === 0) {
-                    trophiesGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500 text-sm">Nenhum título cadastrado no momento.</div>`;
-                } else {
-                    trophiesGrid.innerHTML = data.trophies.map(t => `
-                        <div class="bg-brand-card border border-brand-border hover:border-brand-green/60 p-6 rounded-xl flex items-center gap-4 group transition-all">
-                            <div class="w-14 h-14 rounded-lg bg-black border border-brand-green/40 flex items-center justify-center text-brand-green text-2xl group-hover:scale-110 transition-transform flex-shrink-0">
-                                <i class="fa-solid fa-trophy"></i>
-                            </div>
-                            <div>
-                                <span class="text-[10px] text-brand-green font-mono font-bold uppercase block">${t.year} • ${t.pos}</span>
-                                <h4 class="font-display font-black text-lg text-white uppercase group-hover:text-brand-green transition-colors">${t.title}</h4>
-                            </div>
+                trophiesGrid.innerHTML = data.trophies.map(t => `
+                    <div class="bg-brand-card border border-brand-border hover:border-brand-green/60 p-6 rounded-xl flex items-center gap-4 group transition-all">
+                        <div class="w-14 h-14 rounded-lg bg-black border border-brand-green/40 flex items-center justify-center text-brand-green text-2xl group-hover:scale-110 transition-transform flex-shrink-0">
+                            <i class="fa-solid fa-trophy"></i>
                         </div>
-                    `).join('');
-                }
+                        <div>
+                            <span class="text-[10px] text-brand-green font-mono font-bold uppercase block">${t.year} • ${t.pos}</span>
+                            <h4 class="font-display font-black text-lg text-white uppercase group-hover:text-brand-green transition-colors">${t.title}</h4>
+                        </div>
+                    </div>
+                `).join('');
             }
 
-            // Render Shop Products (Cursos e Merch)
+            // 5. Renderizar Loja
             const productsGrid = document.getElementById('productsGrid');
             if (productsGrid && data.shop) {
                 const filteredProducts = window.currentShopCategory === 'all' 
                     ? data.shop 
                     : data.shop.filter(p => (p.category || 'Vestuário') === window.currentShopCategory);
 
-                if (filteredProducts.length === 0) {
-                    productsGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500 text-sm">Nenhum curso ou produto encontrado nessa categoria.</div>`;
-                } else {
-                    productsGrid.innerHTML = filteredProducts.map(prod => {
-                        const isCourse = prod.category === 'Curso';
-                        return `
-                            <div class="bg-brand-card border border-brand-border rounded-lg overflow-hidden group flex flex-col justify-between hover:border-brand-green/60 transition-all">
-                                <div>
-                                    <div class="h-56 overflow-hidden relative bg-black">
-                                        <img src="${prod.img}" alt="${prod.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform filter brightness-90">
-                                        <span class="absolute top-3 left-3 ${isCourse ? 'bg-purple-600 text-white' : 'bg-brand-green text-black'} font-bold text-[10px] uppercase px-2 py-0.5 clip-button shadow-lg">
-                                            <i class="${isCourse ? 'fa-solid fa-graduation-cap' : 'fa-solid fa-fire'} mr-1"></i> ${prod.tag || (isCourse ? 'CURSO PRO' : 'LANÇAMENTO')}
-                                        </span>
-                                    </div>
-                                    <div class="p-5">
-                                        <span class="text-[10px] text-gray-500 uppercase font-mono font-bold block mb-1">
-                                            ${isCourse ? 'AULAS & TREINAMENTO L7' : 'PROTÓTIMO OFICIAL L7'}
-                                        </span>
-                                        <h3 class="font-display font-bold text-base text-white uppercase line-clamp-2 min-h-[3rem]">${prod.name}</h3>
-                                        <div class="flex items-center gap-2 mt-2">
-                                            <span class="font-display font-black text-2xl text-brand-green">R$ ${Number(prod.price).toFixed(2).replace('.', ',')}</span>
-                                            ${isCourse ? '<span class="text-[10px] text-gray-400 font-mono">(Acesso Vitalício)</span>' : ''}
-                                        </div>
+                productsGrid.innerHTML = filteredProducts.map(prod => {
+                    const isCourse = prod.category === 'Curso';
+                    return `
+                        <div class="bg-brand-card border border-brand-border rounded-lg overflow-hidden group flex flex-col justify-between hover:border-brand-green/60 transition-all">
+                            <div>
+                                <div class="h-56 overflow-hidden relative bg-black">
+                                    <img src="${prod.img}" alt="${prod.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform filter brightness-90">
+                                    <span class="absolute top-3 left-3 ${isCourse ? 'bg-purple-600 text-white' : 'bg-brand-green text-black'} font-bold text-[10px] uppercase px-2 py-0.5 clip-button">
+                                        <i class="${isCourse ? 'fa-solid fa-graduation-cap' : 'fa-solid fa-fire'} mr-1"></i> ${prod.tag || (isCourse ? 'CURSO PRO' : 'LANÇAMENTO')}
+                                    </span>
+                                </div>
+                                <div class="p-5">
+                                    <h3 class="font-display font-bold text-base text-white uppercase line-clamp-2 min-h-[3rem]">${prod.name}</h3>
+                                    <div class="flex items-center gap-2 mt-2">
+                                        <span class="font-display font-black text-2xl text-brand-green">R$ ${Number(prod.price).toFixed(2).replace('.', ',')}</span>
                                     </div>
                                 </div>
-                                <div class="p-5 pt-0">
-                                    <button onclick="addToCart(${prod.id})" class="w-full ${isCourse ? 'bg-purple-600 hover:bg-purple-500 text-white border-purple-500/50' : 'bg-brand-green/10 hover:bg-brand-green hover:text-black text-brand-green border-brand-green/40'} border font-display font-bold py-2.5 text-xs uppercase clip-button transition-all flex items-center justify-center gap-1.5">
-                                        <i class="${isCourse ? 'fa-solid fa-play' : 'fa-solid fa-cart-shopping'}"></i>
-                                        <span>${isCourse ? 'COMPRAR CURSO' : 'RESERVAR PRÉ-VENDA'}</span>
-                                    </button>
-                                </div>
                             </div>
-                        `;
-                    }).join('');
-                }
-            }
-        };
-
-        // CARRINHO DE COMPRAS (RESERVA DE PRÉ-VENDA)
-        let cart = [];
-        window.addToCart = function(id) {
-            const data = getSiteData();
-            const prod = data.shop.find(p => p.id === id);
-            if (prod) {
-                cart.push(prod);
-                updateCartUI();
-                openCart();
-                showToast(`Reserva de "${prod.name}" adicionada!`);
-            }
-        };
-
-        function updateCartUI() {
-            const badge = document.getElementById('cartBadge');
-            const container = document.getElementById('cartItemsContainer');
-            const totalEl = document.getElementById('cartTotal');
-
-            if (cart.length > 0) {
-                badge.innerText = cart.length;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-
-            if (container) {
-                if (cart.length === 0) {
-                    container.innerHTML = `<p class="text-gray-500 text-xs text-center py-8">Seu carrinho está vazio.</p>`;
-                } else {
-                    container.innerHTML = cart.map((item, index) => `
-                        <div class="flex items-center justify-between bg-black/40 p-3 rounded border border-brand-border">
-                            <div class="flex items-center gap-3">
-                                <img src="${item.img}" class="w-12 h-12 object-cover rounded">
-                                <div>
-                                    <h4 class="font-bold text-xs text-white uppercase line-clamp-1">${item.name}</h4>
-                                    <span class="text-xs text-brand-green font-bold">R$ ${Number(item.price).toFixed(2)}</span>
-                                </div>
+                            <div class="p-5 pt-0">
+                                <button onclick="addToCart(${prod.id})" class="w-full ${isCourse ? 'bg-purple-600 hover:bg-purple-500 text-white' : 'bg-brand-green/10 hover:bg-brand-green hover:text-black text-brand-green'} border border-brand-green/40 font-display font-bold py-2.5 text-xs uppercase clip-button transition-all flex items-center justify-center gap-1.5">
+                                    <i class="${isCourse ? 'fa-solid fa-play' : 'fa-solid fa-cart-shopping'}"></i>
+                                    <span>${isCourse ? 'COMPRAR CURSO' : 'RESERVAR'}</span>
+                                </button>
                             </div>
-                            <button onclick="removeFromCart(${index})" class="text-gray-500 hover:text-red-400 p-1">
-                                <i class="fa-solid fa-trash text-sm"></i>
-                            </button>
                         </div>
-                    `).join('');
-                }
+                    `;
+                }).join('');
             }
-
-            const total = cart.reduce((acc, item) => acc + Number(item.price), 0);
-            if (totalEl) totalEl.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
-        }
-
-        window.removeFromCart = function(index) {
-            cart.splice(index, 1);
-            updateCartUI();
         };
 
-        window.openCart = function() { document.getElementById('cartDrawer').classList.remove('hidden'); };
-        window.closeCart = function() { document.getElementById('cartDrawer').classList.add('hidden'); };
-        window.checkout = function() {
-            if (cart.length === 0) return showToast('Carrinho vazio!', 'error');
-            showToast('Pedido registrado com sucesso! Entraremos em contato.');
-            cart = [];
-            updateCartUI();
-            closeCart();
+        // NOTÍCIA DENTRO DA PÁGINA (MODAL COMPLETO)
+        window.openNewsArticleModal = function(index) {
+            const data = getSiteData();
+            if (!data.news || !data.news[index]) return;
+
+            const item = data.news[index];
+            document.getElementById('articleTag').innerText = item.tag || 'COMUNICADO';
+            document.getElementById('articleTitle').innerText = item.title;
+            document.getElementById('articleImage').src = item.img;
+            document.getElementById('articleSummary').innerText = item.summary;
+            document.getElementById('articleBody').innerText = item.content || item.summary;
+
+            document.getElementById('newsArticleModal').classList.remove('hidden');
         };
 
-        // ADMIN MODAL & TAB LOGIC
+        window.closeNewsArticleModal = function() {
+            document.getElementById('newsArticleModal').classList.add('hidden');
+        };
+
+        // ADMIN: MODAL E NAVEGAÇÃO
         window.openAdminModal = function() {
             document.getElementById('adminModal').classList.remove('hidden');
             window.loadAdminValues();
         };
+
         window.closeAdminModal = function() {
             document.getElementById('adminModal').classList.add('hidden');
         };
@@ -1471,93 +1348,43 @@
             window.renderAdminLists();
         };
 
+        // GERENCIAMENTO DE ELENCO E OUTRAS LISTAS
         window.renderAdminLists = function() {
             const data = getSiteData();
-            
-            // Admin Tryouts List (Formulário de Recrutamento)
-            const tryList = document.getElementById('adminTryoutsList');
-            const tryBadge = document.getElementById('adminTryoutBadge');
-            const trySummary = document.getElementById('tryoutStatsSummary');
-            
-            const tryouts = data.tryouts || [];
-            if (tryBadge) tryBadge.innerText = tryouts.length;
-            if (trySummary) trySummary.innerText = `Total: ${tryouts.length} candidatos`;
 
-            if (tryList) {
-                if (tryouts.length === 0) {
-                    tryList.innerHTML = `<div class="bg-black/40 border border-brand-border p-8 rounded text-center text-gray-500 text-xs">Nenhuma candidatura recebida no momento.</div>`;
+            // Renderizar Lista de Jogadores para Gerenciamento
+            const pList = document.getElementById('adminPlayersList');
+            if (pList && data.players) {
+                if (data.players.length === 0) {
+                    pList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhum jogador no elenco.</div>`;
                 } else {
-                    tryList.innerHTML = tryouts.map((t, idx) => {
-                        const cleanPhone = t.phone ? t.phone.replace(/\D/g, '') : '';
-                        const waMsg = encodeURIComponent(`Olá ${t.nick}! Sou do departamento de eSports da L7 ESPORTS. Analisamos sua candidatura para a peneira (${t.category} - ${t.role}) e gostaríamos de te convidar para o teste!`);
-                        const statusColors = {
-                            'Pendente': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/40',
-                            'Aprovado': 'bg-green-500/20 text-green-300 border-green-500/40',
-                            'Rejeitado': 'bg-red-500/20 text-red-300 border-red-500/40'
-                        };
-                        const status = t.status || 'Pendente';
-
-                        return `
-                            <div class="bg-black/60 border border-brand-border p-5 rounded-lg space-y-3 relative hover:border-brand-green/40 transition-colors">
-                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-brand-border/60 pb-3">
-                                    <div class="flex items-center gap-3">
-                                        <span class="font-display font-black text-xl text-white uppercase">${t.nick}</span>
-                                        <span class="text-xs text-gray-400">ID: ${t.ffId}</span>
-                                        <span class="bg-brand-green/10 text-brand-green border border-brand-green/30 text-[10px] font-bold px-2 py-0.5 rounded uppercase font-mono">${t.category}</span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-[10px] border px-2 py-0.5 rounded uppercase font-bold ${statusColors[status] || statusColors['Pendente']}">
-                                            ${status}
-                                        </span>
-                                        <span class="text-[10px] text-gray-500 font-mono">${t.date || ''}</span>
-                                    </div>
-                                </div>
-
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-                                    <div><span class="text-[10px] text-gray-500 uppercase block">Nome Real:</span><span class="font-semibold text-gray-200">${t.fullName}</span></div>
-                                    <div><span class="text-[10px] text-gray-500 uppercase block">Idade:</span><span class="font-semibold text-gray-200">${t.age} anos</span></div>
-                                    <div><span class="text-[10px] text-gray-500 uppercase block">Função:</span><span class="font-bold text-brand-green">${t.role}</span></div>
-                                    <div><span class="text-[10px] text-gray-500 uppercase block">Patente:</span><span class="font-semibold text-gray-200">${t.rank}</span></div>
-                                </div>
-
-                                ${t.history ? `<div class="text-xs bg-black/40 p-2.5 rounded border border-brand-border/50"><span class="text-[10px] text-gray-500 uppercase block font-bold">Histórico Competitivo:</span><p class="text-gray-300 mt-0.5">${t.history}</p></div>` : ''}
-                                ${t.reason ? `<div class="text-xs bg-black/40 p-2.5 rounded border border-brand-border/50"><span class="text-[10px] text-gray-500 uppercase block font-bold">Motivo p/ entrar na L7:</span><p class="text-gray-300 mt-0.5">${t.reason}</p></div>` : ''}
-
-                                <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-brand-border/40">
-                                    <a href="${t.video}" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600/40 text-red-300 border border-red-500/40 px-3 py-1.5 rounded flex items-center gap-1.5 transition-colors">
-                                        <i class="fa-brands fa-youtube"></i> Ver Highlights
-                                    </a>
-
-                                    <div class="flex items-center gap-2">
-                                        <select onchange="updateTryoutStatus(${idx}, this.value)" class="bg-black border border-brand-border text-[11px] text-gray-300 p-1.5 rounded">
-                                            <option value="Pendente" ${status === 'Pendente' ? 'selected' : ''}>Pendente</option>
-                                            <option value="Aprovado" ${status === 'Aprovado' ? 'selected' : ''}>Aprovado p/ Teste</option>
-                                            <option value="Rejeitado" ${status === 'Rejeitado' ? 'selected' : ''}>Rejeitado</option>
-                                        </select>
-
-                                        ${cleanPhone ? `
-                                            <a href="https://wa.me/55${cleanPhone}?text=${waMsg}" target="_blank" class="text-xs bg-green-600 hover:bg-green-500 text-black font-bold px-3 py-1.5 rounded flex items-center gap-1">
-                                                <i class="fa-brands fa-whatsapp text-sm"></i> Chamar no Whats
-                                            </a>
-                                        ` : ''}
-
-                                        <button onclick="deleteTryout(${idx})" class="text-xs bg-red-900/30 hover:bg-red-800 text-red-300 p-1.5 rounded" title="Excluir candidatura">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </div>
+                    pList.innerHTML = data.players.map((p, idx) => `
+                        <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border hover:border-brand-green/40 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <img src="${p.photo}" class="w-12 h-12 object-cover rounded bg-black">
+                                <div>
+                                    <span class="font-bold text-xs text-white uppercase block">${p.nick} (${p.name})</span>
+                                    <span class="text-[10px] text-brand-green font-mono">${p.role} • K/D: ${p.kd} • Capa: ${p.headshot}</span>
                                 </div>
                             </div>
-                        `;
-                    }).join('');
+                            <div class="flex items-center gap-2">
+                                <button onclick="editPlayer(${idx})" class="bg-purple-600/30 hover:bg-purple-600 text-purple-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
+                                    <i class="fa-solid fa-pen"></i> Editar
+                                </button>
+                                <button onclick="deletePlayer(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
+                                    <i class="fa-solid fa-trash"></i> Excluir
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
                 }
             }
-            
-            // Admin Shop List (Com Opção de Excluir Produtos Existentes)
-            // Admin News List
+
+            // Renderizar Lista de Notícias no Admin
             const nList = document.getElementById('adminNewsList');
             if (nList && data.news) {
                 if (data.news.length === 0) {
-                    nList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhuma notícia cadastrada.</div>`;
+                    nList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhuma notícia publicada.</div>`;
                 } else {
                     nList.innerHTML = data.news.map((n, idx) => `
                         <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border hover:border-brand-green/40 transition-colors">
@@ -1565,54 +1392,24 @@
                                 <img src="${n.img}" class="w-12 h-12 object-cover rounded bg-black">
                                 <div>
                                     <span class="font-bold text-xs text-white uppercase block line-clamp-1">${n.title}</span>
-                                    <span class="text-[10px] text-brand-green font-mono">${n.tag || 'LBFF'}</span>
+                                    <span class="text-[10px] text-brand-green font-mono">${n.tag || 'NOTÍCIA'}</span>
                                 </div>
                             </div>
-                            <button onclick="deleteNews(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
-                                <i class="fa-solid fa-trash"></i>
-                                <span>Excluir</span>
-                            </button>
-                        </div>
-                    `).join('');
-                }
-            }
-
-            // Admin Trophies List
-            const tList = document.getElementById('adminTrophiesList');
-            if (tList && data.trophies) {
-                if (data.trophies.length === 0) {
-                    tList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhum título cadastrado.</div>`;
-                } else {
-                    tList.innerHTML = data.trophies.map((tr, idx) => `
-                        <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border hover:border-brand-green/40 transition-colors">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded bg-black border border-brand-green flex items-center justify-center text-brand-green text-xs">
-                                    <i class="fa-solid fa-trophy"></i>
-                                </div>
-                                <div>
-                                    <span class="font-bold text-xs text-white uppercase block">${tr.title}</span>
-                                    <span class="text-[10px] text-brand-green font-mono">${tr.year} - ${tr.pos}</span>
-                                </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="editNews(${idx})" class="bg-purple-600/30 hover:bg-purple-600 text-purple-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
+                                    <i class="fa-solid fa-pen"></i> Editar
+                                </button>
+                                <button onclick="deleteNews(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
+                                    <i class="fa-solid fa-trash"></i> Excluir
+                                </button>
                             </div>
-                            <button onclick="deleteTrophy(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
-                                <i class="fa-solid fa-trash"></i>
-                                <span>Excluir</span>
-                            </button>
                         </div>
                     `).join('');
                 }
             }
         };
 
-        window.deleteTryout = function(idx) {
-            const data = getSiteData();
-            if (data.tryouts) {
-                data.tryouts.splice(idx, 1);
-                window.saveDataToFirebase(data);
-            }
-        };
-
-        // SALVAR HERO E STATS
+        // AÇÕES DO HERO BANNER
         window.saveHeroChanges = function() {
             const data = getSiteData();
             data.hero = {
@@ -1631,13 +1428,44 @@
             window.saveDataToFirebase(data);
         };
 
-        // ADMIN FORM SHOW/HIDE
-        window.openPlayerForm = function() { document.getElementById('playerForm').classList.remove('hidden'); };
+        // JOGADORES: FORMULÁRIO E AÇÕES DE GERENCIAMENTO
+        window.openPlayerForm = function() { 
+            document.getElementById('pIndex').value = '';
+            document.getElementById('pNick').value = '';
+            document.getElementById('pName').value = '';
+            document.getElementById('pRole').value = '';
+            document.getElementById('pKd').value = '';
+            document.getElementById('pHeadshot').value = '';
+            document.getElementById('pPhoto').value = '';
+            document.getElementById('playerFormTitle').innerText = 'Cadastrar Novo Atleta';
+            document.getElementById('playerForm').classList.remove('hidden'); 
+        };
+
         window.closePlayerForm = function() { document.getElementById('playerForm').classList.add('hidden'); };
+
+        window.editPlayer = function(index) {
+            const data = getSiteData();
+            const player = data.players[index];
+            if (!player) return;
+
+            document.getElementById('pIndex').value = index;
+            document.getElementById('pNick').value = player.nick || '';
+            document.getElementById('pName').value = player.name || '';
+            document.getElementById('pRole').value = player.role || '';
+            document.getElementById('pKd').value = player.kd || '';
+            document.getElementById('pHeadshot').value = player.headshot || '';
+            document.getElementById('pPhoto').value = player.photo || '';
+
+            document.getElementById('playerFormTitle').innerText = 'Editar Atleta ' + player.nick;
+            document.getElementById('playerForm').classList.remove('hidden');
+        };
+
         window.savePlayer = function() {
             const data = getSiteData();
-            const p = {
-                id: Date.now(),
+            const idxVal = document.getElementById('pIndex').value;
+            
+            const playerObj = {
+                id: idxVal !== '' ? data.players[idxVal].id : Date.now(),
                 nick: document.getElementById('pNick').value,
                 name: document.getElementById('pName').value,
                 role: document.getElementById('pRole').value,
@@ -1645,116 +1473,105 @@
                 headshot: document.getElementById('pHeadshot').value || '75%',
                 photo: document.getElementById('pPhoto').value || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=600&auto=format&fit=crop'
             };
-            if (!p.nick) return showToast('Preencha o Nick', 'error');
-            data.players.push(p);
+
+            if (!playerObj.nick) return showToast('Preencha o Nick do atleta', 'error');
+
+            if (idxVal !== '') {
+                data.players[idxVal] = playerObj;
+            } else {
+                data.players.push(playerObj);
+            }
+
             window.saveDataToFirebase(data);
             closePlayerForm();
         };
+
         window.deletePlayer = function(idx) {
             const data = getSiteData();
             data.players.splice(idx, 1);
             window.saveDataToFirebase(data);
         };
 
-        // NEWS ADMIN
-        window.openNewsForm = function() { document.getElementById('newsForm').classList.remove('hidden'); };
+        // NOTÍCIAS: FORMULÁRIO E AÇÕES
+        window.openNewsForm = function() { 
+            document.getElementById('nIndex').value = '';
+            document.getElementById('nTitle').value = '';
+            document.getElementById('nTag').value = '';
+            document.getElementById('nSummary').value = '';
+            document.getElementById('nContent').value = '';
+            document.getElementById('nImg').value = '';
+            document.getElementById('newsFormTitle').innerText = 'Nova Notícia';
+            document.getElementById('newsForm').classList.remove('hidden'); 
+        };
+
         window.closeNewsForm = function() { document.getElementById('newsForm').classList.add('hidden'); };
+
+        window.editNews = function(index) {
+            const data = getSiteData();
+            const news = data.news[index];
+            if (!news) return;
+
+            document.getElementById('nIndex').value = index;
+            document.getElementById('nTitle').value = news.title || '';
+            document.getElementById('nTag').value = news.tag || '';
+            document.getElementById('nSummary').value = news.summary || '';
+            document.getElementById('nContent').value = news.content || news.summary || '';
+            document.getElementById('nImg').value = news.img || '';
+
+            document.getElementById('newsFormTitle').innerText = 'Editar Notícia';
+            document.getElementById('newsForm').classList.remove('hidden');
+        };
+
         window.saveNews = function() {
             const data = getSiteData();
-            const n = {
-                id: Date.now(),
+            const idxVal = document.getElementById('nIndex').value;
+
+            const newsObj = {
+                id: idxVal !== '' ? data.news[idxVal].id : Date.now(),
                 title: document.getElementById('nTitle').value,
                 tag: document.getElementById('nTag').value || 'LBFF 2026',
                 summary: document.getElementById('nSummary').value,
+                content: document.getElementById('nContent').value || document.getElementById('nSummary').value,
                 img: document.getElementById('nImg').value || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop'
             };
-            if (!n.title) return showToast('Preencha o Título', 'error');
-            data.news.push(n);
+
+            if (!newsObj.title || !newsObj.summary) return showToast('Preencha título e resumo da notícia', 'error');
+
+            if (idxVal !== '') {
+                data.news[idxVal] = newsObj;
+            } else {
+                data.news.unshift(newsObj);
+            }
+
             window.saveDataToFirebase(data);
             closeNewsForm();
         };
+
         window.deleteNews = function(idx) {
             const data = getSiteData();
             data.news.splice(idx, 1);
             window.saveDataToFirebase(data);
         };
 
-        // SHOP ADMIN
-        window.openProductForm = function() { document.getElementById('productForm').classList.remove('hidden'); };
-        window.closeProductForm = function() { document.getElementById('productForm').classList.add('hidden'); };
-        window.saveProduct = function() {
-            const data = getSiteData();
-            const prod = {
-                id: Date.now(),
-                name: document.getElementById('prodName').value,
-                price: parseFloat(document.getElementById('prodPrice').value) || 99.90,
-                category: document.getElementById('prodCategory').value || 'Curso',
-                tag: document.getElementById('prodTag').value || 'CURSO PRO',
-                img: document.getElementById('prodImg').value || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop'
-            };
-            if (!prod.name) return showToast('Preencha o Nome do Curso/Produto', 'error');
-            if (!data.shop) data.shop = [];
-            data.shop.push(prod);
-            window.saveDataToFirebase(data);
-            closeProductForm();
-        };
-        window.deleteProduct = function(idx) {
-            const data = getSiteData();
-            data.shop.splice(idx, 1);
-            window.saveDataToFirebase(data);
-        };
+        // OUTRAS MODAIS E HELPERS
+        window.openTryoutModal = function() { document.getElementById('tryoutModal').classList.remove('hidden'); };
+        window.closeTryoutModal = function() { document.getElementById('tryoutModal').classList.add('hidden'); };
 
-        // TROPHIES ADMIN
-        window.openTrophyForm = function() { document.getElementById('trophyForm').classList.remove('hidden'); };
-        window.closeTrophyForm = function() { document.getElementById('trophyForm').classList.add('hidden'); };
-        window.saveTrophy = function() {
-            const data = getSiteData();
-            const tr = {
-                id: Date.now(),
-                title: document.getElementById('trTitle').value,
-                year: document.getElementById('trYear').value || '2026',
-                pos: document.getElementById('trPos').value || 'CAMPEÃO #1'
-            };
-            if (!tr.title) return showToast('Preencha o Nome do Torneio', 'error');
-            data.trophies.push(tr);
-            window.saveDataToFirebase(data);
-            closeTrophyForm();
-        };
-        window.deleteTrophy = function(idx) {
-            const data = getSiteData();
-            data.trophies.splice(idx, 1);
-            window.saveDataToFirebase(data);
-        };
-
-        // AUTH MODAL & HELPERS
         window.openAuthModal = function(tab) {
             document.getElementById('authModal').classList.remove('hidden');
             switchAuthTab(tab);
         };
-        window.closeAuthModal = function() {
-            document.getElementById('authModal').classList.add('hidden');
-            document.getElementById('authAlert').classList.add('hidden');
-        };
+        window.closeAuthModal = function() { document.getElementById('authModal').classList.add('hidden'); };
+
         window.switchAuthTab = function(tab) {
             if (tab === 'login') {
                 document.getElementById('loginForm').classList.remove('hidden');
                 document.getElementById('registerForm').classList.add('hidden');
-                document.getElementById('tabLogin').classList.add('border-brand-green', 'text-white');
-                document.getElementById('tabRegister').classList.remove('border-brand-green', 'text-white');
             } else {
                 document.getElementById('loginForm').classList.add('hidden');
                 document.getElementById('registerForm').classList.remove('hidden');
-                document.getElementById('tabRegister').classList.add('border-brand-green', 'text-white');
-                document.getElementById('tabLogin').classList.remove('border-brand-green', 'text-white');
             }
         };
-
-        function showAuthAlert(msg, type) {
-            const el = document.getElementById('authAlert');
-            el.innerText = msg;
-            el.className = `mb-4 p-3 rounded text-xs font-semibold ${type === 'error' ? 'bg-red-900/50 text-red-200 border border-red-700' : 'bg-green-900/50 text-green-200 border border-green-700'}`;
-            el.classList.remove('hidden');
-        }
 
         function showToast(msg, type = 'info') {
             const toast = document.createElement('div');
@@ -1764,18 +1581,8 @@
             setTimeout(() => toast.remove(), 3000);
         }
 
-        // MOBILE MENU TOGGLE
-        const mobileBtn = document.getElementById('mobileMenuBtn');
-        if (mobileBtn) {
-            mobileBtn.addEventListener('click', () => {
-                document.getElementById('mobileMenu').classList.toggle('hidden');
-            });
-        }
-
-        // INITIALIZE RENDER
         document.addEventListener('DOMContentLoaded', () => {
             window.renderAllContent();
-            document.getElementById('openCartBtn').addEventListener('click', openCart);
         });
     </script>
 </body>
