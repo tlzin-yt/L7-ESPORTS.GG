@@ -272,29 +272,31 @@
 
     <!-- CONQUISTAS SECTION -->
     <section id="conquistas" class="py-20 border-t border-brand-border bg-brand-bg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-16">
-                <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// MURAL DE TROFÉUS</span>
-                <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight">NOSSAS <span class="text-brand-green">CONQUISTAS</span></h2>
-                <p class="text-gray-400 text-sm mt-3">A trajetória de glórias da L7 ESPORTS em torneios regionais e nacionais.</p>
-            </div>
-
-            <!-- TROPHIES GRID -->
-            <div id="trophiesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Loaded Dynamically via JS -->
-            </div>
-        </div>
-    </section>
-
-    <!-- LOJA MERCH SECTION -->
+    <!-- LOJA MERCH & CURSOS SECTION -->
     <section id="loja" class="py-20 border-t border-brand-border bg-brand-card/40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
                 <div>
-                    <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// OFFICIAL MERCHANDISE</span>
-                    <h2 class="font-display font-black text-4xl sm:text-[#00FF66] text-white uppercase tracking-tight">LOJA <span class="text-brand-green">L7 STORE</span></h2>
+                    <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// LOJA & TREINAMENTOS PRO</span>
+                    <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight">LOJA & <span class="text-brand-green">CURSOS L7</span></h2>
                 </div>
-                <p class="text-gray-400 text-sm max-w-sm mt-2 md:mt-0">Vista o uniforme dos campeões. Entrega para todo o Brasil.</p>
+                <p class="text-gray-400 text-sm max-w-md mt-2 md:mt-0">
+                    Aprenda com os pro players da L7 ESPORTS ou garanta a pré-venda da nossa linha oficial de uniforme e equipamentos.
+                </p>
+            </div>
+
+            <!-- FILTROS DA LOJA (CURSOS / VESTUÁRIO / PERIFÉRICOS) -->
+            <div class="flex flex-wrap gap-2 mb-8" id="shopFilterContainer">
+                <button onclick="filterShopCategory('all')" class="shop-filter-btn px-4 py-2 bg-brand-green text-black font-display font-bold text-xs uppercase clip-button transition-all">Todos os Produtos</button>
+                <button onclick="filterShopCategory('Curso')" class="shop-filter-btn px-4 py-2 bg-black/60 hover:bg-brand-card text-gray-300 hover:text-brand-green border border-brand-border font-display font-bold text-xs uppercase clip-button transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-graduation-cap text-brand-green"></i> Cursos & Mentoria
+                </button>
+                <button onclick="filterShopCategory('Vestuário')" class="shop-filter-btn px-4 py-2 bg-black/60 hover:bg-brand-card text-gray-300 hover:text-brand-green border border-brand-border font-display font-bold text-xs uppercase clip-button transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-shirt"></i> Vestuário
+                </button>
+                <button onclick="filterShopCategory('Equipamento')" class="shop-filter-btn px-4 py-2 bg-black/60 hover:bg-brand-card text-gray-300 hover:text-brand-green border border-brand-border font-display font-bold text-xs uppercase clip-button transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-gamepad"></i> Equipamentos
+                </button>
             </div>
 
             <!-- PRODUCTS GRID -->
@@ -850,7 +852,10 @@
                 { id: 1, title: "L7 ESPORTS AVANÇA PARA A GRANDE FINAL DA LBFF!", tag: "LBFF 2026", summary: "Com uma sequência épica de 3 Booyahs no mapa Bermudas, a equipe garantiu a liderança isolada.", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" }
             ],
             shop: [
-                { id: 101, name: "Manta Oficial L7 Pro 2026", price: 149.90, tag: "NOVA EDICÃO", img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop" }
+                { id: 101, name: "Curso de IGL & Rotação Pro", price: 97.90, category: "Curso", tag: "CURSO PRO", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop" },
+                { id: 102, name: "Aulas de Rush & Movimentação", price: 67.90, category: "Curso", tag: "CURSO PRO", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" },
+                { id: 103, name: "Masterclass de Sniper AWM & M82B", price: 49.90, category: "Curso", tag: "NOVO", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=600&auto=format&fit=crop" },
+                { id: 104, name: "Manta Oficial L7 Pro 2026", price: 149.90, category: "Vestuário", tag: "PRÉ-VENDA", img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop" }
             ],
             trophies: [
                 { id: 1, title: "LIGA BOOYAH MASTER", year: "2026", pos: "CAMPEÃO #1" }
@@ -905,44 +910,40 @@
 
         // SALVAR NO FIRESTORE
         window.saveDataToFirebase = async function(data) {
-            window.siteData = data;
-            localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
-            if (typeof window.renderAllContent === 'function') {
-                window.renderAllContent();
-            }
             try {
+                window.siteData = data;
+                localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
                 await setDoc(docRef, data);
-                showToast('Salvo com sucesso no Banco de Dados!');
-            } catch (err) {
-                console.error("Erro ao salvar no Firebase:", err);
-                showToast('Salvo localmente (erro de conexão com Firebase)');
+                showToast('Dados salvos no Firebase!', 'success');
+            } catch (e) {
+                console.error("Erro ao salvar no Firestore:", e);
+                showToast('Dados salvos localmente.', 'info');
             }
         };
 
-        // AUTH STATE MONITORING
+        // AUTH STATE CHANGE LISTENERS
         onAuthStateChanged(auth, (user) => {
             window.currentUser = user;
-            updateAuthUI(user);
+            updateUserUI(user);
         });
 
-        function updateAuthUI(user) {
+        function updateUserUI(user) {
             const container = document.getElementById('authContainer');
             const adminBtn = document.getElementById('adminPanelBtn');
 
             if (user) {
-                const isSuperAdmin = user.email === ADMIN_EMAIL;
-                
-                if (isSuperAdmin) {
+                const isAdmin = user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+                if (isAdmin) {
                     adminBtn.classList.remove('hidden');
                 } else {
                     adminBtn.classList.add('hidden');
                 }
 
                 container.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <div class="text-right hidden sm:block">
-                            <span class="block text-xs font-bold text-white">${user.displayName || 'Membro L7'}</span>
-                            <span class="block text-[10px] ${isSuperAdmin ? 'text-purple-400 font-bold' : 'text-brand-green'}">${isSuperAdmin ? 'SUPER ADMIN' : user.email}</span>
+                    <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2 bg-brand-card border border-brand-border px-3 py-1.5 rounded">
+                            <i class="fa-solid fa-user-ninja text-brand-green"></i>
+                            <span class="font-display font-bold text-xs text-white uppercase">${user.displayName || user.email.split('@')[0]}</span>
                         </div>
                         <button onclick="window.handleLogout()" class="bg-brand-card hover:bg-red-900/30 text-gray-300 hover:text-red-400 border border-brand-border p-2.5 rounded transition-colors" title="Sair da Conta">
                             <i class="fa-solid fa-right-from-bracket"></i>
@@ -1050,115 +1051,63 @@
         };
 
         // RENDERIZAR TODO O CONTEÚDO DO SITE (EXPOSTO NO ESCOPO GLOBAL)
+        window.currentShopCategory = 'all';
+
+        window.filterShopCategory = function(category) {
+            window.currentShopCategory = category;
+            window.renderAllContent();
+        };
+
         window.renderAllContent = function() {
             const data = getSiteData();
             if (!data) return;
 
-            // Render Hero
-            if (data.hero) {
-                document.getElementById('heroTitle').innerHTML = data.hero.title || "O FUTURO DO FREE FIRE É A <span class='text-brand-green text-glow'>L7 ESPORTS</span>";
-                document.getElementById('heroSubtitle').innerText = data.hero.subtitle || "";
-                if (data.hero.bg) {
-                    document.getElementById('heroBg').style.backgroundImage = `url('${data.hero.bg}')`;
-                }
-
-                // Render Stats
-                document.getElementById('statVal1').innerText = data.hero.stV1 || "#1";
-                document.getElementById('statLabel1').innerText = data.hero.stL1 || "Ranking de Guildas";
-                document.getElementById('statVal2').innerText = data.hero.stV2 || "15+";
-                document.getElementById('statLabel2').innerText = data.hero.stL2 || "Títulos Oficiais";
-                document.getElementById('statVal3').innerText = data.hero.stV3 || "85%";
-                document.getElementById('statLabel3').innerText = data.hero.stL3 || "Taxa de Booyah";
-                document.getElementById('statVal4').innerText = data.hero.stV4 || "500K+";
-                document.getElementById('statLabel4').innerText = data.hero.stL4 || "Torcida Apaixonada";
-            }
-
-            // Render Players (Elenco)
-            const playersGrid = document.getElementById('playersGrid');
-            if (playersGrid && data.players) {
-                playersGrid.innerHTML = data.players.map(p => `
-                    <div class="bg-brand-card border border-brand-border rounded-lg overflow-hidden group hover:border-brand-green transition-all duration-300">
-                        <div class="h-64 overflow-hidden relative">
-                            <img src="${p.photo}" alt="${p.nick}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
-                            <span class="absolute top-3 left-3 bg-brand-green text-black font-display font-bold text-xs px-2.5 py-1 clip-button uppercase">${p.role}</span>
-                        </div>
-                        <div class="p-5">
-                            <h3 class="font-display font-black text-2xl text-white uppercase group-hover:text-brand-green transition-colors">${p.nick}</h3>
-                            <p class="text-xs text-gray-400 font-semibold mb-4">${p.name}</p>
-                            <div class="grid grid-cols-2 gap-2 pt-3 border-t border-brand-border/60 text-center">
-                                <div>
-                                    <span class="text-[10px] text-gray-500 uppercase block font-mono">K/D RATIO</span>
-                                    <span class="font-display font-bold text-lg text-brand-green">${p.kd}</span>
-                                </div>
-                                <div>
-                                    <span class="text-[10px] text-gray-500 uppercase block font-mono">CAPA %</span>
-                                    <span class="font-display font-bold text-lg text-white">${p.headshot || '75%'}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            // Render News (Notícias)
-            const newsGrid = document.getElementById('newsGrid');
-            if (newsGrid && data.news) {
-                newsGrid.innerHTML = data.news.map(n => `
-                    <div class="bg-brand-card border border-brand-border rounded-lg overflow-hidden group hover:border-brand-green transition-all">
-                        <div class="h-48 overflow-hidden relative">
-                            <img src="${n.img}" alt="${n.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <span class="absolute top-3 left-3 bg-purple-600 text-white font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded">${n.tag}</span>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="font-display font-bold text-lg text-white group-hover:text-brand-green transition-colors mb-2">${n.title}</h3>
-                            <p class="text-gray-400 text-xs line-clamp-3 leading-relaxed">${n.summary}</p>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            // Render Trophies (Conquistas)
-            const trophiesGrid = document.getElementById('trophiesGrid');
-            if (trophiesGrid && data.trophies) {
-                trophiesGrid.innerHTML = data.trophies.map(t => `
-                    <div class="bg-brand-card/60 border border-brand-border p-6 rounded-lg text-center hover:border-brand-green/50 transition-all group">
-                        <div class="w-12 h-12 bg-brand-green/10 text-brand-green rounded-full flex items-center justify-center mx-auto mb-4 text-xl group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-trophy"></i>
-                        </div>
-                        <span class="text-xs text-brand-green font-mono uppercase block font-bold">${t.year}</span>
-                        <h4 class="font-display font-bold text-lg text-white uppercase mt-1">${t.title}</h4>
-                        <span class="inline-block mt-3 bg-brand-green/20 text-brand-green text-[10px] font-bold px-3 py-1 rounded-full uppercase">${t.pos}</span>
-                    </div>
-                `).join('');
-            }
-
-            // Render Shop Products (Loja)
+            // Render Shop Products (Cursos e Merch)
             const productsGrid = document.getElementById('productsGrid');
             if (productsGrid && data.shop) {
-                productsGrid.innerHTML = data.shop.map(prod => `
-                    <div class="bg-brand-card border border-brand-border rounded-lg overflow-hidden group flex flex-col justify-between">
-                        <div>
-                            <div class="h-56 overflow-hidden relative bg-black">
-                                <img src="${prod.img}" alt="${prod.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
-                                ${prod.tag ? `<span class="absolute top-3 left-3 bg-brand-green text-black font-bold text-[10px] uppercase px-2 py-0.5 clip-button">${prod.tag}</span>` : ''}
+                const filteredProducts = window.currentShopCategory === 'all' 
+                    ? data.shop 
+                    : data.shop.filter(p => (p.category || 'Vestuário') === window.currentShopCategory);
+
+                if (filteredProducts.length === 0) {
+                    productsGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500 text-sm">Nenhum curso ou produto encontrado nessa categoria.</div>`;
+                } else {
+                    productsGrid.innerHTML = filteredProducts.map(prod => {
+                        const isCourse = prod.category === 'Curso';
+                        return `
+                            <div class="bg-brand-card border border-brand-border rounded-lg overflow-hidden group flex flex-col justify-between hover:border-brand-green/60 transition-all">
+                                <div>
+                                    <div class="h-56 overflow-hidden relative bg-black">
+                                        <img src="${prod.img}" alt="${prod.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform filter brightness-90">
+                                        <span class="absolute top-3 left-3 ${isCourse ? 'bg-purple-600 text-white' : 'bg-brand-green text-black'} font-bold text-[10px] uppercase px-2 py-0.5 clip-button shadow-lg">
+                                            <i class="${isCourse ? 'fa-solid fa-graduation-cap' : 'fa-solid fa-fire'} mr-1"></i> ${prod.tag || (isCourse ? 'CURSO PRO' : 'LANÇAMENTO')}
+                                        </span>
+                                    </div>
+                                    <div class="p-5">
+                                        <span class="text-[10px] text-gray-500 uppercase font-mono font-bold block mb-1">
+                                            ${isCourse ? 'AULAS & TREINAMENTO L7' : 'PROTÓTIMO OFICIAL L7'}
+                                        </span>
+                                        <h3 class="font-display font-bold text-base text-white uppercase line-clamp-2 min-h-[3rem]">${prod.name}</h3>
+                                        <div class="flex items-center gap-2 mt-2">
+                                            <span class="font-display font-black text-2xl text-brand-green">R$ ${Number(prod.price).toFixed(2).replace('.', ',')}</span>
+                                            ${isCourse ? '<span class="text-[10px] text-gray-400 font-mono">(Acesso Vitalício)</span>' : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-5 pt-0">
+                                    <button onclick="addToCart(${prod.id})" class="w-full ${isCourse ? 'bg-purple-600 hover:bg-purple-500 text-white border-purple-500/50' : 'bg-brand-green/10 hover:bg-brand-green hover:text-black text-brand-green border-brand-green/40'} border font-display font-bold py-2.5 text-xs uppercase clip-button transition-all flex items-center justify-center gap-1.5">
+                                        <i class="${isCourse ? 'fa-solid fa-play' : 'fa-solid fa-cart-shopping'}"></i>
+                                        <span>${isCourse ? 'COMPRAR CURSO' : 'RESERVAR PRÉ-VENDA'}</span>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="p-5">
-                                <h3 class="font-display font-bold text-base text-white uppercase line-clamp-1">${prod.name}</h3>
-                                <span class="font-display font-black text-xl text-brand-green block mt-2">R$ ${Number(prod.price).toFixed(2).replace('.', ',')}</span>
-                            </div>
-                        </div>
-                        <div class="p-5 pt-0">
-                            <button onclick="addToCart(${prod.id})" class="w-full bg-brand-card hover:bg-brand-green hover:text-black text-white border border-brand-border hover:border-brand-green font-display font-bold py-2.5 text-xs uppercase clip-button transition-all">
-                                Adicionar ao Carrinho
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
+                        `;
+                    }).join('');
+                }
             }
         };
 
-        // CARRINHO DE COMPRAS
+        // CARRINHO DE COMPRAS (RESERVA DE PRÉ-VENDA)
         let cart = [];
         window.addToCart = function(id) {
             const data = getSiteData();
@@ -1167,7 +1116,7 @@
                 cart.push(prod);
                 updateCartUI();
                 openCart();
-                showToast(`"${prod.name}" adicionado ao carrinho!`);
+                showToast(`Reserva de "${prod.name}" adicionada!`);
             }
         };
 
@@ -1503,10 +1452,12 @@
                 id: Date.now(),
                 name: document.getElementById('prodName').value,
                 price: parseFloat(document.getElementById('prodPrice').value) || 99.90,
-                tag: document.getElementById('prodTag').value || 'NOVO',
-                img: document.getElementById('prodImg').value || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop'
+                category: document.getElementById('prodCategory').value || 'Curso',
+                tag: document.getElementById('prodTag').value || 'CURSO PRO',
+                img: document.getElementById('prodImg').value || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop'
             };
-            if (!prod.name) return showToast('Preencha o Nome do Produto', 'error');
+            if (!prod.name) return showToast('Preencha o Nome do Curso/Produto', 'error');
+            if (!data.shop) data.shop = [];
             data.shop.push(prod);
             window.saveDataToFirebase(data);
             closeProductForm();
