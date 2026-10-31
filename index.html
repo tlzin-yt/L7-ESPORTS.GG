@@ -1146,12 +1146,20 @@
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'l7-esports';
         const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'siteContent', 'main');
 
-        // LEITURA INICIAL SEM RECONSTRUÇÃO DE DADOS PADRÃO
+        // LEITURA LOCAL ROBUSTA COM MESCLAGEM DE SEGURANÇA
         function loadLocalDataFirst() {
             const stored = localStorage.getItem('L7_SITE_DATA');
             if (stored) {
                 try {
-                    return JSON.parse(stored);
+                    const parsed = JSON.parse(stored);
+                    return {
+                        hero: parsed.hero || DEFAULT_DATA.hero,
+                        players: parsed.players !== undefined ? parsed.players : DEFAULT_DATA.players,
+                        news: parsed.news !== undefined ? parsed.news : DEFAULT_DATA.news,
+                        shop: parsed.shop !== undefined ? parsed.shop : DEFAULT_DATA.shop,
+                        trophies: parsed.trophies !== undefined ? parsed.trophies : DEFAULT_DATA.trophies,
+                        tryouts: parsed.tryouts !== undefined ? parsed.tryouts : DEFAULT_DATA.tryouts
+                    };
                 } catch(e) {}
             }
             return DEFAULT_DATA;
@@ -1159,16 +1167,23 @@
 
         window.siteData = loadLocalDataFirst();
 
-        // SINCRONIZAÇÃO FIRESTORE PROTEGIDA CONTRA RESET
+        // SINCRONIZAÇÃO FIRESTORE COM MESCLAGEM COMPLETA
         onSnapshot(docRef, (docSnap) => {
             if (docSnap.exists()) {
                 const firebaseData = docSnap.data();
                 if (firebaseData && typeof firebaseData === 'object') {
-                    window.siteData = firebaseData;
-                    localStorage.setItem('L7_SITE_DATA', JSON.stringify(firebaseData));
+                    window.siteData = {
+                        hero: firebaseData.hero || window.siteData.hero || DEFAULT_DATA.hero,
+                        players: firebaseData.players !== undefined ? firebaseData.players : window.siteData.players,
+                        news: firebaseData.news !== undefined ? firebaseData.news : window.siteData.news,
+                        shop: firebaseData.shop !== undefined ? firebaseData.shop : window.siteData.shop,
+                        trophies: firebaseData.trophies !== undefined ? firebaseData.trophies : window.siteData.trophies,
+                        tryouts: firebaseData.tryouts !== undefined ? firebaseData.tryouts : window.siteData.tryouts
+                    };
+                    localStorage.setItem('L7_SITE_DATA', JSON.stringify(window.siteData));
                 }
             } else {
-                setDoc(docRef, window.siteData || DEFAULT_DATA);
+                setDoc(docRef, window.siteData);
             }
 
             if (typeof window.renderAllContent === 'function') {
@@ -1178,19 +1193,34 @@
                 if (typeof window.loadAdminValues === 'function') window.loadAdminValues();
             }
         }, (err) => {
-            console.warn("Utilizando armazenamento persistente local do navegador.", err);
+            console.warn("Utilizando armazenamento local do navegador.", err);
         });
 
-        // SALVAR NO FIRESTORE COM CONFIRMAÇÃO DE ESCRITA
+        // SALVAR NO FIRESTORE E LOCALSTORAGE DE FORMA UNIFICADA
         window.saveDataToFirebase = async function(data) {
-            window.siteData = data;
-            localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
+            window.siteData = {
+                hero: data.hero || window.siteData.hero,
+                players: data.players !== undefined ? data.players : window.siteData.players,
+                news: data.news !== undefined ? data.news : window.siteData.news,
+                shop: data.shop !== undefined ? data.shop : window.siteData.shop,
+                trophies: data.trophies !== undefined ? data.trophies : window.siteData.trophies,
+                tryouts: data.tryouts !== undefined ? data.tryouts : window.siteData.tryouts
+            };
+            localStorage.setItem('L7_SITE_DATA', JSON.stringify(window.siteData));
+            
+            if (typeof window.renderAllContent === 'function') {
+                window.renderAllContent();
+            }
+            if (typeof window.renderAdminLists === 'function') {
+                window.renderAdminLists();
+            }
+
             try {
-                await setDoc(docRef, data);
-                showToast('Dados salvos permanentemente!', 'success');
+                await setDoc(docRef, window.siteData);
+                showToast('Alterações salvas com sucesso!', 'success');
             } catch (e) {
                 console.error("Erro ao gravar no Firestore:", e);
-                showToast('Salvo em cache local.', 'info');
+                showToast('Salvo no dispositivo.', 'info');
             }
         };
 
@@ -1882,6 +1912,7 @@
                 stL4: document.getElementById('stL4').value
             };
             window.saveDataToFirebase(data);
+            showToast('Início do site atualizado!', 'success');
         };
 
         // ADMIN FORM SHOW/HIDE & SAVES
@@ -1903,11 +1934,15 @@
             data.players.push(p);
             window.saveDataToFirebase(data);
             closePlayerForm();
+            window.renderAdminLists();
         };
         window.deletePlayer = function(idx) {
             const data = getSiteData();
-            data.players.splice(idx, 1);
-            window.saveDataToFirebase(data);
+            if (data.players) {
+                data.players.splice(idx, 1);
+                window.saveDataToFirebase(data);
+                window.renderAdminLists();
+            }
         };
 
         // NEWS ADMIN
@@ -1928,11 +1963,15 @@
             data.news.push(n);
             window.saveDataToFirebase(data);
             closeNewsForm();
+            window.renderAdminLists();
         };
         window.deleteNews = function(idx) {
             const data = getSiteData();
-            data.news.splice(idx, 1);
-            window.saveDataToFirebase(data);
+            if (data.news) {
+                data.news.splice(idx, 1);
+                window.saveDataToFirebase(data);
+                window.renderAdminLists();
+            }
         };
 
         // SHOP ADMIN
