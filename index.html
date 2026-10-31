@@ -1164,11 +1164,19 @@
         // SINCRONIZAÇÃO EM TEMPO REAL COM FIRESTORE
         onSnapshot(docRef, (docSnap) => {
             if (docSnap.exists()) {
-                window.siteData = docSnap.data();
+                const firebaseData = docSnap.data();
+                // Garante a preservação de notícias locais caso a coleção do Firebase venha vazia por primeira carga
+                if ((!firebaseData.news || firebaseData.news.length === 0) && DEFAULT_DATA.news) {
+                    firebaseData.news = DEFAULT_DATA.news;
+                }
+                window.siteData = firebaseData;
             } else {
                 window.siteData = DEFAULT_DATA;
                 setDoc(docRef, DEFAULT_DATA);
             }
+            // Atualiza o localStorage para garantir persistência mesmo offline
+            localStorage.setItem('L7_SITE_DATA', JSON.stringify(window.siteData));
+
             if (typeof window.renderAllContent === 'function') {
                 window.renderAllContent();
             }
@@ -1873,8 +1881,12 @@
 
         // INITIALIZE RENDER
         document.addEventListener('DOMContentLoaded', () => {
+            // Garante o carregamento prévio do cache local para evitar piscada no F5
+            window.siteData = getSiteDataLocal();
             window.renderAllContent();
-            document.getElementById('openCartBtn').addEventListener('click', openCart);
+            
+            const cartBtn = document.getElementById('openCartBtn');
+            if (cartBtn) cartBtn.addEventListener('click', openCart);
         });
     </script>
 </body>
