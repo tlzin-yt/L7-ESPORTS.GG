@@ -103,9 +103,21 @@
                 <!-- DESKTOP NAV LINKS -->
                 <nav class="hidden md:flex items-center gap-8 font-display font-semibold tracking-wide text-sm uppercase">
                     <a href="#home" class="hover:text-brand-green transition-colors text-white">Início</a>
+                    <!-- MENU INSTITUCIONAL COM DROPDOWN -->
+                    <div class="relative group py-2">
+                        <button class="hover:text-brand-green transition-colors text-gray-300 flex items-center gap-1">
+                            <span>Sobre a L7</span>
+                            <i class="fa-solid fa-chevron-down text-[10px] group-hover:rotate-180 transition-transform"></i>
+                        </button>
+                        <div class="absolute top-full left-0 w-48 bg-brand-card border border-brand-border rounded-lg shadow-2xl p-2 hidden group-hover:block transition-all z-50">
+                            <a href="#home" class="block px-3 py-2 text-xs text-gray-300 hover:text-brand-green hover:bg-black/40 rounded">Sobre a L7</a>
+                            <a href="#noticias" class="block px-3 py-2 text-xs text-gray-300 hover:text-brand-green hover:bg-black/40 rounded">Parcerias</a>
+                            <a href="#loja" class="block px-3 py-2 text-xs text-gray-300 hover:text-brand-green hover:bg-black/40 rounded">Redes Sociais</a>
+                        </div>
+                    </div>
                     <a href="#elenco" class="hover:text-brand-green transition-colors text-gray-300">Elenco FF</a>
                     <button onclick="openTryoutModal()" class="text-brand-green hover:text-white transition-colors flex items-center gap-1.5 font-bold">
-                        <i class="fa-solid fa-fire animate-pulse text-xs"></i> Peneira
+                        <i class="fa-solid fa-fire animate-pulse text-xs"></i> Seletiva
                     </button>
                     <a href="#noticias" class="hover:text-brand-green transition-colors text-gray-300">Notícias</a>
                     <a href="#conquistas" class="hover:text-brand-green transition-colors text-gray-300">Conquistas</a>
@@ -148,7 +160,7 @@
         <div id="mobileMenu" class="hidden md:hidden bg-brand-card border-b border-brand-border px-4 pt-2 pb-6 space-y-3 font-display font-semibold uppercase text-sm">
             <a href="#home" class="block py-2 text-white hover:text-brand-green">Início</a>
             <a href="#elenco" class="block py-2 text-gray-300 hover:text-brand-green">Elenco FF</a>
-            <button onclick="openTryoutModal(); toggleMobileMenu();" class="block w-full text-left py-2 text-brand-green font-bold">Peneira / Inscrição</button>
+            <button onclick="openTryoutModal(); toggleMobileMenu();" class="block w-full text-left py-2 text-brand-green font-bold">Seletiva / Inscrição</button>
             <a href="#noticias" class="block py-2 text-gray-300 hover:text-brand-green">Notícias</a>
             <a href="#conquistas" class="block py-2 text-gray-300 hover:text-brand-green">Conquistas</a>
             <a href="#loja" class="block py-2 text-gray-300 hover:text-brand-green">Loja Merch</a>
@@ -181,7 +193,7 @@
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <button onclick="openTryoutModal()" class="w-full sm:w-auto bg-brand-green hover:bg-brand-darkGreen text-black font-display font-black px-8 py-4 clip-button text-base tracking-wider uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,255,102,0.5)] flex items-center justify-center gap-3">
                     <i class="fa-solid fa-trophy text-lg"></i>
-                    <span>Inscrever-se na Peneira</span>
+                    <span>Inscrever-se na Seletiva</span>
                 </button>
                 <a href="#elenco" class="w-full sm:w-auto bg-brand-card hover:bg-brand-card/80 text-white font-display font-bold px-8 py-4 clip-button text-base tracking-wider uppercase border border-brand-border hover:border-brand-green transition-all duration-300 flex items-center justify-center gap-3">
                     <i class="fa-solid fa-users"></i>
@@ -212,22 +224,125 @@
     </section>
 
     <!-- ELENCO FREE FIRE SECTION -->
-    <section id="elenco" class="py-20 border-t border-brand-border bg-brand-bg relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+    <!-- SEÇÃO SOBRE A L7, PARCERIAS E REDES SOCIAIS -->
+    <section id="sobre" class="py-20 border-t border-brand-border bg-brand-card/20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+            
+            <!-- 1. SOBRE A L7 ESPORTS -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
                 <div>
-                    <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// ROSTER OFICIAL</span>
-                    <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight">ELENCO <span class="text-brand-green">PRO FREE FIRE</span></h2>
+                    <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// NOSSA HISTÓRIA & PROPÓSITO</span>
+                    <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight mb-4">
+                        A MENTALIDADE <span class="text-brand-green text-glow">L7 ESPORTS</span>
+                    </h2>
+                    <p class="text-gray-300 text-sm sm:text-base leading-relaxed mb-4">
+                        Fundada com o objetivo de revolucionar o cenário competitivo de Free Fire, a <strong class="text-white">L7 ESPORTS</strong> é mais do que uma guilda: é um ecossistema de alto rendimento.
+                    </p>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Combinando análise tática avançada, treinos intensivos e infraestrutura de ponta, preparamos nossos atletas para dominar tanto o cenário de emuladores quanto as ligas móbiles oficiais.
+                    </p>
+                    <div class="flex gap-4">
+                        <div class="bg-black/60 border border-brand-border p-3 rounded clip-button">
+                            <span class="font-display font-bold text-xl text-brand-green block">100%</span>
+                            <span class="text-[10px] text-gray-400 uppercase">Foco no Competitivo</span>
+                        </div>
+                        <div class="bg-black/60 border border-brand-border p-3 rounded clip-button">
+                            <span class="font-display font-bold text-xl text-white block">24/7</span>
+                            <span class="text-[10px] text-gray-400 uppercase">Rotina Profissional</span>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-gray-400 max-w-md text-sm mt-4 md:mt-0">
-                    Os brabos que carregam o manto da L7 nas ligas de emulador e mobile.
-                </p>
+                <div class="relative">
+                    <div class="w-full h-80 bg-brand-card border border-brand-border rounded-lg overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover filter brightness-75">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-bg via-transparent to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 right-6">
+                            <span class="font-display font-black text-2xl text-white uppercase">O TOPO É O NOSSO HABITAT</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- PLAYERS GRID CONTAINER -->
-            <div id="playersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Loaded Dynamically via JS -->
+            <!-- 2. PARCERIAS & PATROCINADORES -->
+            <div id="parcerias" class="pt-10 border-t border-brand-border/60">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="text-brand-green font-mono text-xs uppercase tracking-widest block mb-1">// PATROCINADORES OFICIAIS</span>
+                    <h3 class="font-display font-black text-3xl text-white uppercase">PARCERIAS <span class="text-brand-green">DE ELITE</span></h3>
+                    <p class="text-gray-400 text-xs mt-2">Marcas que impulsionam o desempenho da L7 ESPORTS nos campeonatos.</p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
+                        <i class="fa-solid fa-microchip text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
+                        <span class="font-display font-bold text-sm text-white uppercase">CYBER TECH</span>
+                        <span class="text-[10px] text-gray-500 uppercase">Hardware & Gear</span>
+                    </div>
+                    <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
+                        <i class="fa-solid fa-bolt text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
+                        <span class="font-display font-bold text-sm text-white uppercase">ENERGY RUSH</span>
+                        <span class="text-[10px] text-gray-500 uppercase">Energeticos Gamer</span>
+                    </div>
+                    <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
+                        <i class="fa-solid fa-headset text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
+                        <span class="font-display font-bold text-sm text-white uppercase">AUDIO PRO</span>
+                        <span class="text-[10px] text-gray-500 uppercase">Periféricos de Som</span>
+                    </div>
+                    <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
+                        <i class="fa-solid fa-wifi text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
+                        <span class="font-display font-bold text-sm text-white uppercase">FIBRA ULTRA</span>
+                        <span class="text-[10px] text-gray-500 uppercase">Conexão 1Gbps</span>
+                    </div>
+                </div>
             </div>
+
+            <!-- 3. REDES SOCIAIS -->
+            <div id="redes" class="pt-10 border-t border-brand-border/60">
+                <div class="text-center max-w-2xl mx-auto mb-10">
+                    <span class="text-brand-green font-mono text-xs uppercase tracking-widest block mb-1">// COMUNIDADE & MÍDIA</span>
+                    <h3 class="font-display font-black text-3xl text-white uppercase">NOSSAS <span class="text-brand-green">REDES SOCIAIS</span></h3>
+                    <p class="text-gray-400 text-xs mt-2">Acompanhe treinos, bastidores, clips e avisos de peneiras em tempo real.</p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-3 group transition-all">
+                        <div class="w-10 h-10 rounded bg-black flex items-center justify-center text-brand-green group-hover:bg-brand-green group-hover:text-black transition-colors">
+                            <i class="fa-brands fa-instagram text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="font-display font-bold text-sm text-white block">Instagram</span>
+                            <span class="text-[10px] text-gray-400">@l7esports.ff</span>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-3 group transition-all">
+                        <div class="w-10 h-10 rounded bg-black flex items-center justify-center text-red-500 group-hover:bg-red-500 group-hover:text-black transition-colors">
+                            <i class="fa-brands fa-youtube text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="font-display font-bold text-sm text-white block">YouTube</span>
+                            <span class="text-[10px] text-gray-400">L7 Esports Oficial</span>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-3 group transition-all">
+                        <div class="w-10 h-10 rounded bg-black flex items-center justify-center text-indigo-400 group-hover:bg-indigo-400 group-hover:text-black transition-colors">
+                            <i class="fa-brands fa-discord text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="font-display font-bold text-sm text-white block">Discord</span>
+                            <span class="text-[10px] text-gray-400">Comunidade L7</span>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-brand-card border border-brand-border hover:border-brand-green p-4 rounded-lg flex items-center gap-3 group transition-all">
+                        <div class="w-10 h-10 rounded bg-black flex items-center justify-center text-cyan-400 group-hover:bg-cyan-400 group-hover:text-black transition-colors">
+                            <i class="fa-brands fa-tiktok text-xl"></i>
+                        </div>
+                        <div>
+                            <span class="font-display font-bold text-sm text-white block">TikTok</span>
+                            <span class="text-[10px] text-gray-400">Clips & Highlights</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
         </div>
     </section>
 
