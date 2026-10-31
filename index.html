@@ -456,7 +456,15 @@
                 </button>
             </form>
 
-            <div class="mt-4 text-center text-xs text-gray-400 border-t border-white/10 pt-4">
+            <!-- LOGIN COM GOOGLE -->
+            <div class="mt-4 pt-4 border-t border-white/10">
+                <button onclick="handleGoogleSignIn()" class="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-2.5 rounded text-xs flex items-center justify-center gap-2 border border-white/10 transition-colors uppercase">
+                    <i class="fa-brands fa-google text-red-500"></i>
+                    <span>Entrar com Google</span>
+                </button>
+            </div>
+
+            <div class="mt-4 text-center text-xs text-gray-400">
                 <span id="toggleText">Ainda não tem uma conta?</span>
                 <button onclick="toggleAuthMode()" id="toggleBtn" class="text-brand-green font-bold uppercase ml-1 hover:underline">
                     Criar Conta
@@ -523,7 +531,9 @@
             createUserWithEmailAndPassword,
             signInWithEmailAndPassword,
             signOut,
-            updateProfile
+            updateProfile,
+            GoogleAuthProvider,
+            signInWithPopup
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { 
             getFirestore, 
@@ -533,6 +543,9 @@
             collection,
             onSnapshot
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // E-mail Admin Supremo
+        const ADMIN_EMAIL = "tuliofonseca00@gmail.com";
 
         // Identificador Global do App
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'l7-esports-app';
@@ -553,6 +566,7 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
+        const googleProvider = new GoogleAuthProvider();
 
         let isSignUpMode = false;
         let currentUser = null;
@@ -625,9 +639,12 @@
             if (user) {
                 let nickname = user.displayName || (user.email ? user.email.split('@')[0] : 'JOGADOR');
                 
-                // Exibir botão Admin se for administrador
-                if (user.email && (user.email.includes('admin') || user.email.includes('l7'))) {
+                // Exibir botão Admin se for o Administrador Definido (tuliofonseca00@gmail.com)
+                const isAdmin = user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+                if (isAdmin) {
                     adminBtn.classList.remove('hidden');
+                } else {
+                    adminBtn.classList.add('hidden');
                 }
 
                 userArea.innerHTML = `
@@ -650,6 +667,18 @@
                 `;
             }
         });
+
+        // Login com Google
+        window.handleGoogleSignIn = async function() {
+            try {
+                await signInWithPopup(auth, googleProvider);
+                showToast("Autenticado via Google com sucesso!", "success");
+                closeAuthModal();
+            } catch (err) {
+                console.error("Erro no Login do Google:", err);
+                showToast("Erro ao realizar login com o Google.", "error");
+            }
+        };
 
         // Form Submit Login / Cadastro
         window.handleAuthSubmit = async function(e) {
@@ -684,6 +713,19 @@
         window.handleSignOut = async function() {
             await signOut(auth);
             showToast("Sessão encerrada com segurança.", "info");
+        };
+
+        // Autenticação via Google Popup
+        window.handleGoogleSignIn = async function() {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                const user = result.user;
+                showToast(`Bem-vindo, ${user.displayName || 'Jogador'}!`, "success");
+                closeAuthModal();
+            } catch (error) {
+                console.error("Erro no login com Google:", error);
+                showToast("Falha ao entrar com a conta do Google.", "error");
+            }
         };
 
         // Renderização em tempo real das seções baseadas no banco em nuvem
