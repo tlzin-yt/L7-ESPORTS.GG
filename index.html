@@ -74,6 +74,9 @@
             background: #00FF66;
         }
     </style>
+</head>
+<body class="bg-brand-bg text-gray-200 antialiased">
+
     <!-- HEADER / NAVIGATION INSPIRADO NA LOUD -->
     <header class="sticky top-0 z-40 bg-[#121212] border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1221,4 +1224,816 @@
                 `;
             }
         }
-<!-- ... existing code -->
+
+        // AUTH FUNCTIONS EXPOSED GLOBALLY
+        window.handleLogin = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPassword').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                closeAuthModal();
+                showToast('Login efetuado com sucesso!', 'success');
+            } catch (err) {
+                showAuthAlert(getFirebaseErrorMessage(err.code), 'error');
+            }
+        };
+
+        window.handleRegister = async (e) => {
+            e.preventDefault();
+            const nick = document.getElementById('regNick').value;
+            const email = document.getElementById('regEmail').value;
+            const pass = document.getElementById('regPassword').value;
+
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                await updateProfile(cred.user, { displayName: nick });
+                closeAuthModal();
+                showToast('Conta criada! Bem-vindo à L7.', 'success');
+            } catch (err) {
+                showAuthAlert(getFirebaseErrorMessage(err.code), 'error');
+            }
+        };
+
+        window.handleGoogleLogin = async () => {
+            try {
+                await signInWithPopup(auth, googleProvider);
+                closeAuthModal();
+                showToast('Autenticado via Google!', 'success');
+            } catch (err) {
+                showAuthAlert('Falha no login com Google.', 'error');
+            }
+        };
+
+        window.handleLogout = async () => {
+            await signOut(auth);
+            showToast('Sessão encerrada.', 'info');
+        };
+
+        function getFirebaseErrorMessage(code) {
+            switch (code) {
+                case 'auth/invalid-credential':
+                case 'auth/user-not-found':
+                case 'auth/wrong-password':
+                    return 'E-mail ou senha incorretos.';
+                case 'auth/email-already-in-use':
+                    return 'Este e-mail já está cadastrado.';
+                case 'auth/weak-password':
+                    return 'A senha deve ter pelo menos 6 caracteres.';
+                default:
+                    return 'Erro de autenticação. Tente novamente.';
+            }
+        }
+    </script>
+
+    <!-- WEBSITE DATA MANAGEMENT & INTERACTIVITY -->
+    <script>
+        function getSiteDataLocal() {
+            const stored = localStorage.getItem('L7_SITE_DATA');
+            if (stored) {
+                try { return JSON.parse(stored); } catch(e) {}
+            }
+            return window.DEFAULT_DATA;
+        }
+
+        function getSiteData() {
+            return window.siteData || getSiteDataLocal();
+        }
+
+        // UPLOAD DE IMAGENS LOCAL DA GALERIA (BASE64)
+        window.handleImageUpload = function(input, targetInputId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(targetInputId).value = e.target.result;
+                    showToast('Imagem carregada da galeria!');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+
+        // RENDERIZAR TODO O CONTEÚDO DO SITE (EXPOSTO NO ESCOPO GLOBAL)
+        window.currentShopCategory = 'all';
+
+        window.filterShopCategory = function(category) {
+            window.currentShopCategory = category;
+            window.renderAllContent();
+        };
+
+        window.renderAllContent = function() {
+            const data = getSiteData();
+            if (!data) return;
+
+            // Render Hero Section Dynamic Text
+            if (data.hero) {
+                const heroTitle = document.getElementById('heroTitle');
+                const heroSubtitle = document.getElementById('heroSubtitle');
+                const heroBg = document.getElementById('heroBg');
+                
+                if (heroTitle && data.hero.title) heroTitle.innerHTML = data.hero.title;
+                if (heroSubtitle && data.hero.subtitle) heroSubtitle.innerText = data.hero.subtitle;
+                if (heroBg && data.hero.bg) heroBg.style.backgroundImage = `url('${data.hero.bg}')`;
+
+                const stV1 = document.getElementById('statVal1');
+                const stL1 = document.getElementById('statLabel1');
+                const stV2 = document.getElementById('statVal2');
+                const stL2 = document.getElementById('statLabel2');
+                const stV3 = document.getElementById('statVal3');
+                const stL3 = document.getElementById('statLabel3');
+                const stV4 = document.getElementById('statVal4');
+                const stL4 = document.getElementById('statLabel4');
+
+                if (stV1) stV1.innerText = data.hero.stV1 || "#1";
+                if (stL1) stL1.innerText = data.hero.stL1 || "Ranking de Guildas";
+                if (stV2) stV2.innerText = data.hero.stV2 || "15+";
+                if (stL2) stL2.innerText = data.hero.stL2 || "Títulos Oficiais";
+                if (stV3) stV3.innerText = data.hero.stV3 || "85%";
+                if (stL3) stL3.innerText = data.hero.stL3 || "Taxa de Booyah";
+                if (stV4) stV4.innerText = data.hero.stV4 || "500K+";
+                if (stL4) stL4.innerText = data.hero.stL4 || "Torcida Apaixonada";
+            }
+
+            // Render Players Section
+            const playersGrid = document.getElementById('playersGrid');
+            if (playersGrid && data.players) {
+                if (data.players.length === 0) {
+                    playersGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500 text-sm">Nenhum jogador cadastrado no momento.</div>`;
+                } else {
+                    playersGrid.innerHTML = data.players.map(player => `
+                        <div class="bg-brand-card border border-brand-border hover:border-brand-green/60 rounded-xl overflow-hidden group transition-all duration-300 hover:-translate-y-1 shadow-lg">
+                            <div class="h-64 overflow-hidden relative bg-black">
+                                <img src="${player.photo}" alt="${player.nick}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100">
+                                <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
+                                <span class="absolute top-3 left-3 bg-brand-green text-black font-display font-black text-[10px] uppercase px-2.5 py-1 clip-button">
+                                    ${player.role}
+                                </span>
+                            </div>
+                            <div class="p-5 relative -mt-6 z-10">
+                                <h3 class="font-display font-black text-2xl text-white uppercase tracking-wide group-hover:text-brand-green transition-colors">${player.nick}</h3>
+                                <span class="text-xs text-gray-400 block font-medium uppercase mb-4">${player.name}</span>
+                                
+                                <div class="grid grid-cols-2 gap-2 pt-3 border-t border-brand-border/60">
+                                    <div class="bg-black/50 p-2 rounded text-center border border-brand-border/40">
+                                        <span class="text-[9px] text-gray-400 uppercase block font-semibold">K/D Ratio</span>
+                                        <span class="font-display font-bold text-sm text-brand-green">${player.kd}</span>
+                                    </div>
+                                    <div class="bg-black/50 p-2 rounded text-center border border-brand-border/40">
+                                        <span class="text-[9px] text-gray-400 uppercase block font-semibold">Capa %</span>
+                                        <span class="font-display font-bold text-sm text-white">${player.headshot}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Render News Section (Exibe cards com resumo curto)
+            const newsGrid = document.getElementById('newsGrid');
+            if (newsGrid && data.news) {
+                if (data.news.length === 0) {
+                    newsGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500 text-sm">Nenhum comunicado publicado no momento.</div>`;
+                } else {
+                    newsGrid.innerHTML = data.news.map((item, index) => `
+                        <article onclick="openNewsArticleModal(${index})" class="bg-brand-card border border-brand-border rounded-xl overflow-hidden group hover:border-brand-green/60 transition-all duration-300 flex flex-col justify-between cursor-pointer">
+                            <div>
+                                <div class="h-48 overflow-hidden relative bg-black">
+                                    <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90">
+                                    <span class="absolute top-3 left-3 bg-brand-green text-black font-display font-bold text-[10px] uppercase px-2.5 py-0.5 clip-button">
+                                        ${item.tag || 'COMUNICADO'}
+                                    </span>
+                                </div>
+                                <div class="p-5">
+                                    <h3 class="font-display font-bold text-lg text-white uppercase group-hover:text-brand-green transition-colors leading-snug mb-2">${item.title}</h3>
+                                    <p class="text-xs text-gray-400 leading-relaxed line-clamp-3">${item.summary || item.content || ''}</p>
+                                </div>
+                            </div>
+                            <div class="p-5 pt-0 flex items-center justify-between text-xs text-brand-green font-bold">
+                                <span>Ler Matéria Completa</span>
+                                <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                        </article>
+                    `).join('');
+                }
+            }
+
+            // Render Trophies Section
+            const trophiesGrid = document.getElementById('trophiesGrid');
+            if (trophiesGrid && data.trophies) {
+                if (data.trophies.length === 0) {
+                    trophiesGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500 text-sm">Nenhum título cadastrado no momento.</div>`;
+                } else {
+                    trophiesGrid.innerHTML = data.trophies.map(t => `
+                        <div class="bg-brand-card border border-brand-border hover:border-brand-green/60 p-6 rounded-xl flex items-center gap-4 group transition-all">
+                            <div class="w-14 h-14 rounded-lg bg-black border border-brand-green/40 flex items-center justify-center text-brand-green text-2xl group-hover:scale-110 transition-transform flex-shrink-0">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] text-brand-green font-mono font-bold uppercase block">${t.year} • ${t.pos}</span>
+                                <h4 class="font-display font-black text-lg text-white uppercase group-hover:text-brand-green transition-colors">${t.title}</h4>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Render Shop Products (Cursos e Merch)
+            const productsGrid = document.getElementById('productsGrid');
+            if (productsGrid && data.shop) {
+                const filteredProducts = window.currentShopCategory === 'all' 
+                    ? data.shop 
+                    : data.shop.filter(p => (p.category || 'Vestuário') === window.currentShopCategory);
+
+                if (filteredProducts.length === 0) {
+                    productsGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500 text-sm">Nenhum curso ou produto encontrado nessa categoria.</div>`;
+                } else {
+                    productsGrid.innerHTML = filteredProducts.map(prod => {
+                        const isCourse = prod.category === 'Curso';
+                        return `
+                            <div class="bg-brand-card border border-brand-border rounded-lg overflow-hidden group flex flex-col justify-between hover:border-brand-green/60 transition-all">
+                                <div>
+                                    <div class="h-56 overflow-hidden relative bg-black">
+                                        <img src="${prod.img}" alt="${prod.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform filter brightness-90">
+                                        <span class="absolute top-3 left-3 ${isCourse ? 'bg-purple-600 text-white' : 'bg-brand-green text-black'} font-bold text-[10px] uppercase px-2 py-0.5 clip-button shadow-lg">
+                                            <i class="${isCourse ? 'fa-solid fa-graduation-cap' : 'fa-solid fa-fire'} mr-1"></i> ${prod.tag || (isCourse ? 'CURSO PRO' : 'LANÇAMENTO')}
+                                        </span>
+                                    </div>
+                                    <div class="p-5">
+                                        <span class="text-[10px] text-gray-500 uppercase font-mono font-bold block mb-1">
+                                            ${isCourse ? 'AULAS & TREINAMENTO L7' : 'PROTÓTIMO OFICIAL L7'}
+                                        </span>
+                                        <h3 class="font-display font-bold text-base text-white uppercase line-clamp-2 min-h-[3rem]">${prod.name}</h3>
+                                        <div class="flex items-center gap-2 mt-2">
+                                            <span class="font-display font-black text-2xl text-brand-green">R$ ${Number(prod.price).toFixed(2).replace('.', ',')}</span>
+                                            ${isCourse ? '<span class="text-[10px] text-gray-400 font-mono">(Acesso Vitalício)</span>' : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-5 pt-0">
+                                    <button onclick="addToCart(${prod.id})" class="w-full ${isCourse ? 'bg-purple-600 hover:bg-purple-500 text-white border-purple-500/50' : 'bg-brand-green/10 hover:bg-brand-green hover:text-black text-brand-green border-brand-green/40'} border font-display font-bold py-2.5 text-xs uppercase clip-button transition-all flex items-center justify-center gap-1.5">
+                                        <i class="${isCourse ? 'fa-solid fa-play' : 'fa-solid fa-cart-shopping'}"></i>
+                                        <span>${isCourse ? 'COMPRAR CURSO' : 'RESERVAR PRÉ-VENDA'}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+        };
+
+        // SISTEMA DE LEITURA COMPLETA DA NOTÍCIA (ESTILO PORTAL DE NOTÍCIAS)
+        window.openNewsArticleModal = function(index) {
+            const data = getSiteData();
+            if (!data.news || !data.news[index]) return;
+
+            const item = data.news[index];
+
+            document.getElementById('articleTag').innerText = item.tag || 'L7 NEWS';
+            document.getElementById('articleTitle').innerText = item.title;
+            document.getElementById('articleSummary').innerText = item.summary || '';
+            document.getElementById('articleImg').src = item.img;
+            
+            // Render de parágrafos da matéria
+            const bodyEl = document.getElementById('articleBody');
+            const rawContent = item.content || item.summary || 'Sem conteúdo adicional disponível.';
+            const paragraphs = rawContent.split('\n').filter(p => p.trim() !== '');
+            
+            bodyEl.innerHTML = paragraphs.map(p => `<p class="leading-relaxed text-gray-300 mb-4">${p}</p>`).join('');
+
+            // Render de outras notícias recomendadas no rodapé da leitura
+            const relatedGrid = document.getElementById('relatedNewsGrid');
+            if (relatedGrid) {
+                const otherNews = data.news.filter((_, idx) => idx !== index).slice(0, 2);
+                if (otherNews.length === 0) {
+                    relatedGrid.innerHTML = `<p class="text-xs text-gray-500 col-span-full">Nenhuma outra notícia no momento.</p>`;
+                } else {
+                    relatedGrid.innerHTML = otherNews.map(other => `
+                        <div onclick="closeNewsArticleModal(); setTimeout(() => openNewsArticleModal(${data.news.indexOf(other)}), 200);" class="bg-black/50 border border-brand-border p-3 rounded-lg flex items-center gap-3 cursor-pointer hover:border-brand-green transition-colors">
+                            <img src="${other.img}" class="w-16 h-16 object-cover rounded bg-black flex-shrink-0">
+                            <div>
+                                <span class="text-[10px] text-brand-green font-mono uppercase font-bold block">${other.tag || 'NEWS'}</span>
+                                <h4 class="font-display font-bold text-xs text-white uppercase line-clamp-2">${other.title}</h4>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            document.getElementById('newsArticleModal').classList.remove('hidden');
+        };
+
+        window.closeNewsArticleModal = function() {
+            document.getElementById('newsArticleModal').classList.add('hidden');
+        };
+
+        // FORMULÁRIO DE PENEIRA / SELETIVA
+        window.openTryoutModal = function() {
+            document.getElementById('tryoutModal').classList.remove('hidden');
+        };
+
+        window.closeTryoutModal = function() {
+            document.getElementById('tryoutModal').classList.add('hidden');
+        };
+
+        window.submitTryout = function(e) {
+            e.preventDefault();
+            const data = getSiteData();
+            if (!data.tryouts) data.tryouts = [];
+
+            const categoryRadio = document.querySelector('input[name="tryCategory"]:checked');
+            const application = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString('pt-BR'),
+                category: categoryRadio ? categoryRadio.value : 'Mobile',
+                nick: document.getElementById('tryNick').value,
+                ffId: document.getElementById('tryFfId').value,
+                fullName: document.getElementById('tryFullName').value,
+                phone: document.getElementById('tryPhone').value,
+                age: document.getElementById('tryAge').value,
+                role: document.getElementById('tryRole').value,
+                rank: document.getElementById('tryRank').value,
+                video: document.getElementById('tryVideo').value,
+                history: document.getElementById('tryHistory').value,
+                reason: document.getElementById('tryReason').value,
+                status: 'Pendente'
+            };
+
+            data.tryouts.push(application);
+            window.saveDataToFirebase(data);
+            
+            document.getElementById('tryoutForm').reset();
+            closeTryoutModal();
+            showToast('Inscrição enviada! Entraremos em contato.', 'success');
+        };
+
+        window.updateTryoutStatus = function(idx, status) {
+            const data = getSiteData();
+            if (data.tryouts && data.tryouts[idx]) {
+                data.tryouts[idx].status = status;
+                window.saveDataToFirebase(data);
+            }
+        };
+
+        window.deleteTryout = function(idx) {
+            const data = getSiteData();
+            if (data.tryouts) {
+                data.tryouts.splice(idx, 1);
+                window.saveDataToFirebase(data);
+            }
+        };
+
+        // CARRINHO DE COMPRAS
+        let cart = [];
+        window.addToCart = function(id) {
+            const data = getSiteData();
+            const prod = data.shop.find(p => p.id === id);
+            if (prod) {
+                cart.push(prod);
+                updateCartUI();
+                openCart();
+                showToast(`Reserva de "${prod.name}" adicionada!`);
+            }
+        };
+
+        function updateCartUI() {
+            const badge = document.getElementById('cartBadge');
+            const container = document.getElementById('cartItemsContainer');
+            const totalEl = document.getElementById('cartTotal');
+
+            if (cart.length > 0) {
+                badge.innerText = cart.length;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            if (container) {
+                if (cart.length === 0) {
+                    container.innerHTML = `<p class="text-gray-500 text-xs text-center py-8">Seu carrinho está vazio.</p>`;
+                } else {
+                    container.innerHTML = cart.map((item, index) => `
+                        <div class="flex items-center justify-between bg-black/40 p-3 rounded border border-brand-border">
+                            <div class="flex items-center gap-3">
+                                <img src="${item.img}" class="w-12 h-12 object-cover rounded">
+                                <div>
+                                    <h4 class="font-bold text-xs text-white uppercase line-clamp-1">${item.name}</h4>
+                                    <span class="text-xs text-brand-green font-bold">R$ ${Number(item.price).toFixed(2).replace('.', ',')}</span>
+                                </div>
+                            </div>
+                            <button onclick="removeFromCart(${index})" class="text-gray-500 hover:text-red-400 p-1">
+                                <i class="fa-solid fa-trash text-sm"></i>
+                            </button>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            const total = cart.reduce((acc, item) => acc + Number(item.price), 0);
+            if (totalEl) totalEl.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+
+        window.removeFromCart = function(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        };
+
+        window.openCart = function() { document.getElementById('cartDrawer').classList.remove('hidden'); };
+        window.closeCart = function() { document.getElementById('cartDrawer').classList.add('hidden'); };
+        window.checkout = function() {
+            if (cart.length === 0) return showToast('Carrinho vazio!', 'error');
+            showToast('Pedido registrado com sucesso! Entraremos em contato.');
+            cart = [];
+            updateCartUI();
+            closeCart();
+        };
+
+        // ADMIN MODAL & TAB LOGIC
+        window.openAdminModal = function() {
+            document.getElementById('adminModal').classList.remove('hidden');
+            window.loadAdminValues();
+        };
+        window.closeAdminModal = function() {
+            document.getElementById('adminModal').classList.add('hidden');
+        };
+
+        window.switchAdminTab = function(tabName) {
+            const tabs = ['hero', 'tryouts', 'players', 'news', 'shop', 'trophies'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`adminContent-${t}`);
+                if (el) el.classList.add('hidden');
+            });
+            const active = document.getElementById(`adminContent-${tabName}`);
+            if (active) active.classList.remove('hidden');
+        };
+
+        window.loadAdminValues = function() {
+            const data = getSiteData();
+            if (data.hero) {
+                document.getElementById('adminHeroTitle').value = data.hero.title || "";
+                document.getElementById('adminHeroSubtitle').value = data.hero.subtitle || "";
+                document.getElementById('adminHeroBg').value = data.hero.bg || "";
+                document.getElementById('stV1').value = data.hero.stV1 || "";
+                document.getElementById('stL1').value = data.hero.stL1 || "";
+                document.getElementById('stV2').value = data.hero.stV2 || "";
+                document.getElementById('stL2').value = data.hero.stL2 || "";
+                document.getElementById('stV3').value = data.hero.stV3 || "";
+                document.getElementById('stL3').value = data.hero.stL3 || "";
+                document.getElementById('stV4').value = data.hero.stV4 || "";
+                document.getElementById('stL4').value = data.hero.stL4 || "";
+            }
+            window.renderAdminLists();
+        };
+
+        window.renderAdminLists = function() {
+            const data = getSiteData();
+            
+            // Admin Tryouts List (Formulário de Recrutamento)
+            const tryList = document.getElementById('adminTryoutsList');
+            const tryBadge = document.getElementById('adminTryoutBadge');
+            const trySummary = document.getElementById('tryoutStatsSummary');
+            
+            const tryouts = data.tryouts || [];
+            if (tryBadge) tryBadge.innerText = tryouts.length;
+            if (trySummary) trySummary.innerText = `Total: ${tryouts.length} candidatos`;
+
+            if (tryList) {
+                if (tryouts.length === 0) {
+                    tryList.innerHTML = `<div class="bg-black/40 border border-brand-border p-8 rounded text-center text-gray-500 text-xs">Nenhuma candidatura recebida no momento.</div>`;
+                } else {
+                    tryList.innerHTML = tryouts.map((t, idx) => {
+                        const cleanPhone = t.phone ? t.phone.replace(/\D/g, '') : '';
+                        const waMsg = encodeURIComponent(`Olá ${t.nick}! Sou do departamento de eSports da L7 ESPORTS. Analisamos sua candidatura para a peneira (${t.category} - ${t.role}) e gostaríamos de te convidar para o teste!`);
+                        const statusColors = {
+                            'Pendente': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/40',
+                            'Aprovado': 'bg-green-500/20 text-green-300 border-green-500/40',
+                            'Rejeitado': 'bg-red-500/20 text-red-300 border-red-500/40'
+                        };
+                        const status = t.status || 'Pendente';
+
+                        return `
+                            <div class="bg-black/60 border border-brand-border p-5 rounded-lg space-y-3 relative hover:border-brand-green/40 transition-colors">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-brand-border/60 pb-3">
+                                    <div class="flex items-center gap-3">
+                                        <span class="font-display font-black text-xl text-white uppercase">${t.nick}</span>
+                                        <span class="text-xs text-gray-400">ID: ${t.ffId}</span>
+                                        <span class="bg-brand-green/10 text-brand-green border border-brand-green/30 text-[10px] font-bold px-2 py-0.5 rounded uppercase font-mono">${t.category}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] border px-2 py-0.5 rounded uppercase font-bold ${statusColors[status] || statusColors['Pendente']}">
+                                            ${status}
+                                        </span>
+                                        <span class="text-[10px] text-gray-500 font-mono">${t.date || ''}</span>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                                    <div><span class="text-[10px] text-gray-500 uppercase block">Nome Real:</span><span class="font-semibold text-gray-200">${t.fullName}</span></div>
+                                    <div><span class="text-[10px] text-gray-500 uppercase block">Idade:</span><span class="font-semibold text-gray-200">${t.age} anos</span></div>
+                                    <div><span class="text-[10px] text-gray-500 uppercase block">Função:</span><span class="font-bold text-brand-green">${t.role}</span></div>
+                                    <div><span class="text-[10px] text-gray-500 uppercase block">Patente:</span><span class="font-semibold text-gray-200">${t.rank}</span></div>
+                                </div>
+
+                                ${t.history ? `<div class="text-xs bg-black/40 p-2.5 rounded border border-brand-border/50"><span class="text-[10px] text-gray-500 uppercase block font-bold">Histórico Competitivo:</span><p class="text-gray-300 mt-0.5">${t.history}</p></div>` : ''}
+                                ${t.reason ? `<div class="text-xs bg-black/40 p-2.5 rounded border border-brand-border/50"><span class="text-[10px] text-gray-500 uppercase block font-bold">Motivo p/ entrar na L7:</span><p class="text-gray-300 mt-0.5">${t.reason}</p></div>` : ''}
+
+                                <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-brand-border/40">
+                                    <a href="${t.video}" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600/40 text-red-300 border border-red-500/40 px-3 py-1.5 rounded flex items-center gap-1.5 transition-colors">
+                                        <i class="fa-brands fa-youtube"></i> Ver Highlights
+                                    </a>
+
+                                    <div class="flex items-center gap-2">
+                                        <select onchange="updateTryoutStatus(${idx}, this.value)" class="bg-black border border-brand-border text-[11px] text-gray-300 p-1.5 rounded">
+                                            <option value="Pendente" ${status === 'Pendente' ? 'selected' : ''}>Pendente</option>
+                                            <option value="Aprovado" ${status === 'Aprovado' ? 'selected' : ''}>Aprovado p/ Teste</option>
+                                            <option value="Rejeitado" ${status === 'Rejeitado' ? 'selected' : ''}>Rejeitado</option>
+                                        </select>
+
+                                        ${cleanPhone ? `
+                                            <a href="https://wa.me/55${cleanPhone}?text=${waMsg}" target="_blank" class="text-xs bg-green-600 hover:bg-green-500 text-black font-bold px-3 py-1.5 rounded flex items-center gap-1">
+                                                <i class="fa-brands fa-whatsapp text-sm"></i> Chamar no Whats
+                                            </a>
+                                        ` : ''}
+
+                                        <button onclick="deleteTryout(${idx})" class="text-xs bg-red-900/30 hover:bg-red-800 text-red-300 p-1.5 rounded" title="Excluir candidatura">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+
+            // Admin Players List
+            const pList = document.getElementById('adminPlayersList');
+            if (pList && data.players) {
+                if (data.players.length === 0) {
+                    pList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhum jogador cadastrado.</div>`;
+                } else {
+                    pList.innerHTML = data.players.map((p, idx) => `
+                        <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border hover:border-brand-green/40 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <img src="${p.photo}" class="w-12 h-12 object-cover rounded bg-black">
+                                <div>
+                                    <span class="font-bold text-xs text-white uppercase block">${p.nick}</span>
+                                    <span class="text-[10px] text-brand-green font-mono">${p.role} • K/D: ${p.kd}</span>
+                                </div>
+                            </div>
+                            <button onclick="deletePlayer(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
+                                <i class="fa-solid fa-trash"></i>
+                                <span>Excluir</span>
+                            </button>
+                        </div>
+                    `).join('');
+                }
+            }
+            
+            // Admin News List
+            const nList = document.getElementById('adminNewsList');
+            if (nList && data.news) {
+                if (data.news.length === 0) {
+                    nList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhuma notícia cadastrada.</div>`;
+                } else {
+                    nList.innerHTML = data.news.map((n, idx) => `
+                        <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border hover:border-brand-green/40 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <img src="${n.img}" class="w-12 h-12 object-cover rounded bg-black">
+                                <div>
+                                    <span class="font-bold text-xs text-white uppercase block line-clamp-1">${n.title}</span>
+                                    <span class="text-[10px] text-brand-green font-mono">${n.tag || 'LBFF'}</span>
+                                </div>
+                            </div>
+                            <button onclick="deleteNews(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
+                                <i class="fa-solid fa-trash"></i>
+                                <span>Excluir</span>
+                            </button>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Admin Shop List (Com Opção de Excluir Produtos Existentes)
+            const sList = document.getElementById('adminShopList');
+            if (sList && data.shop) {
+                if (data.shop.length === 0) {
+                    sList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhum produto cadastrado.</div>`;
+                } else {
+                    sList.innerHTML = data.shop.map((prod, idx) => `
+                        <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border hover:border-brand-green/40 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <img src="${prod.img}" class="w-12 h-12 object-cover rounded bg-black">
+                                <div>
+                                    <span class="font-bold text-xs text-white uppercase block line-clamp-1">${prod.name}</span>
+                                    <span class="text-[10px] text-brand-green font-mono">R$ ${Number(prod.price).toFixed(2)} • ${prod.category || 'Item'}</span>
+                                </div>
+                            </div>
+                            <button onclick="deleteProduct(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
+                                <i class="fa-solid fa-trash"></i>
+                                <span>Excluir</span>
+                            </button>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // Admin Trophies List
+            const tList = document.getElementById('adminTrophiesList');
+            if (tList && data.trophies) {
+                if (data.trophies.length === 0) {
+                    tList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhum título cadastrado.</div>`;
+                } else {
+                    tList.innerHTML = data.trophies.map((tr, idx) => `
+                        <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border hover:border-brand-green/40 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded bg-black border border-brand-green flex items-center justify-center text-brand-green text-xs">
+                                    <i class="fa-solid fa-trophy"></i>
+                                </div>
+                                <div>
+                                    <span class="font-bold text-xs text-white uppercase block">${tr.title}</span>
+                                    <span class="text-[10px] text-brand-green font-mono">${tr.year} - ${tr.pos}</span>
+                                </div>
+                            </div>
+                            <button onclick="deleteTrophy(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
+                                <i class="fa-solid fa-trash"></i>
+                                <span>Excluir</span>
+                            </button>
+                        </div>
+                    `).join('');
+                }
+            }
+        };
+
+        // SALVAR HERO E STATS
+        window.saveHeroChanges = function() {
+            const data = getSiteData();
+            data.hero = {
+                title: document.getElementById('adminHeroTitle').value,
+                subtitle: document.getElementById('adminHeroSubtitle').value,
+                bg: document.getElementById('adminHeroBg').value,
+                stV1: document.getElementById('stV1').value,
+                stL1: document.getElementById('stL1').value,
+                stV2: document.getElementById('stV2').value,
+                stL2: document.getElementById('stL2').value,
+                stV3: document.getElementById('stV3').value,
+                stL3: document.getElementById('stL3').value,
+                stV4: document.getElementById('stV4').value,
+                stL4: document.getElementById('stL4').value
+            };
+            window.saveDataToFirebase(data);
+        };
+
+        // ADMIN FORM SHOW/HIDE & SAVES
+        window.openPlayerForm = function() { document.getElementById('playerForm').classList.remove('hidden'); };
+        window.closePlayerForm = function() { document.getElementById('playerForm').classList.add('hidden'); };
+        window.savePlayer = function() {
+            const data = getSiteData();
+            const p = {
+                id: Date.now(),
+                nick: document.getElementById('pNick').value,
+                name: document.getElementById('pName').value,
+                role: document.getElementById('pRole').value,
+                kd: document.getElementById('pKd').value || '4.50',
+                headshot: document.getElementById('pHeadshot').value || '75%',
+                photo: document.getElementById('pPhoto').value || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=600&auto=format&fit=crop'
+            };
+            if (!p.nick) return showToast('Preencha o Nick', 'error');
+            if (!data.players) data.players = [];
+            data.players.push(p);
+            window.saveDataToFirebase(data);
+            closePlayerForm();
+        };
+        window.deletePlayer = function(idx) {
+            const data = getSiteData();
+            data.players.splice(idx, 1);
+            window.saveDataToFirebase(data);
+        };
+
+        // NEWS ADMIN
+        window.openNewsForm = function() { document.getElementById('newsForm').classList.remove('hidden'); };
+        window.closeNewsForm = function() { document.getElementById('newsForm').classList.add('hidden'); };
+        window.saveNews = function() {
+            const data = getSiteData();
+            const n = {
+                id: Date.now(),
+                title: document.getElementById('nTitle').value,
+                tag: document.getElementById('nTag').value || 'LBFF 2026',
+                summary: document.getElementById('nSummary').value,
+                content: document.getElementById('nContent').value,
+                img: document.getElementById('nImg').value || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop'
+            };
+            if (!n.title) return showToast('Preencha o Título', 'error');
+            if (!data.news) data.news = [];
+            data.news.push(n);
+            window.saveDataToFirebase(data);
+            closeNewsForm();
+        };
+        window.deleteNews = function(idx) {
+            const data = getSiteData();
+            data.news.splice(idx, 1);
+            window.saveDataToFirebase(data);
+        };
+
+        // SHOP ADMIN
+        window.openProductForm = function() { document.getElementById('productForm').classList.remove('hidden'); };
+        window.closeProductForm = function() { document.getElementById('productForm').classList.add('hidden'); };
+        window.saveProduct = function() {
+            const data = getSiteData();
+            const prod = {
+                id: Date.now(),
+                name: document.getElementById('prodName').value,
+                price: parseFloat(document.getElementById('prodPrice').value) || 99.90,
+                category: document.getElementById('prodCategory').value || 'Curso',
+                tag: document.getElementById('prodTag').value || 'CURSO PRO',
+                img: document.getElementById('prodImg').value || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop'
+            };
+            if (!prod.name) return showToast('Preencha o Nome do Curso/Produto', 'error');
+            if (!data.shop) data.shop = [];
+            data.shop.push(prod);
+            window.saveDataToFirebase(data);
+            closeProductForm();
+        };
+        window.deleteProduct = function(idx) {
+            const data = getSiteData();
+            data.shop.splice(idx, 1);
+            window.saveDataToFirebase(data);
+        };
+
+        // TROPHIES ADMIN
+        window.openTrophyForm = function() { document.getElementById('trophyForm').classList.remove('hidden'); };
+        window.closeTrophyForm = function() { document.getElementById('trophyForm').classList.add('hidden'); };
+        window.saveTrophy = function() {
+            const data = getSiteData();
+            const tr = {
+                id: Date.now(),
+                title: document.getElementById('trTitle').value,
+                year: document.getElementById('trYear').value || '2026',
+                pos: document.getElementById('trPos').value || 'CAMPEÃO #1'
+            };
+            if (!tr.title) return showToast('Preencha o Nome do Torneio', 'error');
+            if (!data.trophies) data.trophies = [];
+            data.trophies.push(tr);
+            window.saveDataToFirebase(data);
+            closeTrophyForm();
+        };
+        window.deleteTrophy = function(idx) {
+            const data = getSiteData();
+            data.trophies.splice(idx, 1);
+            window.saveDataToFirebase(data);
+        };
+
+        // AUTH MODAL & HELPERS
+        window.openAuthModal = function(tab) {
+            document.getElementById('authModal').classList.remove('hidden');
+            switchAuthTab(tab);
+        };
+        window.closeAuthModal = function() {
+            document.getElementById('authModal').classList.add('hidden');
+            document.getElementById('authAlert').classList.add('hidden');
+        };
+        window.switchAuthTab = function(tab) {
+            if (tab === 'login') {
+                document.getElementById('loginForm').classList.remove('hidden');
+                document.getElementById('registerForm').classList.add('hidden');
+                document.getElementById('tabLogin').classList.add('border-brand-green', 'text-white');
+                document.getElementById('tabRegister').classList.remove('border-brand-green', 'text-white');
+            } else {
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('registerForm').classList.remove('hidden');
+                document.getElementById('tabRegister').classList.add('border-brand-green', 'text-white');
+                document.getElementById('tabLogin').classList.remove('border-brand-green', 'text-white');
+            }
+        };
+
+        function showAuthAlert(msg, type) {
+            const el = document.getElementById('authAlert');
+            el.innerText = msg;
+            el.className = `mb-4 p-3 rounded text-xs font-semibold ${type === 'error' ? 'bg-red-900/50 text-red-200 border border-red-700' : 'bg-green-900/50 text-green-200 border border-green-700'}`;
+            el.classList.remove('hidden');
+        }
+
+        function showToast(msg, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-5 right-5 z-50 p-4 rounded text-xs font-bold uppercase font-mono shadow-2xl transition-all flex items-center gap-2 border ${type === 'error' ? 'bg-red-950 text-red-300 border-red-700' : 'bg-brand-card text-brand-green border-brand-green'}`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${msg}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // MOBILE MENU TOGGLE
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        if (mobileBtn) {
+            mobileBtn.addEventListener('click', () => {
+                document.getElementById('mobileMenu').classList.toggle('hidden');
+            });
+        }
+
+        // INITIALIZE RENDER
+        document.addEventListener('DOMContentLoaded', () => {
+            window.renderAllContent();
+            document.getElementById('openCartBtn').addEventListener('click', openCart);
+        });
+    </script>
+</body>
+</html>
