@@ -246,32 +246,15 @@
                             <span class="font-display font-bold text-xl text-brand-green block">100%</span>
                             <span class="text-[10px] text-gray-400 uppercase">Foco no Competitivo</span>
                         </div>
-                        <div class="bg-black/60 border border-brand-border p-3 rounded clip-button">
-                            <span class="font-display font-bold text-xl text-white block">24/7</span>
-                            <span class="text-[10px] text-gray-400 uppercase">Rotina Profissional</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative">
-                    <div class="w-full h-80 bg-brand-card border border-brand-border rounded-lg overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover filter brightness-75">
-                        <div class="absolute inset-0 bg-gradient-to-t from-brand-bg via-transparent to-transparent"></div>
-                        <div class="absolute bottom-6 left-6 right-6">
-                            <span class="font-display font-black text-2xl text-white uppercase">O TOPO É O NOSSO HABITAT</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. PARCERIAS & PATROCINADORES -->
+            <!-- 2. PARCERIAS & PATROCINADORES COM DISCORD -->
             <div id="parcerias" class="pt-10 border-t border-brand-border/60">
-                <div class="text-center max-w-2xl mx-auto mb-10">
-                    <span class="text-brand-green font-mono text-xs uppercase tracking-widest block mb-1">// PATROCINADORES OFICIAIS</span>
-                    <h3 class="font-display font-black text-3xl text-white uppercase">PARCERIAS <span class="text-brand-green">DE ELITE</span></h3>
-                    <p class="text-gray-400 text-xs mt-2">Marcas que impulsionam o desempenho da L7 ESPORTS nos campeonatos.</p>
+                <div class="text-center max-w-2xl mx-auto mb-8">
+                    <span class="text-brand-green font-mono text-xs uppercase tracking-widest block mb-1">// PATROCINADORES & PARCERIAS</span>
+                    <h3 class="font-display font-black text-3xl text-white uppercase">SEJA UM PARCEIRO <span class="text-brand-green">L7 ESPORTS</span></h3>
+                    <p class="text-gray-400 text-xs mt-2">Sua marca junto da maior guilda de Free Fire. Abram propostas diretamente no nosso Discord oficial.</p>
                 </div>
 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                     <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
                         <i class="fa-solid fa-microchip text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
                         <span class="font-display font-bold text-sm text-white uppercase">CYBER TECH</span>
@@ -280,7 +263,7 @@
                     <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
                         <i class="fa-solid fa-bolt text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
                         <span class="font-display font-bold text-sm text-white uppercase">ENERGY RUSH</span>
-                        <span class="text-[10px] text-gray-500 uppercase">Energeticos Gamer</span>
+                        <span class="text-[10px] text-gray-500 uppercase">Energéticos Gamer</span>
                     </div>
                     <div class="bg-brand-card border border-brand-border hover:border-brand-green/50 p-6 rounded-lg flex flex-col items-center justify-center text-center group transition-all">
                         <i class="fa-solid fa-headset text-3xl text-gray-500 group-hover:text-brand-green transition-colors mb-2"></i>
@@ -292,6 +275,23 @@
                         <span class="font-display font-bold text-sm text-white uppercase">FIBRA ULTRA</span>
                         <span class="text-[10px] text-gray-500 uppercase">Conexão 1Gbps</span>
                     </div>
+                </div>
+
+                <!-- CARD DE PARCERIA NO DISCORD -->
+                <div class="bg-gradient-to-r from-indigo-950/60 via-brand-card to-black border border-indigo-500/40 p-6 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-lg bg-indigo-600/30 border border-indigo-400 flex items-center justify-center text-indigo-300 text-2xl">
+                            <i class="fa-brands fa-discord"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-display font-bold text-white text-base uppercase">Quer patrocinar a L7 ESPORTS?</h4>
+                            <p class="text-gray-300 text-xs">Abra um ticket na aba <strong>#parcerias</strong> do nosso Discord para falar com a diretoria.</p>
+                        </div>
+                    </div>
+                    <a href="https://discord.gg" target="_blank" rel="noopener noreferrer" class="whitespace-nowrap bg-indigo-600 hover:bg-indigo-500 text-white font-display font-bold px-6 py-3 clip-button text-xs uppercase transition-all flex items-center gap-2">
+                        <i class="fa-brands fa-discord text-base"></i>
+                        <span>Abrir Ticket no Discord</span>
+                    </a>
                 </div>
             </div>
 
@@ -861,20 +861,33 @@
                 <!-- TAB 4: SHOP -->
                 <div id="adminContent-shop" class="hidden space-y-6">
                     <div class="flex justify-between items-center border-b border-brand-border pb-2">
-                        <h3 class="font-display font-bold text-lg text-white">Gerenciar Produtos da Loja</h3>
+                        <h3 class="font-display font-bold text-lg text-white">Gerenciar Produtos & Cursos da Loja</h3>
                         <button onclick="openProductForm()" class="bg-brand-green text-black font-bold text-xs py-2 px-4 rounded uppercase">
-                            + Novo Produto
+                            + Novo Produto / Curso
                         </button>
                     </div>
 
                     <div id="productForm" class="hidden bg-black/60 p-4 border border-brand-border rounded-lg space-y-3">
-                        <h4 id="productFormTitle" class="font-bold text-xs uppercase text-brand-green">Novo Produto</h4>
+                        <h4 id="productFormTitle" class="font-bold text-xs uppercase text-brand-green">Novo Produto / Curso</h4>
                         <input type="hidden" id="prodId">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input type="text" id="prodName" placeholder="Nome do Produto" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
-                            <input type="number" step="0.01" id="prodPrice" placeholder="Preço (ex: 129.90)" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
-                            <input type="text" id="prodTag" placeholder="Tag (Lançamento, Edição Limitada)" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
-                            <input type="text" id="prodImg" placeholder="URL da Imagem do Produto" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
+                            <input type="text" id="prodName" placeholder="Nome do Produto/Curso" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
+                            <input type="number" step="0.01" id="prodPrice" placeholder="Preço (ex: 97.90)" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
+                            <select id="prodCategory" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
+                                <option value="Curso">Categoria: Curso & Mentoria</option>
+                                <option value="Vestuário">Categoria: Vestuário</option>
+                                <option value="Equipamento">Categoria: Equipamento</option>
+                            </select>
+                            <input type="text" id="prodTag" placeholder="Tag (ex: CURSO PRO, PRÉ-VENDA)" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
+                            <div class="col-span-1 sm:col-span-2">
+                                <div class="flex gap-2">
+                                    <input type="text" id="prodImg" placeholder="URL da Capa do Curso/Produto" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
+                                    <label class="bg-brand-green text-black font-bold text-xs px-3 flex items-center justify-center rounded cursor-pointer whitespace-nowrap">
+                                        <i class="fa-solid fa-upload mr-1"></i> Galeria
+                                        <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'prodImg')">
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                         <div class="flex gap-2 justify-end">
                             <button onclick="closeProductForm()" class="text-xs text-gray-400 px-3 py-1.5">Cancelar</button>
@@ -883,7 +896,7 @@
                     </div>
 
                     <div id="adminShopList" class="space-y-3">
-                        <!-- Admin Shop List -->
+                        <!-- Admin Shop List Rendered via JS -->
                     </div>
                 </div>
 
@@ -1405,21 +1418,31 @@
                 }
             }
             
-            // Admin Players List
-            const pList = document.getElementById('adminPlayersList');
-            if (pList && data.players) {
-                pList.innerHTML = data.players.map((p, idx) => `
-                    <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border">
-                        <div class="flex items-center gap-3">
-                            <img src="${p.photo}" class="w-10 h-10 object-cover rounded">
-                            <div>
-                                <span class="font-bold text-xs text-white uppercase block">${p.nick}</span>
-                                <span class="text-[10px] text-brand-green">${p.role}</span>
+            // Admin Shop List (Com Opção de Excluir Produtos Existentes)
+            const sList = document.getElementById('adminShopList');
+            if (sList && data.shop) {
+                if (data.shop.length === 0) {
+                    sList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhum produto cadastrado na loja.</div>`;
+                } else {
+                    sList.innerHTML = data.shop.map((prod, idx) => `
+                        <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border hover:border-brand-green/40 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <img src="${prod.img}" class="w-12 h-12 object-cover rounded bg-black">
+                                <div>
+                                    <span class="font-bold text-xs text-white uppercase block line-clamp-1">${prod.name}</span>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <span class="text-[10px] text-brand-green font-bold">R$ ${Number(prod.price).toFixed(2)}</span>
+                                        <span class="text-[9px] bg-brand-border px-1.5 py-0.2 rounded text-gray-300 font-mono">${prod.category || 'Vestuário'}</span>
+                                    </div>
+                                </div>
                             </div>
+                            <button onclick="deleteProduct(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
+                                <i class="fa-solid fa-trash"></i>
+                                <span>Excluir</span>
+                            </button>
                         </div>
-                        <button onclick="deletePlayer(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1 px-3 rounded">Excluir</button>
-                    </div>
-                `).join('');
+                    `).join('');
+                }
             }
         };
 
