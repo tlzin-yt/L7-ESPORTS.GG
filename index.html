@@ -165,8 +165,9 @@
                 <span>TEMPORADA 2026 • GUILDA PROFISSIONAL FF</span>
             </div>
 
-            <h1 id="heroTitle" class="font-display font-black text-5xl sm:text-7xl lg:text-8xl tracking-tight text-white uppercase mb-4 leading-none">
-                DOMINANDO O <span class="text-brand-green text-glow">MAPA</span>
+            <!-- TÍTULO EDITÁVEL SEM NECESSIDADE DE CODIGO HTML -->
+            <h1 id="heroTitle" class="font-display font-black text-4xl sm:text-6xl lg:text-7xl tracking-tight text-white uppercase mb-4 leading-none">
+                O FUTURO DO FREE FIRE É A <span class="text-brand-green text-glow">L7 ESPORTS</span>
             </h1>
 
             <p id="heroSubtitle" class="max-w-2xl mx-auto text-gray-300 text-base sm:text-xl mb-10 font-sans font-normal leading-relaxed">
@@ -184,23 +185,23 @@
                 </a>
             </div>
 
-            <!-- QUICK STATS -->
+            <!-- QUICK STATS EDITÁVEIS NO ADMIN -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mt-16 pt-10 border-t border-brand-border/60">
                 <div class="bg-brand-card/50 border border-brand-border p-4 rounded-lg backdrop-blur-sm">
-                    <span class="font-display font-bold text-3xl text-brand-green block">#1</span>
-                    <span class="text-xs text-gray-400 uppercase font-semibold">Ranking de Guildas</span>
+                    <span id="statVal1" class="font-display font-bold text-3xl text-brand-green block">#1</span>
+                    <span id="statLabel1" class="text-xs text-gray-400 uppercase font-semibold">Ranking de Guildas</span>
                 </div>
                 <div class="bg-brand-card/50 border border-brand-border p-4 rounded-lg backdrop-blur-sm">
-                    <span class="font-display font-bold text-3xl text-white block">15+</span>
-                    <span class="text-xs text-gray-400 uppercase font-semibold">Títulos Oficiais</span>
+                    <span id="statVal2" class="font-display font-bold text-3xl text-white block">15+</span>
+                    <span id="statLabel2" class="text-xs text-gray-400 uppercase font-semibold">Títulos Oficiais</span>
                 </div>
                 <div class="bg-brand-card/50 border border-brand-border p-4 rounded-lg backdrop-blur-sm">
-                    <span class="font-display font-bold text-3xl text-brand-green block">85%</span>
-                    <span class="text-xs text-gray-400 uppercase font-semibold">Taxa de Booyah</span>
+                    <span id="statVal3" class="font-display font-bold text-3xl text-brand-green block">85%</span>
+                    <span id="statLabel3" class="text-xs text-gray-400 uppercase font-semibold">Taxa de Booyah</span>
                 </div>
                 <div class="bg-brand-card/50 border border-brand-border p-4 rounded-lg backdrop-blur-sm">
-                    <span class="font-display font-bold text-3xl text-white block">500K+</span>
-                    <span class="text-xs text-gray-400 uppercase font-semibold">Torcida Apaixonada</span>
+                    <span id="statVal4" class="font-display font-bold text-3xl text-white block">500K+</span>
+                    <span id="statLabel4" class="text-xs text-gray-400 uppercase font-semibold">Torcida Apaixonada</span>
                 </div>
             </div>
         </div>
@@ -424,69 +425,61 @@
     <div id="adminModal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/90 backdrop-blur-xl hidden">
         <div class="bg-brand-card border-2 border-purple-500 w-full max-w-5xl h-[90vh] flex flex-col rounded-xl overflow-hidden shadow-2xl">
             
-            <!-- ADMIN HEADER -->
-            <div class="bg-black/80 px-6 py-4 border-b border-purple-500/40 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="bg-purple-600 text-white font-black px-2.5 py-1 text-xs rounded uppercase tracking-widest animate-pulse">
-                        SUPER ADMIN
-                    </div>
-                    <h2 class="font-display font-black text-xl text-white uppercase">Painel de Gerenciamento <span class="text-purple-400">L7 ESPORTS</span></h2>
-                </div>
-                <div class="flex items-center gap-4">
-                    <button onclick="resetToDefaultData()" class="text-xs bg-red-900/40 hover:bg-red-900 border border-red-500 text-red-300 px-3 py-1.5 rounded transition-all">
-                        <i class="fa-solid fa-rotate-left mr-1"></i> Restaurar Padrões
-                    </button>
-                    <button onclick="closeAdminModal()" class="text-gray-400 hover:text-white">
-                        <i class="fa-solid fa-xmark text-2xl"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- ADMIN TABS -->
-            <div class="flex bg-black/50 border-b border-brand-border px-6 overflow-x-auto">
-                <button onclick="switchAdminTab('hero')" id="adminTab-hero" class="py-3 px-4 font-display font-bold text-xs uppercase tracking-wider text-purple-400 border-b-2 border-purple-500 whitespace-nowrap">
-                    <i class="fa-solid fa-display mr-1.5"></i> Hero & Banners
-                </button>
-                <button onclick="switchAdminTab('players')" id="adminTab-players" class="py-3 px-4 font-display font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white whitespace-nowrap">
-                    <i class="fa-solid fa-users mr-1.5"></i> Elenco FF
-                </button>
-                <button onclick="switchAdminTab('news')" id="adminTab-news" class="py-3 px-4 font-display font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white whitespace-nowrap">
-                    <i class="fa-solid fa-newspaper mr-1.5"></i> Notícias
-                </button>
-                <button onclick="switchAdminTab('shop')" id="adminTab-shop" class="py-3 px-4 font-display font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white whitespace-nowrap">
-                    <i class="fa-solid fa-cart-shopping mr-1.5"></i> Loja
-                </button>
-                <button onclick="switchAdminTab('trophies')" id="adminTab-trophies" class="py-3 px-4 font-display font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white whitespace-nowrap">
-                    <i class="fa-solid fa-trophy mr-1.5"></i> Conquistas
-                </button>
-            </div>
-
-            <!-- ADMIN BODY CONTENT -->
-            <div class="p-6 overflow-y-auto flex-1 bg-black/30">
-                
-                <!-- TAB 1: HERO & BANNERS -->
+                <!-- TAB 1: HERO & BANNERS E STATS -->
                 <div id="adminContent-hero" class="space-y-6">
-                    <h3 class="font-display font-bold text-lg text-white border-b border-brand-border pb-2">Editar Hero Section</h3>
+                    <h3 class="font-display font-bold text-lg text-white border-b border-brand-border pb-2">Editar Textos & Banners (Visual Front-End)</h3>
                     <div class="grid grid-cols-1 gap-4">
                         <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Título Principal</label>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Título Principal (Digite sem códigos)</label>
                             <input type="text" id="adminHeroTitle" class="w-full bg-black border border-brand-border rounded p-3 text-sm text-white focus:border-purple-500">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Subtítulo</label>
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Subtítulo / Apresentação</label>
                             <textarea id="adminHeroSubtitle" rows="3" class="w-full bg-black border border-brand-border rounded p-3 text-sm text-white focus:border-purple-500"></textarea>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">URL Imagem de Fundo (Background)</label>
-                            <input type="text" id="adminHeroBg" class="w-full bg-black border border-brand-border rounded p-3 text-sm text-white focus:border-purple-500">
+                            <label class="block text-xs font-bold text-gray-400 uppercase mb-1">Imagem de Fundo (Selecione da Galeria ou Insira URL)</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="adminHeroBg" placeholder="URL da foto..." class="w-full bg-black border border-brand-border rounded p-3 text-sm text-white focus:border-purple-500">
+                                <label class="bg-brand-green text-black font-bold text-xs px-4 flex items-center justify-center rounded cursor-pointer uppercase hover:bg-white transition-colors">
+                                    <i class="fa-solid fa-image mr-1"></i> Galeria
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'adminHeroBg')">
+                                </label>
+                            </div>
                         </div>
-                        <button onclick="saveHeroChanges()" class="bg-purple-600 hover:bg-purple-500 text-white font-display font-bold py-3 px-6 rounded uppercase tracking-wider text-xs flex items-center justify-center gap-2 w-fit">
-                            <i class="fa-solid fa-floppy-disk"></i> Salvar Banners
+
+                        <!-- EDITAR ESTATÍSTICAS DA HERO -->
+                        <h4 class="font-display font-bold text-sm text-brand-green uppercase mt-4">Cards de Estatísticas (Stats Bar)</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="bg-black/40 p-2 rounded border border-brand-border">
+                                <span class="text-[10px] text-gray-400">Card 1 (Verde)</span>
+                                <input type="text" id="stV1" placeholder="#1" class="w-full bg-black p-1.5 text-xs text-white rounded mb-1">
+                                <input type="text" id="stL1" placeholder="RANKING DE GUILDAS" class="w-full bg-black p-1.5 text-xs text-white rounded">
+                            </div>
+                            <div class="bg-black/40 p-2 rounded border border-brand-border">
+                                <span class="text-[10px] text-gray-400">Card 2 (Branco)</span>
+                                <input type="text" id="stV2" placeholder="15+" class="w-full bg-black p-1.5 text-xs text-white rounded mb-1">
+                                <input type="text" id="stL2" placeholder="TÍTULOS OFICIAIS" class="w-full bg-black p-1.5 text-xs text-white rounded">
+                            </div>
+                            <div class="bg-black/40 p-2 rounded border border-brand-border">
+                                <span class="text-[10px] text-gray-400">Card 3 (Verde)</span>
+                                <input type="text" id="stV3" placeholder="85%" class="w-full bg-black p-1.5 text-xs text-white rounded mb-1">
+                                <input type="text" id="stL3" placeholder="TAXA DE BOOYAH" class="w-full bg-black p-1.5 text-xs text-white rounded">
+                            </div>
+                            <div class="bg-black/40 p-2 rounded border border-brand-border">
+                                <span class="text-[10px] text-gray-400">Card 4 (Branco)</span>
+                                <input type="text" id="stV4" placeholder="500K+" class="w-full bg-black p-1.5 text-xs text-white rounded mb-1">
+                                <input type="text" id="stL4" placeholder="TORCIDA APAIXONADA" class="w-full bg-black p-1.5 text-xs text-white rounded">
+                            </div>
+                        </div>
+
+                        <button onclick="saveHeroChanges()" class="bg-purple-600 hover:bg-purple-500 text-white font-display font-bold py-3 px-6 rounded uppercase tracking-wider text-xs flex items-center justify-center gap-2 w-fit mt-2">
+                            <i class="fa-solid fa-floppy-disk"></i> Salvar no Firebase
                         </button>
                     </div>
                 </div>
 
-                <!-- TAB 2: PLAYERS -->
+                <!-- TAB 2: PLAYERS (COM UPLOAD DE GALERIA) -->
                 <div id="adminContent-players" class="hidden space-y-6">
                     <div class="flex justify-between items-center border-b border-brand-border pb-2">
                         <h3 class="font-display font-bold text-lg text-white">Gerenciar Jogadores</h3>
@@ -505,7 +498,15 @@
                             <input type="text" id="pRole" placeholder="Função (Capitão, Rush, Support)" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
                             <input type="text" id="pKd" placeholder="K/D Ratio (ex: 4.85)" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
                             <input type="text" id="pHeadshot" placeholder="Capa % (ex: 78%)" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
-                            <input type="text" id="pPhoto" placeholder="URL da Foto do Jogador" class="bg-black border border-brand-border p-2 rounded text-xs text-white">
+                            <div>
+                                <div class="flex gap-2">
+                                    <input type="text" id="pPhoto" placeholder="URL da Foto do Jogador" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
+                                    <label class="bg-brand-green text-black font-bold text-xs px-3 flex items-center justify-center rounded cursor-pointer whitespace-nowrap">
+                                        <i class="fa-solid fa-upload mr-1"></i> Galeria
+                                        <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'pPhoto')">
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                         <div class="flex gap-2 justify-end">
                             <button onclick="closePlayerForm()" class="text-xs text-gray-400 px-3 py-1.5">Cancelar</button>
@@ -626,6 +627,33 @@
             setDoc, 
             onSnapshot 
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // DEFAULT DATA DEFINED AT MODULE TOP TO PREVENT REFERENCE ERRORS
+        const DEFAULT_DATA = {
+            hero: {
+                title: "O FUTURO DO FREE FIRE É A <span class='text-brand-green text-glow'>L7 ESPORTS</span>",
+                subtitle: "A L7 ESPORTS é a organização elite de Free Fire. Foco em alta performance, competições oficiais da LBFF e formação de pro players lendários.",
+                bg: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1920&auto=format&fit=crop",
+                stV1: "#1", stL1: "Ranking de Guildas",
+                stV2: "15+", stL2: "Títulos Oficiais",
+                stV3: "85%", stL3: "Taxa de Booyah",
+                stV4: "500K+", stL4: "Torcida Apaixonada"
+            },
+            players: [
+                { id: 1, nick: "L7_NOBRU", name: "Gabriel", role: "Capitão / IGL", kd: "4.92", headshot: "82%", photo: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=600&auto=format&fit=crop" },
+                { id: 2, nick: "L7_CORINGA", name: "Lucas", role: "Rush 1", kd: "5.10", headshot: "89%", photo: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600&auto=format&fit=crop" }
+            ],
+            news: [
+                { id: 1, title: "L7 ESPORTS AVANÇA PARA A GRANDE FINAL DA LBFF!", tag: "LBFF 2026", summary: "Com uma sequência épica de 3 Booyahs no mapa Bermudas, a equipe garantiu a liderança isolada.", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" }
+            ],
+            shop: [
+                { id: 101, name: "Manta Oficial L7 Pro 2026", price: 149.90, tag: "NOVA EDICÃO", img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop" }
+            ],
+            trophies: [
+                { id: 1, title: "LIGA BOOYAH MASTER", year: "2026", pos: "CAMPEÃO #1" }
+            ]
+        };
+        window.DEFAULT_DATA = DEFAULT_DATA;
 
         // FIREBASE CONFIG SUBMITTED BY CLIENT
         const firebaseConfig = {
@@ -785,38 +813,6 @@
 
     <!-- WEBSITE DATA MANAGEMENT & INTERACTIVITY -->
     <script>
-        // INITIAL DEFAULT DATA
-        const DEFAULT_DATA = {
-            hero: {
-                title: "DOMINANDO O <span class='text-brand-green text-glow'>MAPA</span>",
-                subtitle: "A L7 ESPORTS é a organização elite de Free Fire. Foco em alta performance, competições oficiais da LBFF e formação de pro players lendários.",
-                bg: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1920&auto=format&fit=crop"
-            },
-            players: [
-                { id: 1, nick: "L7_NOBRU", name: "Gabriel", role: "Capitão / IGL", kd: "4.92", headshot: "82%", photo: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=600&auto=format&fit=crop" },
-                { id: 2, nick: "L7_CORINGA", name: "Lucas", role: "Rush 1", kd: "5.10", headshot: "89%", photo: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600&auto=format&fit=crop" },
-                { id: 3, nick: "L7_THURZIN", name: "Matheus", role: "Support", kd: "4.30", headshot: "75%", photo: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=600&auto=format&fit=crop" },
-                { id: 4, nick: "L7_BAXINHO", name: "Felipe", role: "Rush 2", kd: "4.78", headshot: "80%", photo: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=600&auto=format&fit=crop" }
-            ],
-            news: [
-                { id: 1, title: "L7 ESPORTS GARANTE VAGA NA FINAL DA LBFF", tag: "COMPETITIVO", summary: "Com três Booyahs seguidos, a equipe dominante avança no topo da tabela geral.", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" },
-                { id: 2, title: "PENEIRA OFICIAL 2026 ABERTA PARA NOVOS TALENTOS", tag: "GUILDA", summary: "Inscreva-se no Discord oficial e dispute vaga na line de acesso e amadores.", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=600&auto=format&fit=crop" },
-                { id: 3, title: "NOVA MANTA L7 UNIFORME OFICIAL REVEAL", tag: "LOJA MERCH", summary: "Design com fibra de carbono e neon green disponível na L7 Store.", img: "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=600&auto=format&fit=crop" }
-            ],
-            shop: [
-                { id: 1, name: "Camisa Oficial L7 Pro 2026", price: 129.90, tag: "LANÇAMENTO", img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop" },
-                { id: 2, name: "Moletom Cyberpunk L7 Hoodie", price: 239.90, tag: "EDIÇÃO LIMITADA", img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600&auto=format&fit=crop" },
-                { id: 3, name: "Boné L7 Snapback Black/Green", price: 79.90, tag: "ACESSÓRIOS", img: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=600&auto=format&fit=crop" },
-                { id: 4, name: "Mousepad Speed Giant L7 90x40", price: 99.90, tag: "GEAR", img: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?q=80&w=600&auto=format&fit=crop" }
-            ],
-            trophies: [
-                { id: 1, title: "Liga Brasileira Free Fire", year: "2025", pos: "CAMPEÃO #1" },
-                { id: 2, title: "Copa das Guildas Pro", year: "2025", pos: "CAMPEÃO #1" },
-                { id: 3, title: "Misto dos Crias Emulador", year: "2024", pos: "TOP 2 VICE" },
-                { id: 4, title: "Torneio das Estrelas FF", year: "2024", pos: "CAMPEÃO #1" }
-            ]
-        };
-
         window.siteData = null;
 
         function getSiteDataLocal() {
@@ -824,444 +820,10 @@
             if (stored) {
                 try { return JSON.parse(stored); } catch(e) {}
             }
-            return DEFAULT_DATA;
+            return window.DEFAULT_DATA;
         }
 
         function getSiteData() {
             return window.siteData || getSiteDataLocal();
         }
-
-        function saveSiteData(data) {
-            if (window.saveDataToFirebase) {
-                window.saveDataToFirebase(data);
-            } else {
-                localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
-                renderAllContent();
-            }
-        }
-
-        // FUNÇÃO PARA LER FOTO DA GALERIA DO DISPOSITIVO E CONVERTER EM BASE64
-        function handleImageUpload(inputElement, targetInputId) {
-            const file = inputElement.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById(targetInputId).value = e.target.result;
-                showToast('Imagem carregada da galeria!');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // RENDER ALL SITE SECTIONS
-        function renderAllContent() {
-            const data = getSiteData();
-
-            // HERO
-            document.getElementById('heroTitle').innerHTML = data.hero.title;
-            document.getElementById('heroSubtitle').innerText = data.hero.subtitle;
-            document.getElementById('heroBg').style.backgroundImage = `url('${data.hero.bg}')`;
-
-            // PLAYERS
-            const playersGrid = document.getElementById('playersGrid');
-            playersGrid.innerHTML = data.players.map(p => `
-                <div class="bg-brand-card border border-brand-border rounded-lg overflow-hidden group hover:border-brand-green transition-all duration-300">
-                    <div class="relative h-72 overflow-hidden bg-black/50">
-                        <img src="${p.photo}" alt="${p.nick}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
-                        <span class="absolute top-3 left-3 bg-brand-green text-black font-display font-bold text-xs px-2.5 py-1 clip-button">
-                            ${p.role}
-                        </span>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-display font-black text-2xl text-white tracking-wide group-hover:text-brand-green transition-colors">${p.nick}</h3>
-                        <p class="text-xs text-gray-400 mb-4 font-semibold">${p.name}</p>
-                        <div class="grid grid-cols-2 gap-2 pt-3 border-t border-brand-border/60 text-xs">
-                            <div>
-                                <span class="text-gray-500 block">K/D RATIO</span>
-                                <span class="font-bold text-white text-sm">${p.kd}</span>
-                            </div>
-                            <div>
-                                <span class="text-gray-500 block">CAPA %</span>
-                                <span class="font-bold text-brand-green text-sm">${p.headshot}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            // NEWS
-            const newsGrid = document.getElementById('newsGrid');
-            newsGrid.innerHTML = data.news.map(n => `
-                <div class="bg-brand-card border border-brand-border rounded-lg overflow-hidden flex flex-col hover:border-brand-green transition-all">
-                    <div class="h-48 overflow-hidden relative">
-                        <img src="${n.img}" class="w-full h-full object-cover">
-                        <span class="absolute top-3 left-3 bg-black/80 border border-brand-green text-brand-green font-bold text-[10px] px-2 py-0.5 rounded">
-                            ${n.tag}
-                        </span>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h3 class="font-display font-bold text-xl text-white mb-2 leading-snug">${n.title}</h3>
-                            <p class="text-xs text-gray-400 leading-relaxed mb-4">${n.summary}</p>
-                        </div>
-                        <a href="#" class="text-brand-green text-xs font-bold uppercase tracking-wider hover:underline inline-flex items-center gap-1">
-                            Ler Comunicado Completo <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </a>
-                    </div>
-                </div>
-            `).join('');
-
-            // TROPHIES
-            const trophiesGrid = document.getElementById('trophiesGrid');
-            trophiesGrid.innerHTML = data.trophies.map(t => `
-                <div class="bg-brand-card border border-brand-border p-6 rounded-lg text-center hover:border-brand-green transition-all">
-                    <div class="w-16 h-16 bg-brand-green/10 text-brand-green border border-brand-green/30 rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
-                        <i class="fa-solid fa-trophy"></i>
-                    </div>
-                    <span class="text-xs font-mono text-brand-green font-bold block mb-1">${t.year}</span>
-                    <h3 class="font-display font-bold text-lg text-white mb-2 uppercase">${t.title}</h3>
-                    <span class="inline-block bg-black border border-brand-border text-white text-xs font-bold px-3 py-1 rounded">
-                        ${t.pos}
-                    </span>
-                </div>
-            `).join('');
-
-            // SHOP PRODUCTS
-            const productsGrid = document.getElementById('productsGrid');
-            productsGrid.innerHTML = data.shop.map(prod => `
-                <div class="bg-brand-card border border-brand-border rounded-lg overflow-hidden group hover:border-brand-green transition-all">
-                    <div class="h-64 overflow-hidden relative bg-black/40">
-                        <img src="${prod.img}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <span class="absolute top-3 left-3 bg-brand-green text-black font-bold text-[10px] px-2 py-1 uppercase tracking-wider">
-                            ${prod.tag}
-                        </span>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-display font-bold text-base text-white mb-1">${prod.name}</h3>
-                        <p class="font-display font-black text-xl text-brand-green mb-4">R$ ${prod.price.toFixed(2)}</p>
-                        <button onclick="addToCart(${prod.id})" class="w-full bg-black hover:bg-brand-green hover:text-black text-white border border-brand-border hover:border-brand-green font-display font-bold py-2.5 text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-cart-plus"></i>
-                            <span>Adicionar ao Carrinho</span>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // CART FUNCTIONALITY
-        let cart = [];
-        function addToCart(prodId) {
-            const data = getSiteData();
-            const prod = data.shop.find(p => p.id === prodId);
-            if (!prod) return;
-
-            const existing = cart.find(item => item.id === prodId);
-            if (existing) {
-                existing.qty++;
-            } else {
-                cart.push({ ...prod, qty: 1 });
-            }
-            updateCartUI();
-            openCart();
-        }
-
-        function updateCartUI() {
-            const container = document.getElementById('cartItemsContainer');
-            const totalEl = document.getElementById('cartTotal');
-            const badge = document.getElementById('cartBadge');
-
-            const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
-            badge.innerText = totalQty;
-            badge.classList.toggle('hidden', totalQty === 0);
-
-            let totalPrice = 0;
-            container.innerHTML = cart.map(item => {
-                const sub = item.price * item.qty;
-                totalPrice += sub;
-                return `
-                    <div class="flex items-center gap-3 border-b border-brand-border/60 pb-3">
-                        <img src="${item.img}" class="w-12 h-12 rounded object-cover">
-                        <div class="flex-1">
-                            <h4 class="text-xs font-bold text-white">${item.name}</h4>
-                            <span class="text-xs text-brand-green font-bold">R$ ${item.price.toFixed(2)} x ${item.qty}</span>
-                        </div>
-                        <button onclick="removeFromCart(${item.id})" class="text-gray-500 hover:text-red-400 text-xs">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-            }).join('') || '<p class="text-gray-500 text-xs text-center py-6">Seu carrinho está vazio.</p>';
-
-            totalEl.innerText = `R$ ${totalPrice.toFixed(2)}`;
-        }
-
-        function removeFromCart(id) {
-            cart = cart.filter(i => i.id !== id);
-            updateCartUI();
-        }
-
-        function openCart() { document.getElementById('cartDrawer').classList.remove('hidden'); }
-        function closeCart() { document.getElementById('cartDrawer').classList.add('hidden'); }
-        function checkout() {
-            if (cart.length === 0) return alert('Seu carrinho está vazio.');
-            alert('Pedido simulado com sucesso! Redirecionando para o WhatsApp da L7 Store...');
-            cart = [];
-            updateCartUI();
-            closeCart();
-        }
-
-        // AUTH MODAL LOGIC
-        function openAuthModal(tab = 'login') {
-            document.getElementById('authModal').classList.remove('hidden');
-            switchAuthTab(tab);
-        }
-        function closeAuthModal() {
-            document.getElementById('authModal').classList.add('hidden');
-            document.getElementById('authAlert').classList.add('hidden');
-        }
-        function switchAuthTab(tab) {
-            const isLogin = tab === 'login';
-            document.getElementById('loginForm').classList.toggle('hidden', !isLogin);
-            document.getElementById('registerForm').classList.toggle('hidden', isLogin);
-            document.getElementById('tabLogin').classList.toggle('border-brand-green', isLogin);
-            document.getElementById('tabLogin').classList.toggle('text-white', isLogin);
-            document.getElementById('tabRegister').classList.toggle('border-brand-green', !isLogin);
-            document.getElementById('tabRegister').classList.toggle('text-white', !isLogin);
-        }
-
-        function showAuthAlert(msg, type) {
-            const el = document.getElementById('authAlert');
-            el.innerText = msg;
-            el.className = `p-3 rounded text-xs font-semibold mb-4 ${type === 'error' ? 'bg-red-900/50 text-red-300 border border-red-500' : 'bg-brand-green/20 text-brand-green'}`;
-            el.classList.remove('hidden');
-        }
-
-        function showToast(msg) {
-            const div = document.createElement('div');
-            div.className = 'fixed bottom-5 right-5 z-50 bg-brand-card border border-brand-green text-white font-bold text-xs py-3 px-5 rounded clip-button shadow-2xl animate-bounce';
-            div.innerText = msg;
-            document.body.appendChild(div);
-            setTimeout(() => div.remove(), 3000);
-        }
-
-        // ADMIN MODAL & TAB LOGIC
-        function openAdminModal() {
-            if (!window.currentUser || window.currentUser.email !== "tuliofonseca00@gmail.com") {
-                alert("Acesso Negado: Apenas tuliofonseca00@gmail.com possui permissão Super Admin.");
-                return;
-            }
-            document.getElementById('adminModal').classList.remove('hidden');
-            loadAdminValues();
-        }
-
-        function closeAdminModal() {
-            document.getElementById('adminModal').classList.add('hidden');
-        }
-
-        function switchAdminTab(tab) {
-            ['hero', 'players', 'news', 'shop', 'trophies'].forEach(t => {
-                document.getElementById(`adminContent-${t}`).classList.add('hidden');
-                document.getElementById(`adminTab-${t}`).className = 'py-3 px-4 font-display font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white whitespace-nowrap';
-            });
-            document.getElementById(`adminContent-${tab}`).classList.remove('hidden');
-            document.getElementById(`adminTab-${tab}`).className = 'py-3 px-4 font-display font-bold text-xs uppercase tracking-wider text-purple-400 border-b-2 border-purple-500 whitespace-nowrap';
-        }
-
-        // ADMIN FUNCTIONALITIES
-        function loadAdminValues() {
-            const data = getSiteData();
-
-            // HERO
-            document.getElementById('adminHeroTitle').value = data.hero.title;
-            document.getElementById('adminHeroSubtitle').value = data.hero.subtitle;
-            document.getElementById('adminHeroBg').value = data.hero.bg;
-
-            // PLAYERS LIST
-            const pList = document.getElementById('adminPlayersList');
-            pList.innerHTML = data.players.map(p => `
-                <div class="flex items-center justify-between bg-black/60 p-3 border border-brand-border rounded text-xs">
-                    <div class="flex items-center gap-3">
-                        <img src="${p.photo}" class="w-10 h-10 object-cover rounded">
-                        <div>
-                            <span class="font-bold text-white block">${p.nick} (${p.name})</span>
-                            <span class="text-gray-400">${p.role} • K/D: ${p.kd}</span>
-                        </div>
-                    </div>
-                    <button onclick="deletePlayer(${p.id})" class="text-red-400 hover:text-red-300 p-2"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            `).join('');
-
-            // NEWS LIST
-            const nList = document.getElementById('adminNewsList');
-            nList.innerHTML = data.news.map(n => `
-                <div class="flex items-center justify-between bg-black/60 p-3 border border-brand-border rounded text-xs">
-                    <div>
-                        <span class="font-bold text-white block">${n.title}</span>
-                        <span class="text-brand-green">${n.tag}</span>
-                    </div>
-                    <button onclick="deleteNews(${n.id})" class="text-red-400 hover:text-red-300 p-2"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            `).join('');
-
-            // SHOP LIST
-            const sList = document.getElementById('adminShopList');
-            sList.innerHTML = data.shop.map(prod => `
-                <div class="flex items-center justify-between bg-black/60 p-3 border border-brand-border rounded text-xs">
-                    <div class="flex items-center gap-3">
-                        <img src="${prod.img}" class="w-10 h-10 object-cover rounded">
-                        <div>
-                            <span class="font-bold text-white block">${prod.name}</span>
-                            <span class="text-brand-green">R$ ${prod.price.toFixed(2)}</span>
-                        </div>
-                    </div>
-                    <button onclick="deleteProduct(${prod.id})" class="text-red-400 hover:text-red-300 p-2"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            `).join('');
-
-            // TROPHIES LIST
-            const tList = document.getElementById('adminTrophiesList');
-            tList.innerHTML = data.trophies.map(t => `
-                <div class="flex items-center justify-between bg-black/60 p-3 border border-brand-border rounded text-xs">
-                    <div>
-                        <span class="font-bold text-white block">${t.title} (${t.year})</span>
-                        <span class="text-brand-green">${t.pos}</span>
-                    </div>
-                    <button onclick="deleteTrophy(${t.id})" class="text-red-400 hover:text-red-300 p-2"><i class="fa-solid fa-trash"></i></button>
-                </div>
-            `).join('');
-        }
-
-        // SAVE HERO
-        function saveHeroChanges() {
-            const data = getSiteData();
-            data.hero.title = document.getElementById('adminHeroTitle').value;
-            data.hero.subtitle = document.getElementById('adminHeroSubtitle').value;
-            data.hero.bg = document.getElementById('adminHeroBg').value;
-            saveSiteData(data);
-            showToast('Hero atualizado com sucesso!');
-        }
-
-        // PLAYER HANDLERS
-        function openPlayerForm() { document.getElementById('playerForm').classList.remove('hidden'); }
-        function closePlayerForm() { document.getElementById('playerForm').classList.add('hidden'); }
-        function savePlayer() {
-            const data = getSiteData();
-            const newP = {
-                id: Date.now(),
-                nick: document.getElementById('pNick').value || 'L7_PLAYER',
-                name: document.getElementById('pName').value || 'Jogador',
-                role: document.getElementById('pRole').value || 'Rush',
-                kd: document.getElementById('pKd').value || '4.0',
-                headshot: document.getElementById('pHeadshot').value || '70%',
-                photo: document.getElementById('pPhoto').value || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600&auto=format&fit=crop'
-            };
-            data.players.push(newP);
-            saveSiteData(data);
-            closePlayerForm();
-            loadAdminValues();
-            showToast('Jogador adicionado!');
-        }
-        function deletePlayer(id) {
-            const data = getSiteData();
-            data.players = data.players.filter(p => p.id !== id);
-            saveSiteData(data);
-            loadAdminValues();
-        }
-
-        // NEWS HANDLERS
-        function openNewsForm() { document.getElementById('newsForm').classList.remove('hidden'); }
-        function closeNewsForm() { document.getElementById('newsForm').classList.add('hidden'); }
-        function saveNews() {
-            const data = getSiteData();
-            const newN = {
-                id: Date.now(),
-                title: document.getElementById('nTitle').value || 'NOVO COMUNICADO',
-                tag: document.getElementById('nTag').value || 'LBFF',
-                summary: document.getElementById('nSummary').value || 'Resumo do comunicado da guilda L7 ESPORTS.',
-                img: document.getElementById('nImg').value || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop'
-            };
-            data.news.push(newN);
-            saveSiteData(data);
-            closeNewsForm();
-            loadAdminValues();
-            showToast('Notícia cadastrada!');
-        }
-        function deleteNews(id) {
-            const data = getSiteData();
-            data.news = data.news.filter(n => n.id !== id);
-            saveSiteData(data);
-            loadAdminValues();
-        }
-
-        // SHOP HANDLERS
-        function openProductForm() { document.getElementById('productForm').classList.remove('hidden'); }
-        function closeProductForm() { document.getElementById('productForm').classList.add('hidden'); }
-        function saveProduct() {
-            const data = getSiteData();
-            const newProd = {
-                id: Date.now(),
-                name: document.getElementById('prodName').value || 'Produto L7',
-                price: parseFloat(document.getElementById('prodPrice').value) || 99.90,
-                tag: document.getElementById('prodTag').value || 'OFICIAL',
-                img: document.getElementById('prodImg').value || 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop'
-            };
-            data.shop.push(newProd);
-            saveSiteData(data);
-            closeProductForm();
-            loadAdminValues();
-            showToast('Produto adicionado à loja!');
-        }
-        function deleteProduct(id) {
-            const data = getSiteData();
-            data.shop = data.shop.filter(p => p.id !== id);
-            saveSiteData(data);
-            loadAdminValues();
-        }
-
-        // TROPHIES HANDLERS
-        function openTrophyForm() { document.getElementById('trophyForm').classList.remove('hidden'); }
-        function closeTrophyForm() { document.getElementById('trophyForm').classList.add('hidden'); }
-        function saveTrophy() {
-            const data = getSiteData();
-            const newTr = {
-                id: Date.now(),
-                title: document.getElementById('trTitle').value || 'Torneio Free Fire',
-                year: document.getElementById('trYear').value || '2026',
-                pos: document.getElementById('trPos').value || 'CAMPEÃO #1'
-            };
-            data.trophies.push(newTr);
-            saveSiteData(data);
-            closeTrophyForm();
-            loadAdminValues();
-            showToast('Título adicionado!');
-        }
-        function deleteTrophy(id) {
-            const data = getSiteData();
-            data.trophies = data.trophies.filter(t => t.id !== id);
-            saveSiteData(data);
-            loadAdminValues();
-        }
-
-        function resetToDefaultData() {
-            if (confirm('Deseja realmente redefinir todos os dados do site para os padrões de fábrica?')) {
-                saveSiteData(DEFAULT_DATA);
-                loadAdminValues();
-                showToast('Dados restaurados para o padrão.');
-            }
-        }
-
-        // MOBILE MENU TOGGLE
-        document.getElementById('mobileMenuBtn').addEventListener('click', () => {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
-        });
-
-        document.getElementById('openCartBtn').addEventListener('click', openCart);
-
-        // INITIAL RENDER
-        window.addEventListener('DOMContentLoaded', () => {
-            renderAllContent();
-        });
-    </script>
-</body>
-</html>
+<!-- ... existing code -->
