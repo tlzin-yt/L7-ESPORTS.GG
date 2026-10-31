@@ -1019,25 +1019,31 @@ onSnapshot(docRef, (docSnap) => {
     if (docSnap.exists()) {
         const cloudData = docSnap.data();
         
-        // Atualiza a memória com o que está gravado na NUVEM
-        window.siteData = cloudData;
-        localStorage.setItem('L7_SITE_DATA', JSON.stringify(cloudData));
+        // Se a nuvem tiver dados válidos, atualiza a janela e o localStorage com os dados oficiais da nuvem
+        if (cloudData && (cloudData.news || cloudData.players)) {
+            window.siteData = cloudData;
+            localStorage.setItem('L7_SITE_DATA', JSON.stringify(cloudData));
+        }
     } else {
-        // Se a coleção não existir no Firestore, cria com os dados padrão
-        window.siteData = getSiteDataLocal() || DEFAULT_DATA;
-        setDoc(docRef, window.siteData);
+        // Se o documento não existir na nuvem ainda, cria-o com os dados locais atuais
+        const initialData = getSiteDataLocal() || DEFAULT_DATA;
+        window.siteData = initialData;
+        setDoc(docRef, initialData);
     }
     
-    // Atualiza a tela do telemóvel e do PC instantaneamente
+    // Renderiza tudo na tela imediatamente
     if (typeof window.renderAllContent === 'function') {
         window.renderAllContent();
     }
+    if (typeof window.renderAdminLists === 'function') {
+        window.renderAdminLists();
+    }
 }, (err) => {
-    console.error("Erro ao carregar do Firestore:", err);
+    console.warn("Modo offline / Erro no Firestore:", err);
     window.siteData = getSiteDataLocal();
     if (typeof window.renderAllContent === 'function') window.renderAllContent();
 });
-
+        
 window.saveDataToFirebase = async function(data) {
     try {
         window.siteData = data;
