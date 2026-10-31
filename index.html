@@ -422,8 +422,37 @@
 
     <!-- ADMIN DASHBOARD MODAL (RESTRICTED TO tuliofonseca00@gmail.com) -->
     <div id="adminModal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/90 backdrop-blur-xl hidden">
-        <div class="bg-brand-card border-2 border-purple-500 w-full max-w-5xl h-[90vh] flex flex-col rounded-xl overflow-hidden shadow-2xl">
+        <div class="bg-brand-card border-2 border-purple-500 w-full max-w-5xl h-[90vh] flex flex-col rounded-xl overflow-hidden shadow-2xl relative">
             
+            <!-- HEADER DO DASHBOARD COM BOTÃO DE FECHAR (X) -->
+            <div class="flex items-center justify-between p-4 bg-black/60 border-b border-brand-border">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded bg-purple-600/30 border border-purple-500 flex items-center justify-center text-purple-400 font-bold text-sm">
+                        <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-black text-white uppercase tracking-wider text-base">Painel de Controle Admin</h3>
+                        <span class="text-[10px] text-gray-400">Restrito a tuliofonseca00@gmail.com</span>
+                    </div>
+                </div>
+
+                <!-- BOTÃO FECHAR (X) -->
+                <button onclick="closeAdminModal()" class="w-9 h-9 bg-brand-card hover:bg-red-900/40 text-gray-400 hover:text-red-400 border border-brand-border hover:border-red-500/50 rounded flex items-center justify-center transition-colors" title="Fechar Dashboard">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- NAVEGAÇÃO DE ABAS DO DASHBOARD -->
+            <div class="flex flex-wrap gap-2 p-4 bg-black/30 border-b border-brand-border">
+                <button onclick="switchAdminTab('hero')" class="bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 border border-purple-500/50 font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all">Textos & Hero</button>
+                <button onclick="switchAdminTab('players')" class="bg-brand-card hover:bg-brand-card/80 text-gray-300 border border-brand-border font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all">Elenco Pro</button>
+                <button onclick="switchAdminTab('news')" class="bg-brand-card hover:bg-brand-card/80 text-gray-300 border border-brand-border font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all">Notícias</button>
+                <button onclick="switchAdminTab('shop')" class="bg-brand-card hover:bg-brand-card/80 text-gray-300 border border-brand-border font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all">Loja Merch</button>
+                <button onclick="switchAdminTab('trophies')" class="bg-brand-card hover:bg-brand-card/80 text-gray-300 border border-brand-border font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all">Títulos</button>
+            </div>
+
+            <!-- CONTEÚDO SCROLLÁVEL DAS ABAS -->
+            <div class="p-6 flex-1 overflow-y-auto space-y-6">
                 <!-- TAB 1: HERO & BANNERS E STATS -->
                 <div id="adminContent-hero" class="space-y-6">
                     <h3 class="font-display font-bold text-lg text-white border-b border-brand-border pb-2">Editar Textos & Banners (Visual Front-End)</h3>
@@ -601,8 +630,16 @@
                         <!-- Admin Trophies List -->
                     </div>
                 </div>
-
             </div>
+
+            <!-- FOOTER DO DASHBOARD COM BOTÃO FECHAR -->
+            <div class="p-4 bg-black/60 border-t border-brand-border flex justify-end">
+                <button onclick="closeAdminModal()" class="bg-brand-card hover:bg-brand-card/80 text-white border border-brand-border hover:border-gray-400 font-display font-bold px-6 py-2.5 rounded text-xs uppercase tracking-wider transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-check text-brand-green"></i>
+                    <span>Concluir e Fechar Painel</span>
+                </button>
+            </div>
+
         </div>
     </div>
 
