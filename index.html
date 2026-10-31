@@ -1066,7 +1066,90 @@
                     </div>
                 `;
             } else {
-        // NOTÍCIAS: FORMULÁRIO E AÇÕES (CORRIGIDO PARA PERSISTÊNCIA COMPLETA)
+                adminBtn.classList.add('hidden');
+                container.innerHTML = `
+                    <button onclick="openAuthModal('login')" class="bg-brand-green hover:bg-brand-darkGreen text-black font-display font-bold px-5 py-2.5 clip-button text-sm tracking-wider uppercase transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,255,102,0.4)] flex items-center gap-2">
+                        <i class="fa-solid fa-user"></i>
+                        <span>Entrar</span>
+                    </button>
+                `;
+            }
+        }
+
+        // AUTH FUNCTIONS
+        window.handleLogin = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPassword').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                closeAuthModal();
+                showToast('Login efetuado com sucesso!', 'success');
+            } catch (err) {
+                showToast('Erro ao realizar login.', 'error');
+            }
+        };
+
+        window.handleRegister = async (e) => {
+            e.preventDefault();
+            const nick = document.getElementById('regNick').value;
+            const email = document.getElementById('regEmail').value;
+            const pass = document.getElementById('regPassword').value;
+
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                await updateProfile(cred.user, { displayName: nick });
+                closeAuthModal();
+                showToast('Conta criada! Bem-vindo à L7.', 'success');
+            } catch (err) {
+                showToast('Erro ao criar conta.', 'error');
+            }
+        };
+
+        window.handleGoogleLogin = async () => {
+            try {
+                await signInWithPopup(auth, googleProvider);
+                closeAuthModal();
+                showToast('Autenticado via Google!', 'success');
+            } catch (err) {
+                showToast('Falha no login com Google.', 'error');
+            }
+        };
+
+        window.handleLogout = async () => {
+            await signOut(auth);
+            showToast('Sessão encerrada.', 'info');
+        };
+    </script>
+
+    <!-- WEBSITE DATA MANAGEMENT & INTERACTIVITY -->
+    <script>
+        window.siteData = null;
+
+        function getSiteDataLocal() {
+            const stored = localStorage.getItem('L7_SITE_DATA');
+            if (stored) {
+                try { return JSON.parse(stored); } catch(e) {}
+            }
+            return window.DEFAULT_DATA;
+        }
+
+        function getSiteData() {
+            return window.siteData || getSiteDataLocal();
+        }
+
+        window.handleImageUpload = function(input, targetInputId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(targetInputId).value = e.target.result;
+                    showToast('Imagem carregada da galeria!');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+
+        // NOTÍCIAS: FORMULÁRIO E AÇÕES
         window.openNewsForm = function() { 
             document.getElementById('nIndex').value = '';
             document.getElementById('nTitle').value = '';
@@ -1125,7 +1208,6 @@
                 data.news.unshift(newsObj);
             }
 
-            // Salva dados no Firestore e LocalStorage
             window.saveDataToFirebase(data);
             closeNewsForm();
             window.renderAllContent();
@@ -1144,6 +1226,134 @@
             }
         };
 
+        // SELETIVA / PENEIRA
+        window.openTryoutModal = function() { 
+            const modal = document.getElementById('tryoutModal');
+            if (modal) modal.classList.remove('hidden'); 
+        };
+
+        window.closeTryoutModal = function() { 
+            const modal = document.getElementById('tryoutModal');
+            if (modal) modal.classList.add('hidden'); 
+        };
+
+        window.submitTryout = function(e) {
+            e.preventDefault();
+            const data = getSiteData();
+            if (!data.tryouts) data.tryouts = [];
+
+            const category = document.querySelector('input[name="tryCategory"]:checked')?.value || 'Mobile';
+            const nick = document.getElementById('tryNick').value;
+            const ffId = document.getElementById('tryFfId').value;
+            const fullName = document.getElementById('tryFullName').value;
+            const phone = document.getElementById('tryPhone').value;
+            const age = document.getElementById('tryAge').value;
+            const role = document.getElementById('tryRole').value;
+            const rank = document.getElementById('tryRank').value;
+            const video = document.getElementById('tryVideo').value;
+            const history = document.getElementById('tryHistory').value;
+            const reason = document.getElementById('tryReason').value;
+
+            const application = {
+                id: Date.now(),
+                category,
+                nick,
+                ffId,
+                fullName,
+                phone,
+                age,
+                role,
+                rank,
+                video,
+                history,
+                reason,
+                status: 'Pendente',
+                date: new Date().toLocaleDateString('pt-BR')
+            };
+
+            data.tryouts.unshift(application);
+            window.saveDataToFirebase(data);
+
+            document.getElementById('tryoutForm').reset();
+            window.closeTryoutModal();
+            showToast('Inscrição enviada com sucesso! Aguarde o contato.', 'success');
+        };
+
+        // CARRINHO
+        let cart = [];
+        window.addToCart = function(id) {
+            const data = getSiteData();
+            const prod = data.shop ? data.shop.find(p => p.id === id) : null;
+            if (prod) {
+                cart.push(prod);
+                updateCartUI();
+                window.openCart();
+                showToast(`Reserva de "${prod.name}" adicionada!`);
+            }
+        };
+
+        function updateCartUI() {
+            const badge = document.getElementById('cartBadge');
+            const container = document.getElementById('cartItemsContainer');
+            const totalEl = document.getElementById('cartTotal');
+
+            if (badge) {
+                if (cart.length > 0) {
+                    badge.innerText = cart.length;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+
+            if (container) {
+                if (cart.length === 0) {
+                    container.innerHTML = `<p class="text-gray-500 text-xs text-center py-8">Seu carrinho está vazio.</p>`;
+                } else {
+                    container.innerHTML = cart.map((item, index) => `
+                        <div class="flex items-center justify-between bg-black/40 p-3 rounded border border-brand-border">
+                            <div class="flex items-center gap-3">
+                                <img src="${item.img}" class="w-12 h-12 object-cover rounded">
+                                <div>
+                                    <h4 class="font-bold text-xs text-white uppercase line-clamp-1">${item.name}</h4>
+                                    <span class="text-xs text-brand-green font-bold">R$ ${Number(item.price).toFixed(2)}</span>
+                                </div>
+                            </div>
+                            <button onclick="removeFromCart(${index})" class="text-gray-500 hover:text-red-400 p-1">
+                                <i class="fa-solid fa-trash text-sm"></i>
+                            </button>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            const total = cart.reduce((acc, item) => acc + Number(item.price), 0);
+            if (totalEl) totalEl.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+
+        window.removeFromCart = function(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        };
+
+        window.openCart = function() { 
+            const drawer = document.getElementById('cartDrawer');
+            if (drawer) drawer.classList.remove('hidden'); 
+        };
+        
+        window.closeCart = function() { 
+            const drawer = document.getElementById('cartDrawer');
+            if (drawer) drawer.classList.add('hidden'); 
+        };
+
+        window.checkout = function() {
+            if (cart.length === 0) return showToast('Carrinho vazio!', 'error');
+            showToast('Pedido registrado com sucesso! Entraremos em contato.');
+            cart = [];
+            updateCartUI();
+            window.closeCart();
+        };
+
         window.filterShopCategory = function(category) {
             window.currentShopCategory = category;
             window.renderAllContent();
@@ -1154,7 +1364,7 @@
             const data = getSiteData();
             if (!data) return;
 
-            // 1. Atualizar Hero Banner e Textos Modificados em tempo real
+            // 1. Atualizar Hero Banner e Textos Modificados
             if (data.hero) {
                 const heroTitle = document.getElementById('heroTitle');
                 const heroSubtitle = document.getElementById('heroSubtitle');
@@ -1208,7 +1418,7 @@
                 }
             }
 
-            // 3. Renderizar Feed de Notícias (Com clique para abrir notícia completa)
+            // 3. Renderizar Feed de Notícias
             const newsGrid = document.getElementById('newsGrid');
             if (newsGrid && data.news) {
                 if (data.news.length === 0) {
@@ -1348,11 +1558,11 @@
             window.renderAdminLists();
         };
 
-        // GERENCIAMENTO DE ELENCO E OUTRAS LISTAS
+        // GERENCIAMENTO DE LISTAS NO ADMIN
         window.renderAdminLists = function() {
             const data = getSiteData();
 
-            // Renderizar Lista de Jogadores para Gerenciamento
+            // Renderizar Jogadores
             const pList = document.getElementById('adminPlayersList');
             if (pList && data.players) {
                 if (data.players.length === 0) {
@@ -1380,7 +1590,7 @@
                 }
             }
 
-            // Renderizar Lista de Notícias no Admin
+            // Renderizar Notícias no Admin
             const nList = document.getElementById('adminNewsList');
             if (nList && data.news) {
                 if (data.news.length === 0) {
@@ -1428,7 +1638,7 @@
             window.saveDataToFirebase(data);
         };
 
-        // JOGADORES: FORMULÁRIO E AÇÕES DE GERENCIAMENTO
+        // JOGADORES: FORMULÁRIO E AÇÕES
         window.openPlayerForm = function() { 
             document.getElementById('pIndex').value = '';
             document.getElementById('pNick').value = '';
@@ -1492,71 +1702,7 @@
             window.saveDataToFirebase(data);
         };
 
-        // NOTÍCIAS: FORMULÁRIO E AÇÕES
-        window.openNewsForm = function() { 
-            document.getElementById('nIndex').value = '';
-            document.getElementById('nTitle').value = '';
-            document.getElementById('nTag').value = '';
-            document.getElementById('nSummary').value = '';
-            document.getElementById('nContent').value = '';
-            document.getElementById('nImg').value = '';
-            document.getElementById('newsFormTitle').innerText = 'Nova Notícia';
-            document.getElementById('newsForm').classList.remove('hidden'); 
-        };
-
-        window.closeNewsForm = function() { document.getElementById('newsForm').classList.add('hidden'); };
-
-        window.editNews = function(index) {
-            const data = getSiteData();
-            const news = data.news[index];
-            if (!news) return;
-
-            document.getElementById('nIndex').value = index;
-            document.getElementById('nTitle').value = news.title || '';
-            document.getElementById('nTag').value = news.tag || '';
-            document.getElementById('nSummary').value = news.summary || '';
-            document.getElementById('nContent').value = news.content || news.summary || '';
-            document.getElementById('nImg').value = news.img || '';
-
-            document.getElementById('newsFormTitle').innerText = 'Editar Notícia';
-            document.getElementById('newsForm').classList.remove('hidden');
-        };
-
-        window.saveNews = function() {
-            const data = getSiteData();
-            const idxVal = document.getElementById('nIndex').value;
-
-            const newsObj = {
-                id: idxVal !== '' ? data.news[idxVal].id : Date.now(),
-                title: document.getElementById('nTitle').value,
-                tag: document.getElementById('nTag').value || 'LBFF 2026',
-                summary: document.getElementById('nSummary').value,
-                content: document.getElementById('nContent').value || document.getElementById('nSummary').value,
-                img: document.getElementById('nImg').value || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop'
-            };
-
-            if (!newsObj.title || !newsObj.summary) return showToast('Preencha título e resumo da notícia', 'error');
-
-            if (idxVal !== '') {
-                data.news[idxVal] = newsObj;
-            } else {
-                data.news.unshift(newsObj);
-            }
-
-            window.saveDataToFirebase(data);
-            closeNewsForm();
-        };
-
-        window.deleteNews = function(idx) {
-            const data = getSiteData();
-            data.news.splice(idx, 1);
-            window.saveDataToFirebase(data);
-        };
-
-        // OUTRAS MODAIS E HELPERS
-        window.openTryoutModal = function() { document.getElementById('tryoutModal').classList.remove('hidden'); };
-        window.closeTryoutModal = function() { document.getElementById('tryoutModal').classList.add('hidden'); };
-
+        // AUTH MODAIS E HELPERS
         window.openAuthModal = function(tab) {
             document.getElementById('authModal').classList.remove('hidden');
             switchAuthTab(tab);
