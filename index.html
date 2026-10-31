@@ -1066,81 +1066,81 @@
                     </div>
                 `;
             } else {
-                adminBtn.classList.add('hidden');
-                container.innerHTML = `
-                    <button onclick="openAuthModal('login')" class="bg-brand-green hover:bg-brand-darkGreen text-black font-display font-bold px-5 py-2.5 clip-button text-sm tracking-wider uppercase transition-all duration-300 flex items-center gap-2">
-                        <i class="fa-solid fa-user"></i>
-                        <span>Entrar</span>
-                    </button>
-                `;
+        // NOTÍCIAS: FORMULÁRIO E AÇÕES (CORRIGIDO PARA PERSISTÊNCIA COMPLETA)
+        window.openNewsForm = function() { 
+            document.getElementById('nIndex').value = '';
+            document.getElementById('nTitle').value = '';
+            document.getElementById('nTag').value = '';
+            document.getElementById('nSummary').value = '';
+            document.getElementById('nContent').value = '';
+            document.getElementById('nImg').value = '';
+            document.getElementById('newsFormTitle').innerText = 'Nova Notícia';
+            document.getElementById('newsForm').classList.remove('hidden'); 
+        };
+
+        window.closeNewsForm = function() { document.getElementById('newsForm').classList.add('hidden'); };
+
+        window.editNews = function(index) {
+            const data = getSiteData();
+            if (!data.news || !data.news[index]) return;
+            const news = data.news[index];
+
+            document.getElementById('nIndex').value = index;
+            document.getElementById('nTitle').value = news.title || '';
+            document.getElementById('nTag').value = news.tag || '';
+            document.getElementById('nSummary').value = news.summary || '';
+            document.getElementById('nContent').value = news.content || news.summary || '';
+            document.getElementById('nImg').value = news.img || '';
+
+            document.getElementById('newsFormTitle').innerText = 'Editar Notícia';
+            document.getElementById('newsForm').classList.remove('hidden');
+        };
+
+        window.saveNews = function() {
+            const data = getSiteData();
+            if (!data.news) data.news = [];
+
+            const idxVal = document.getElementById('nIndex').value;
+            const titleVal = document.getElementById('nTitle').value.trim();
+            const summaryVal = document.getElementById('nSummary').value.trim();
+            const contentVal = document.getElementById('nContent').value.trim();
+            const tagVal = document.getElementById('nTag').value.trim() || 'NOTÍCIA';
+            const imgVal = document.getElementById('nImg').value.trim() || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop';
+
+            if (!titleVal) return showToast('Preencha o título da notícia!', 'error');
+            if (!summaryVal) return showToast('Preencha o resumo da notícia!', 'error');
+
+            const newsObj = {
+                id: idxVal !== '' && data.news[idxVal] ? data.news[idxVal].id : Date.now(),
+                title: titleVal,
+                tag: tagVal,
+                summary: summaryVal,
+                content: contentVal || summaryVal,
+                img: imgVal
+            };
+
+            if (idxVal !== '' && data.news[idxVal]) {
+                data.news[idxVal] = newsObj;
+            } else {
+                data.news.unshift(newsObj);
             }
-        }
 
-        window.handleLogin = async (e) => {
-            e.preventDefault();
-            try {
-                await signInWithEmailAndPassword(auth, document.getElementById('loginEmail').value, document.getElementById('loginPassword').value);
-                closeAuthModal();
-                showToast('Login efetuado com sucesso!', 'success');
-            } catch (err) { showAuthAlert('E-mail ou senha incorretos.', 'error'); }
+            // Salva dados no Firestore e LocalStorage
+            window.saveDataToFirebase(data);
+            closeNewsForm();
+            window.renderAllContent();
+            window.renderAdminLists();
+            showToast('Notícia salva e publicada com sucesso!', 'success');
         };
 
-        window.handleRegister = async (e) => {
-            e.preventDefault();
-            try {
-                const cred = await createUserWithEmailAndPassword(auth, document.getElementById('regEmail').value, document.getElementById('regPassword').value);
-                await updateProfile(cred.user, { displayName: document.getElementById('regNick').value });
-                closeAuthModal();
-                showToast('Conta criada! Bem-vindo à L7.', 'success');
-            } catch (err) { showAuthAlert('Erro ao criar conta. Tente outra senha.', 'error'); }
-        };
-
-        window.handleGoogleLogin = async () => {
-            try {
-                await signInWithPopup(auth, googleProvider);
-                closeAuthModal();
-                showToast('Autenticado via Google!', 'success');
-            } catch (err) { showAuthAlert('Falha no login com Google.', 'error'); }
-        };
-
-        window.handleLogout = async () => {
-            await signOut(auth);
-            showToast('Sessão encerrada.', 'info');
-        };
-
-        function showAuthAlert(msg, type) {
-            const el = document.getElementById('authAlert');
-            el.innerText = msg;
-            el.className = `mb-4 p-3 rounded text-xs font-semibold ${type === 'error' ? 'bg-red-900/50 text-red-200 border border-red-700' : 'bg-green-900/50 text-green-200 border border-green-700'}`;
-            el.classList.remove('hidden');
-        }
-    </script>
-
-    <!-- SCRIPT DE APLICAÇÃO -->
-    <script>
-        window.siteData = null;
-        window.currentShopCategory = 'all';
-
-        function getSiteDataLocal() {
-            const stored = localStorage.getItem('L7_SITE_DATA');
-            if (stored) {
-                try { return JSON.parse(stored); } catch(e) {}
-            }
-            return window.DEFAULT_DATA;
-        }
-
-        function getSiteData() {
-            return window.siteData || getSiteDataLocal();
-        }
-
-        window.handleImageUpload = function(input, targetInputId) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById(targetInputId).value = e.target.result;
-                    showToast('Imagem selecionada da galeria!');
-                };
-                reader.readAsDataURL(input.files[0]);
+        window.deleteNews = function(idx) {
+            const data = getSiteData();
+            if (data.news && data.news[idx]) {
+                data.news.splice(idx, 1);
+                window.saveDataToFirebase(data);
+                window.renderAllContent();
+                window.renderAdminLists();
+                showToast('Notícia removida com sucesso!', 'info');
             }
         };
 
