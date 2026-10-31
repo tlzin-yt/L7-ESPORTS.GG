@@ -889,7 +889,18 @@
                         <input type="text" id="nTitle" placeholder="Título da Notícia" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
                         <input type="text" id="nTag" placeholder="Categoria/Tag (ex: LBFF, PENEIRA)" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
                         <textarea id="nSummary" placeholder="Resumo do Comunicado" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white" rows="2"></textarea>
-                        <input type="text" id="nImg" placeholder="URL Imagem Notícia" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
+                        
+                        <!-- INPUT DE IMAGEM COM BOTÃO DE UPLOAD DE GALERIA LOCAL -->
+                        <div>
+                            <div class="flex gap-2">
+                                <input type="text" id="nImg" placeholder="URL da Imagem ou escolha da Galeria" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
+                                <label class="bg-brand-green text-black font-bold text-xs px-3 flex items-center justify-center rounded cursor-pointer whitespace-nowrap hover:bg-brand-darkGreen transition-colors">
+                                    <i class="fa-solid fa-image mr-1"></i> Galeria
+                                    <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'nImg')">
+                                </label>
+                            </div>
+                        </div>
+
                         <div class="flex gap-2 justify-end">
                             <button onclick="closeNewsForm()" class="text-xs text-gray-400 px-3 py-1.5">Cancelar</button>
                             <button onclick="saveNews()" class="text-xs bg-brand-green text-black font-bold px-4 py-1.5 rounded uppercase">Salvar Notícia</button>
