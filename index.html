@@ -1179,42 +1179,41 @@
             document.getElementById('newsForm').classList.remove('hidden');
         };
 
-window.saveNews = function() {
-    const data = getSiteData();
-    if (!data.news) data.news = [];
+        window.saveNews = function() {
+            const data = getSiteData();
+            if (!data.news) data.news = [];
 
-    const idxVal = document.getElementById('nIndex') ? document.getElementById('nIndex').value : '';
-    const titleVal = document.getElementById('nTitle').value.trim();
-    const summaryVal = document.getElementById('nSummary').value.trim();
-    const contentVal = document.getElementById('nContent') ? document.getElementById('nContent').value.trim() : summaryVal;
-    const tagVal = document.getElementById('nTag').value.trim() || 'NOTÍCIA';
-    const imgVal = document.getElementById('nImg').value.trim() || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop';
+            const idxVal = document.getElementById('nIndex') ? document.getElementById('nIndex').value : '';
+            const titleVal = document.getElementById('nTitle').value.trim();
+            const summaryVal = document.getElementById('nSummary').value.trim();
+            const contentVal = document.getElementById('nContent') ? document.getElementById('nContent').value.trim() : summaryVal;
+            const tagVal = document.getElementById('nTag').value.trim() || 'NOTÍCIA';
+            const imgVal = document.getElementById('nImg').value.trim() || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop';
 
-    if (!titleVal) return showToast('Preencha o título da notícia!', 'error');
-    if (!summaryVal) return showToast('Preencha o resumo da notícia!', 'error');
+            if (!titleVal) return showToast('Preencha o título da notícia!', 'error');
+            if (!summaryVal) return showToast('Preencha o resumo da notícia!', 'error');
 
-    const newsObj = {
-        id: idxVal !== '' && data.news[idxVal] ? data.news[idxVal].id : Date.now(),
-        title: titleVal,
-        tag: tagVal,
-        summary: summaryVal,
-        content: contentVal || summaryVal,
-        img: imgVal
-    };
+            const newsObj = {
+                id: idxVal !== '' && data.news[idxVal] ? data.news[idxVal].id : Date.now(),
+                title: titleVal,
+                tag: tagVal,
+                summary: summaryVal,
+                content: contentVal || summaryVal,
+                img: imgVal
+            };
 
-    if (idxVal !== '' && data.news[idxVal]) {
-        data.news[idxVal] = newsObj;
-    } else {
-        data.news.unshift(newsObj);
-    }
+            if (idxVal !== '' && data.news[idxVal]) {
+                data.news[idxVal] = newsObj;
+            } else {
+                data.news.unshift(newsObj);
+            }
 
-    // Salva no Firebase e atualiza o site na hora
-    window.saveDataToFirebase(data);
-    closeNewsForm();
-    if (typeof window.renderAllContent === 'function') window.renderAllContent();
-    if (typeof window.renderAdminLists === 'function') window.renderAdminLists();
-    showToast('Notícia salva e publicada com sucesso!', 'success');
-};
+            window.saveDataToFirebase(data);
+            closeNewsForm();
+            if (typeof window.renderAllContent === 'function') window.renderAllContent();
+            if (typeof window.renderAdminLists === 'function') window.renderAdminLists();
+            showToast('Notícia salva e publicada com sucesso!', 'success');
+        };
 
         window.deleteNews = function(idx) {
             const data = getSiteData();
@@ -1365,6 +1364,11 @@ window.saveNews = function() {
             const data = getSiteData();
             if (!data) return;
 
+            // Define 'all' como padrão para exibir todos os produtos se não houver filtro selecionado
+            if (!window.currentShopCategory) {
+                window.currentShopCategory = 'all';
+            }
+
             // 1. Atualizar Hero Banner e Textos Modificados
             if (data.hero) {
                 const heroTitle = document.getElementById('heroTitle');
@@ -1465,40 +1469,44 @@ window.saveNews = function() {
                 `).join('');
             }
 
-            // 5. Renderizar Loja
+            // 5. Renderizar Loja na Página Principal
             const productsGrid = document.getElementById('productsGrid');
             if (productsGrid && data.shop) {
-                const filteredProducts = window.currentShopCategory === 'all' 
+                const filteredProducts = (window.currentShopCategory === 'all' || !window.currentShopCategory) 
                     ? data.shop 
                     : data.shop.filter(p => (p.category || 'Vestuário') === window.currentShopCategory);
 
-                productsGrid.innerHTML = filteredProducts.map(prod => {
-                    const isCourse = prod.category === 'Curso';
-                    return `
-                        <div class="bg-brand-card border border-brand-border rounded-lg overflow-hidden group flex flex-col justify-between hover:border-brand-green/60 transition-all">
-                            <div>
-                                <div class="h-56 overflow-hidden relative bg-black">
-                                    <img src="${prod.img}" alt="${prod.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform filter brightness-90">
-                                    <span class="absolute top-3 left-3 ${isCourse ? 'bg-purple-600 text-white' : 'bg-brand-green text-black'} font-bold text-[10px] uppercase px-2 py-0.5 clip-button">
-                                        <i class="${isCourse ? 'fa-solid fa-graduation-cap' : 'fa-solid fa-fire'} mr-1"></i> ${prod.tag || (isCourse ? 'CURSO PRO' : 'LANÇAMENTO')}
-                                    </span>
-                                </div>
-                                <div class="p-5">
-                                    <h3 class="font-display font-bold text-base text-white uppercase line-clamp-2 min-h-[3rem]">${prod.name}</h3>
-                                    <div class="flex items-center gap-2 mt-2">
-                                        <span class="font-display font-black text-2xl text-brand-green">R$ ${Number(prod.price).toFixed(2).replace('.', ',')}</span>
+                if (filteredProducts.length === 0) {
+                    productsGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500 text-sm">Nenhum produto cadastrado nesta categoria.</div>`;
+                } else {
+                    productsGrid.innerHTML = filteredProducts.map(prod => {
+                        const isCourse = prod.category === 'Curso';
+                        return `
+                            <div class="bg-brand-card border border-brand-border rounded-lg overflow-hidden group flex flex-col justify-between hover:border-brand-green/60 transition-all">
+                                <div>
+                                    <div class="h-56 overflow-hidden relative bg-black">
+                                        <img src="${prod.img}" alt="${prod.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform filter brightness-90">
+                                        <span class="absolute top-3 left-3 ${isCourse ? 'bg-purple-600 text-white' : 'bg-brand-green text-black'} font-bold text-[10px] uppercase px-2 py-0.5 clip-button">
+                                            <i class="${isCourse ? 'fa-solid fa-graduation-cap' : 'fa-solid fa-fire'} mr-1"></i> ${prod.tag || (isCourse ? 'CURSO PRO' : 'LANÇAMENTO')}
+                                        </span>
+                                    </div>
+                                    <div class="p-5">
+                                        <h3 class="font-display font-bold text-base text-white uppercase line-clamp-2 min-h-[3rem]">${prod.name}</h3>
+                                        <div class="flex items-center gap-2 mt-2">
+                                            <span class="font-display font-black text-2xl text-brand-green">R$ ${Number(prod.price).toFixed(2).replace('.', ',')}</span>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="p-5 pt-0">
+                                    <button onclick="addToCart(${prod.id})" class="w-full ${isCourse ? 'bg-purple-600 hover:bg-purple-500 text-white' : 'bg-brand-green/10 hover:bg-brand-green hover:text-black text-brand-green'} border border-brand-green/40 font-display font-bold py-2.5 text-xs uppercase clip-button transition-all flex items-center justify-center gap-1.5">
+                                        <i class="${isCourse ? 'fa-solid fa-play' : 'fa-solid fa-cart-shopping'}"></i>
+                                        <span>${isCourse ? 'COMPRAR CURSO' : 'RESERVAR'}</span>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="p-5 pt-0">
-                                <button onclick="addToCart(${prod.id})" class="w-full ${isCourse ? 'bg-purple-600 hover:bg-purple-500 text-white' : 'bg-brand-green/10 hover:bg-brand-green hover:text-black text-brand-green'} border border-brand-green/40 font-display font-bold py-2.5 text-xs uppercase clip-button transition-all flex items-center justify-center gap-1.5">
-                                    <i class="${isCourse ? 'fa-solid fa-play' : 'fa-solid fa-cart-shopping'}"></i>
-                                    <span>${isCourse ? 'COMPRAR CURSO' : 'RESERVAR'}</span>
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
+                        `;
+                    }).join('');
+                }
             }
         };
 
@@ -1726,6 +1734,13 @@ window.saveNews = function() {
             toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${msg}`;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Executa a renderização imediata assim que a página é lida
+        window.siteData = getSiteDataLocal();
+        window.currentShopCategory = 'all';
+        if (typeof window.renderAllContent === 'function') {
+            window.renderAllContent();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
