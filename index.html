@@ -1179,41 +1179,42 @@
             document.getElementById('newsForm').classList.remove('hidden');
         };
 
-        window.saveNews = function() {
-            const data = getSiteData();
-            if (!data.news) data.news = [];
+window.saveNews = function() {
+    const data = getSiteData();
+    if (!data.news) data.news = [];
 
-            const idxVal = document.getElementById('nIndex').value;
-            const titleVal = document.getElementById('nTitle').value.trim();
-            const summaryVal = document.getElementById('nSummary').value.trim();
-            const contentVal = document.getElementById('nContent').value.trim();
-            const tagVal = document.getElementById('nTag').value.trim() || 'NOTÍCIA';
-            const imgVal = document.getElementById('nImg').value.trim() || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop';
+    const idxVal = document.getElementById('nIndex') ? document.getElementById('nIndex').value : '';
+    const titleVal = document.getElementById('nTitle').value.trim();
+    const summaryVal = document.getElementById('nSummary').value.trim();
+    const contentVal = document.getElementById('nContent') ? document.getElementById('nContent').value.trim() : summaryVal;
+    const tagVal = document.getElementById('nTag').value.trim() || 'NOTÍCIA';
+    const imgVal = document.getElementById('nImg').value.trim() || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop';
 
-            if (!titleVal) return showToast('Preencha o título da notícia!', 'error');
-            if (!summaryVal) return showToast('Preencha o resumo da notícia!', 'error');
+    if (!titleVal) return showToast('Preencha o título da notícia!', 'error');
+    if (!summaryVal) return showToast('Preencha o resumo da notícia!', 'error');
 
-            const newsObj = {
-                id: idxVal !== '' && data.news[idxVal] ? data.news[idxVal].id : Date.now(),
-                title: titleVal,
-                tag: tagVal,
-                summary: summaryVal,
-                content: contentVal || summaryVal,
-                img: imgVal
-            };
+    const newsObj = {
+        id: idxVal !== '' && data.news[idxVal] ? data.news[idxVal].id : Date.now(),
+        title: titleVal,
+        tag: tagVal,
+        summary: summaryVal,
+        content: contentVal || summaryVal,
+        img: imgVal
+    };
 
-            if (idxVal !== '' && data.news[idxVal]) {
-                data.news[idxVal] = newsObj;
-            } else {
-                data.news.unshift(newsObj);
-            }
+    if (idxVal !== '' && data.news[idxVal]) {
+        data.news[idxVal] = newsObj;
+    } else {
+        data.news.unshift(newsObj);
+    }
 
-            window.saveDataToFirebase(data);
-            closeNewsForm();
-            window.renderAllContent();
-            window.renderAdminLists();
-            showToast('Notícia salva e publicada com sucesso!', 'success');
-        };
+    // Salva no Firebase e atualiza o site na hora
+    window.saveDataToFirebase(data);
+    closeNewsForm();
+    if (typeof window.renderAllContent === 'function') window.renderAllContent();
+    if (typeof window.renderAdminLists === 'function') window.renderAdminLists();
+    showToast('Notícia salva e publicada com sucesso!', 'success');
+};
 
         window.deleteNews = function(idx) {
             const data = getSiteData();
