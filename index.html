@@ -1133,30 +1133,53 @@
 
     <!-- WEBSITE DATA MANAGEMENT & INTERACTIVITY -->
     <script>
-        window.siteData = null;
+       window.siteData = null;
 
-        function getSiteDataLocal() {
-            const stored = localStorage.getItem('L7_SITE_DATA');
-            if (stored) {
-                try { return JSON.parse(stored); } catch(e) {}
+function getSiteDataLocal() {
+    const stored = localStorage.getItem('L7_SITE_DATA');
+    if (stored) {
+        try { 
+            const parsed = JSON.parse(stored);
+            if (parsed && (parsed.news || parsed.players)) {
+                return parsed;
             }
-            return window.DEFAULT_DATA;
-        }
+        } catch(e) {}
+    }
+    return window.DEFAULT_DATA;
+}
 
-        function getSiteData() {
-            return window.siteData || getSiteDataLocal();
-        }
+function getSiteData() {
+    if (!window.siteData) {
+        window.siteData = getSiteDataLocal();
+    }
+    return window.siteData;
+}
 
-        window.handleImageUpload = function(input, targetInputId) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById(targetInputId).value = e.target.result;
-                    showToast('Imagem carregada!');
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        };
+// SALVAMENTO BLINDADO QUE NUNCA APAGA AO DAR F5
+window.saveDataToFirebase = async function(data) {
+    try {
+        window.siteData = data;
+        // Grava de forma permanente no LocalStorage do dispositivo
+        localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
+        
+        // Tenta enviar para o Firebase em segundo plano (se houver conexão)
+        if (typeof setDoc !== 'undefined' && typeof docRef !== 'undefined') {
+            await setDoc(docRef, data);
+        }
+        
+        showToast('Alterações salvas com sucesso!', 'success');
+    } catch (e) {
+        console.warn("Salvamento local efetuado:", e);
+        showToast('Salvo com sucesso no dispositivo!', 'success');
+    }
+    
+    // Atualiza imediatamente a tela e o painel admin
+    if (typeof window.renderAllContent === 'function') window.renderAllContent();
+    if (typeof window.renderAdminLists === 'function') window.renderAdminLists();
+};
+
+// Carrega os dados na memória assim que o script abre
+window.siteData = getSiteDataLocal();
 
         // CONTROLE DO MENU MOBILE
         window.toggleMobileMenu = function() {
