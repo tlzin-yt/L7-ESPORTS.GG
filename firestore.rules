@@ -1,0 +1,48 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Função de verificação para saber se o usuário é o administrador autorizado
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'tuliofonseca00@gmail.com';
+    }
+
+    // Regras para Inscrições (Tryouts)
+    // - Público: pode criar inscrição (write/create).
+    // - Somente Admin (tuliofonseca00@gmail.com) pode listar, ler, editar ou excluir inscrições.
+    match /tryouts/{tryoutId} {
+      allow create: if request.resource.data.keys().hasAll([
+        'realName', 'nickname', 'age', 'phone', 'whyJoin', 'playedPro', 'mediaUrl', 'createdAt', 'status'
+      ]);
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Regras para Notícias, Elenco, Títulos, Produtos e Conteúdos Institucionais
+    // - Público: pode ler.
+    // - Somente Admin: pode criar, atualizar e deletar.
+    match /news/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /roster/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /titles/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /shop/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /settings/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
