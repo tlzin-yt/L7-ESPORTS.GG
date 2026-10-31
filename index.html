@@ -477,19 +477,25 @@
     <div id="adminModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md hidden">
         <div class="bg-[#0f0f14] border-2 border-purple-500 w-full max-w-4xl max-h-[90vh] flex flex-col rounded-xl overflow-hidden relative p-6">
             <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
-                <h3 class="font-display font-black text-xl text-white uppercase">Painel de Gerenciamento Cloud</h3>
+                <h3 class="font-display font-black text-xl text-white uppercase flex items-center gap-2">
+                    <i class="fa-solid fa-user-gear text-purple-400"></i>
+                    <span>Painel de Gerenciamento Cloud L7</span>
+                </h3>
                 <button onclick="closeAdminModal()" class="text-gray-400 hover:text-white text-xl">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <div class="flex gap-2 mb-4 border-b border-white/10 pb-2">
-                <button onclick="switchAdminTab('players')" class="px-3 py-1 bg-purple-600 text-white font-bold text-xs uppercase rounded">Elenco</button>
-                <button onclick="switchAdminTab('news')" class="px-3 py-1 bg-white/5 hover:bg-white/10 text-gray-300 font-bold text-xs uppercase rounded">Notícias</button>
-                <button onclick="switchAdminTab('tryouts')" class="px-3 py-1 bg-white/5 hover:bg-white/10 text-gray-300 font-bold text-xs uppercase rounded">Inscrições Peneira</button>
+            <!-- ABAS DE NAVEGAÇÃO DO ADMIN -->
+            <div class="flex flex-wrap gap-2 mb-4 border-b border-white/10 pb-2">
+                <button onclick="switchAdminTab('players')" id="tabBtn-players" class="px-3 py-1 bg-purple-600 text-white font-bold text-xs uppercase rounded transition-colors">Elenco</button>
+                <button onclick="switchAdminTab('news')" id="tabBtn-news" class="px-3 py-1 bg-white/5 hover:bg-white/10 text-gray-300 font-bold text-xs uppercase rounded transition-colors">Notícias</button>
+                <button onclick="switchAdminTab('shop')" id="tabBtn-shop" class="px-3 py-1 bg-white/5 hover:bg-white/10 text-gray-300 font-bold text-xs uppercase rounded transition-colors">Produtos Loja</button>
+                <button onclick="switchAdminTab('trophies')" id="tabBtn-trophies" class="px-3 py-1 bg-white/5 hover:bg-white/10 text-gray-300 font-bold text-xs uppercase rounded transition-colors">Títulos & Troféus</button>
+                <button onclick="switchAdminTab('tryouts')" id="tabBtn-tryouts" class="px-3 py-1 bg-white/5 hover:bg-white/10 text-gray-300 font-bold text-xs uppercase rounded transition-colors">Peneira</button>
             </div>
 
-            <!-- TAB PLAYERS (EDIÇÃO & GALERIA INCLUÍDA) -->
+            <!-- TAB PLAYERS -->
             <div id="adminContent-players" class="space-y-4 overflow-y-auto flex-1">
                 <h4 id="admPlayerFormTitle" class="text-xs font-bold text-brand-green uppercase">+ Cadastrar / Editar Atleta</h4>
                 <input type="hidden" id="admPlayerIndex" value="">
@@ -515,7 +521,7 @@
                 <div id="adminPlayersList" class="space-y-2 pt-4 border-t border-white/10"></div>
             </div>
 
-            <!-- TAB NEWS (EDIÇÃO, DATA, RESUMO & TEXTO COMPLETO) -->
+            <!-- TAB NEWS -->
             <div id="adminContent-news" class="hidden space-y-4 overflow-y-auto flex-1">
                 <h4 id="admNewsFormTitle" class="text-xs font-bold text-brand-green uppercase">+ Publicar / Editar Notícia</h4>
                 <input type="hidden" id="admNewsIndex" value="">
@@ -547,6 +553,56 @@
                 <div id="adminNewsList" class="space-y-2 pt-4 border-t border-white/10"></div>
             </div>
 
+            <!-- TAB SHOP (NOVO) -->
+            <div id="adminContent-shop" class="hidden space-y-4 overflow-y-auto flex-1">
+                <h4 id="admShopFormTitle" class="text-xs font-bold text-brand-green uppercase">+ Cadastrar / Editar Produto da Loja</h4>
+                <input type="hidden" id="admShopIndex" value="">
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <input type="text" id="admShopName" placeholder="Nome do Produto / Curso *" class="bg-black border border-white/20 p-2 text-xs text-white rounded">
+                    <input type="number" step="0.01" id="admShopPrice" placeholder="Preço R$ (ex: 97.90) *" class="bg-black border border-white/20 p-2 text-xs text-white rounded">
+                    <select id="admShopCategory" class="bg-black border border-white/20 p-2 text-xs text-white rounded">
+                        <option value="Curso">Curso & Mentoria</option>
+                        <option value="Vestuário">Vestuário</option>
+                        <option value="Equipamento">Equipamento</option>
+                    </select>
+                </div>
+
+                <div class="flex gap-2 items-center">
+                    <input type="text" id="admShopImg" placeholder="URL da Foto do Produto ou Escolher da Galeria *" class="flex-1 bg-black border border-white/20 p-2 text-xs text-white rounded">
+                    <label class="bg-brand-green hover:bg-brand-neon text-black font-bold text-xs px-3 py-2 rounded cursor-pointer whitespace-nowrap uppercase">
+                        <i class="fa-solid fa-image mr-1"></i> Galeria
+                        <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'admShopImg')">
+                    </label>
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="saveAdminShop()" class="bg-brand-green text-black font-bold px-4 py-2 text-xs uppercase rounded">Salvar Produto na Nuvem</button>
+                    <button onclick="resetShopForm()" class="bg-white/10 text-gray-300 font-bold px-3 py-2 text-xs uppercase rounded">Limpar</button>
+                </div>
+
+                <div id="adminShopList" class="space-y-2 pt-4 border-t border-white/10"></div>
+            </div>
+
+            <!-- TAB TROPHIES (NOVO) -->
+            <div id="adminContent-trophies" class="hidden space-y-4 overflow-y-auto flex-1">
+                <h4 id="admTrophyFormTitle" class="text-xs font-bold text-brand-green uppercase">+ Cadastrar / Editar Título & Troféu</h4>
+                <input type="hidden" id="admTrophyIndex" value="">
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <input type="text" id="admTrophyTitle" placeholder="Nome do Torneio (ex: LIGA BOOYAH) *" class="bg-black border border-white/20 p-2 text-xs text-white rounded">
+                    <input type="text" id="admTrophyYear" placeholder="Ano (ex: 2026) *" class="bg-black border border-white/20 p-2 text-xs text-white rounded">
+                    <input type="text" id="admTrophyPos" placeholder="Colocação (ex: CAMPEÃO #1) *" class="bg-black border border-white/20 p-2 text-xs text-white rounded">
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="saveAdminTrophy()" class="bg-brand-green text-black font-bold px-4 py-2 text-xs uppercase rounded">Salvar Título na Nuvem</button>
+                    <button onclick="resetTrophyForm()" class="bg-white/10 text-gray-300 font-bold px-3 py-2 text-xs uppercase rounded">Limpar</button>
+                </div>
+
+                <div id="adminTrophiesList" class="space-y-2 pt-4 border-t border-white/10"></div>
+            </div>
+
             <!-- TAB TRYOUTS -->
             <div id="adminContent-tryouts" class="hidden space-y-4 overflow-y-auto flex-1">
                 <h4 class="text-xs font-bold text-brand-green uppercase">Inscrições de Jogadores Recebidas na Nuvem</h4>
@@ -560,7 +616,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
             getAuth, 
-            signInWithCustomToken, 
             onAuthStateChanged,
             createUserWithEmailAndPassword,
             signInWithEmailAndPassword,
@@ -579,7 +634,7 @@
         // E-mail Admin Supremo
         const ADMIN_EMAIL = "tuliofonseca00@gmail.com";
 
-        // Configuração Oficial do SDK Firebase do seu projeto L7 ESPORTS
+        // Configuração Oficial do SDK Firebase do projeto L7 ESPORTS
         const firebaseConfig = {
             apiKey: "AIzaSyDTnfevGDY7naxK_CTwr69flY_r9MEAhx4",
             authDomain: "l7-esports.firebaseapp.com",
@@ -590,16 +645,13 @@
             measurementId: "G-5JQ7VSBT9Z"
         };
 
-        // Inicializar Instâncias
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         const googleProvider = new GoogleAuthProvider();
 
         let isSignUpMode = false;
-        let currentUser = null;
 
-        // Dados Iniciais Padrão para visualização inicial
         const DEFAULT_CLOUD_DATA = {
             players: [
                 { nick: "L7_NOBRU", name: "Gabriel", role: "Capitão / IGL", photo: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=600&auto=format&fit=crop" },
@@ -626,7 +678,6 @@
             tryouts: []
         };
 
-        // Escutar Banco de Dados Firestore na Nuvem em Tempo Real
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'l7-esports';
         const siteDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'siteContent', 'main');
 
@@ -639,25 +690,22 @@
             }
             renderUIFromCloud();
         }, (err) => {
-            console.warn("Utilizando estrutura padrão da nuvem:", err);
+            console.warn("Utilizando dados padrão local:", err);
             window.siteCloudData = DEFAULT_CLOUD_DATA;
             renderUIFromCloud();
         });
 
-        // Gravar alterações no Firestore Cloud
         window.saveToCloud = async function(data) {
             try {
                 await setDoc(siteDocRef, data);
-                showToast("Dados salvos com sucesso no servidor em nuvem!", "success");
+                showToast("Dados salvos no servidor Firebase!", "success");
             } catch (err) {
-                console.error("Erro ao salvar no Firestore:", err);
+                console.error("Erro ao salvar Firestore:", err);
                 showToast("Erro ao sincronizar com a nuvem.", "error");
             }
         };
 
-        // Monitorar estado de autenticação
         onAuthStateChanged(auth, async (user) => {
-            currentUser = user;
             const userArea = document.getElementById('userArea');
             const adminBtn = document.getElementById('adminPanelBtn');
 
@@ -665,7 +713,6 @@
                 const userEmail = user.email || '';
                 let nickname = user.displayName || (userEmail ? userEmail.split('@')[0] : 'JOGADOR');
                 
-                // Exibir botão Admin se for o Administrador Definido (tuliofonseca00@gmail.com)
                 const isAdmin = userEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase();
                 if (isAdmin) {
                     adminBtn.classList.remove('hidden');
@@ -694,7 +741,36 @@
             }
         });
 
-        // Login com Google
+        // NAVEGAÇÃO ENTRE ABAS DO ADMIN (ESCOPO GLOBAL)
+        window.switchAdminTab = (tabName) => {
+            const tabs = ['players', 'news', 'shop', 'trophies', 'tryouts'];
+            tabs.forEach(t => {
+                const content = document.getElementById(`adminContent-${t}`);
+                const btn = document.getElementById(`tabBtn-${t}`);
+                if (content) content.classList.add('hidden');
+                if (btn) {
+                    btn.classList.remove('bg-purple-600', 'text-white');
+                    btn.classList.add('bg-white/5', 'text-gray-300');
+                }
+            });
+            const activeContent = document.getElementById(`adminContent-${tabName}`);
+            const activeBtn = document.getElementById(`tabBtn-${tabName}`);
+            if (activeContent) activeContent.classList.remove('hidden');
+            if (activeBtn) {
+                activeBtn.classList.add('bg-purple-600', 'text-white');
+                activeBtn.classList.remove('bg-white/5', 'text-gray-300');
+            }
+        };
+
+        window.openAdminModal = () => {
+            document.getElementById('adminModal').classList.remove('hidden');
+            renderAdminLists();
+        };
+
+        window.closeAdminModal = () => {
+            document.getElementById('adminModal').classList.add('hidden');
+        };
+
         window.handleGoogleSignIn = async function() {
             try {
                 const result = await signInWithPopup(auth, googleProvider);
@@ -703,12 +779,11 @@
                 showToast(`Bem-vindo, ${name}!`, "success");
                 closeAuthModal();
             } catch (err) {
-                console.error("Erro no Login do Google:", err);
-                showToast("Falha ao entrar com a conta do Google.", "error");
+                console.error("Erro Google Auth:", err);
+                showToast("Falha no login com Google.", "error");
             }
         };
 
-        // Form Submit Login / Cadastro
         window.handleAuthSubmit = async function(e) {
             e.preventDefault();
             const emailInput = document.getElementById('authEmail');
@@ -723,50 +798,34 @@
             const name = nameInput ? nameInput.value.trim() : '';
 
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Processando...`;
 
             try {
                 if (isSignUpMode) {
                     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                     if (name) await updateProfile(userCredential.user, { displayName: name });
-                    showToast("Conta criada na nuvem com sucesso!", "success");
+                    showToast("Conta criada com sucesso!", "success");
                     closeAuthModal();
                 } else {
                     await signInWithEmailAndPassword(auth, email, password);
-                    showToast("Login efetuado com sucesso!", "success");
+                    showToast("Login realizado!", "success");
                     closeAuthModal();
                 }
             } catch (error) {
-                console.error("Erro de autenticação:", error);
-                let errorMsg = "Falha ao autenticar na nuvem. Verifique os dados.";
-                if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
-                    errorMsg = "E-mail ou senha incorretos.";
-                } else if (error.code === 'auth/email-already-in-use') {
-                    errorMsg = "Este e-mail já está cadastrado.";
-                } else if (error.code === 'auth/weak-password') {
-                    errorMsg = "A senha deve ter pelo menos 6 caracteres.";
-                }
-                showToast(errorMsg, "error");
+                showToast("Falha ao autenticar. Tente novamente.", "error");
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerText = isSignUpMode ? "CRIAR MINHA CONTA" : "ENTRAR";
             }
         };
 
         window.handleSignOut = async function() {
-            try {
-                await signOut(auth);
-                showToast("Sessão encerrada com segurança.", "info");
-            } catch (err) {
-                console.error("Erro ao deslogar:", err);
-            }
+            await signOut(auth);
+            showToast("Desconectado.", "info");
         };
 
-        // Renderização em tempo real das seções baseadas no banco em nuvem
         function renderUIFromCloud() {
             const data = window.siteCloudData || DEFAULT_CLOUD_DATA;
 
-            // 1. Elenco na Home
+            // 1. Elenco
             const pGrid = document.getElementById('playersGrid');
             if (pGrid && data.players) {
                 pGrid.innerHTML = data.players.map(p => `
@@ -783,7 +842,7 @@
                 `).join('');
             }
 
-            // 2. Notícias na Home
+            // 2. Notícias
             const nGrid = document.getElementById('newsGrid');
             if (nGrid && data.news) {
                 nGrid.innerHTML = data.news.map((n, idx) => {
@@ -811,14 +870,51 @@
                 }).join('');
             }
 
-            // Renderiza Listas do Painel Admin
+            // 3. Títulos / Troféus
+            const trophiesGrid = document.getElementById('trophiesGrid');
+            if (trophiesGrid && data.trophies) {
+                trophiesGrid.innerHTML = data.trophies.map(t => `
+                    <div class="bg-brand-card border border-white/10 p-6 rounded-xl flex items-center gap-4 hover:border-brand-green transition-all">
+                        <div class="w-12 h-12 rounded-lg bg-black border border-brand-green/40 flex items-center justify-center text-brand-green text-2xl flex-shrink-0">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-brand-green font-mono font-bold uppercase block">${t.year} • ${t.pos}</span>
+                            <h4 class="font-display font-black text-lg text-white uppercase">${t.title}</h4>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // 4. Loja Oficial
+            const productsGrid = document.getElementById('productsGrid');
+            if (productsGrid && data.shop) {
+                productsGrid.innerHTML = data.shop.map(prod => `
+                    <div class="bg-brand-card border border-white/10 rounded-lg overflow-hidden flex flex-col justify-between hover:border-brand-green transition-all">
+                        <div>
+                            <img src="${prod.img}" class="w-full h-48 object-cover">
+                            <div class="p-4">
+                                <span class="text-[10px] font-bold uppercase ${prod.category === 'Curso' ? 'text-purple-400' : 'text-brand-green'} block mb-1">${prod.category}</span>
+                                <h3 class="font-display font-bold text-sm text-white uppercase line-clamp-2">${prod.name}</h3>
+                                <span class="font-display font-black text-xl text-brand-green block mt-2">R$ ${Number(prod.price).toFixed(2).replace('.', ',')}</span>
+                            </div>
+                        </div>
+                        <div class="p-4 pt-0">
+                            <button onclick="addToCart(${prod.id || Date.now()})" class="w-full bg-brand-green text-black font-bold py-2 text-xs uppercase clip-button hover:bg-brand-neon transition-colors">
+                                Comprar / Reservar
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
             renderAdminLists();
         }
 
         function renderAdminLists() {
             const data = window.siteCloudData || DEFAULT_CLOUD_DATA;
 
-            // Lista do Elenco no Admin
+            // Lista Elenco
             const admPList = document.getElementById('adminPlayersList');
             if (admPList && data.players) {
                 admPList.innerHTML = data.players.map((p, idx) => `
@@ -838,7 +934,7 @@
                 `).join('');
             }
 
-            // Lista de Notícias no Admin
+            // Lista Notícias
             const admNList = document.getElementById('adminNewsList');
             if (admNList && data.news) {
                 admNList.innerHTML = data.news.map((n, idx) => `
@@ -847,7 +943,7 @@
                             <img src="${n.img}" class="w-10 h-10 object-cover rounded bg-black">
                             <div>
                                 <span class="font-bold text-xs text-white uppercase block line-clamp-1">${n.title}</span>
-                                <span class="text-[10px] text-brand-green font-mono">${n.date || 'Sem data'} • ${n.tag || 'NOTÍCIA'}</span>
+                                <span class="text-[10px] text-brand-green font-mono">${n.date || 'Sem data'}</span>
                             </div>
                         </div>
                         <div class="flex gap-2">
@@ -857,9 +953,146 @@
                     </div>
                 `).join('');
             }
+
+            // Lista Loja
+            const admSList = document.getElementById('adminShopList');
+            if (admSList && data.shop) {
+                admSList.innerHTML = data.shop.map((s, idx) => `
+                    <div class="flex items-center justify-between bg-black/60 p-3 rounded border border-white/10">
+                        <div class="flex items-center gap-3">
+                            <img src="${s.img}" class="w-10 h-10 object-cover rounded bg-black">
+                            <div>
+                                <span class="font-bold text-xs text-white uppercase block">${s.name}</span>
+                                <span class="text-[10px] text-brand-green font-mono">R$ ${Number(s.price).toFixed(2)} • ${s.category}</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="editAdminShop(${idx})" class="bg-purple-600 hover:bg-purple-500 text-white font-bold text-[10px] px-2.5 py-1 rounded uppercase">Editar</button>
+                            <button onclick="deleteAdminShop(${idx})" class="bg-red-900/60 hover:bg-red-700 text-white font-bold text-[10px] px-2.5 py-1 rounded uppercase">Excluir</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Lista Títulos
+            const admTList = document.getElementById('adminTrophiesList');
+            if (admTList && data.trophies) {
+                admTList.innerHTML = data.trophies.map((t, idx) => `
+                    <div class="flex items-center justify-between bg-black/60 p-3 rounded border border-white/10">
+                        <div>
+                            <span class="font-bold text-xs text-white uppercase block">${t.title}</span>
+                            <span class="text-[10px] text-brand-green font-mono">${t.year} • ${t.pos}</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="editAdminTrophy(${idx})" class="bg-purple-600 hover:bg-purple-500 text-white font-bold text-[10px] px-2.5 py-1 rounded uppercase">Editar</button>
+                            <button onclick="deleteAdminTrophy(${idx})" class="bg-red-900/60 hover:bg-red-700 text-white font-bold text-[10px] px-2.5 py-1 rounded uppercase">Excluir</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
         }
 
-        // SALVAR/EDITAR/DELETAR ATLETA
+        // SALVAR/EDITAR/DELETAR LOJA
+        window.saveAdminShop = async () => {
+            const data = window.siteCloudData || DEFAULT_CLOUD_DATA;
+            if (!data.shop) data.shop = [];
+            const idx = document.getElementById('admShopIndex').value;
+            const name = document.getElementById('admShopName').value.trim();
+            const price = parseFloat(document.getElementById('admShopPrice').value) || 0;
+            const category = document.getElementById('admShopCategory').value;
+            const img = document.getElementById('admShopImg').value.trim() || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop';
+
+            if (!name || price <= 0) return showToast("Preencha o Nome e o Preço válido!", "error");
+
+            const shopObj = { id: Date.now(), name, price, category, img };
+
+            if (idx !== "") data.shop[idx] = shopObj;
+            else data.shop.push(shopObj);
+
+            await window.saveToCloud(data);
+            resetShopForm();
+        };
+
+        window.editAdminShop = (idx) => {
+            const data = window.siteCloudData;
+            if (data && data.shop && data.shop[idx]) {
+                const s = data.shop[idx];
+                document.getElementById('admShopIndex').value = idx;
+                document.getElementById('admShopName').value = s.name || '';
+                document.getElementById('admShopPrice').value = s.price || '';
+                document.getElementById('admShopCategory').value = s.category || 'Vestuário';
+                document.getElementById('admShopImg').value = s.img || '';
+                document.getElementById('admShopFormTitle').innerText = `Editar Produto #${idx + 1}`;
+            }
+        };
+
+        window.deleteAdminShop = async (idx) => {
+            const data = window.siteCloudData;
+            if (data && data.shop && data.shop[idx]) {
+                data.shop.splice(idx, 1);
+                await window.saveToCloud(data);
+                showToast("Produto removido!", "info");
+            }
+        };
+
+        window.resetShopForm = () => {
+            document.getElementById('admShopIndex').value = "";
+            document.getElementById('admShopName').value = "";
+            document.getElementById('admShopPrice').value = "";
+            document.getElementById('admShopImg').value = "";
+            document.getElementById('admShopFormTitle').innerText = "+ Cadastrar / Editar Produto da Loja";
+        };
+
+        // SALVAR/EDITAR/DELETAR TÍTULOS
+        window.saveAdminTrophy = async () => {
+            const data = window.siteCloudData || DEFAULT_CLOUD_DATA;
+            if (!data.trophies) data.trophies = [];
+            const idx = document.getElementById('admTrophyIndex').value;
+            const title = document.getElementById('admTrophyTitle').value.trim();
+            const year = document.getElementById('admTrophyYear').value.trim() || '2026';
+            const pos = document.getElementById('admTrophyPos').value.trim() || 'CAMPEÃO #1';
+
+            if (!title) return showToast("Preencha o Nome do Torneio!", "error");
+
+            const trophyObj = { title, year, pos };
+
+            if (idx !== "") data.trophies[idx] = trophyObj;
+            else data.trophies.push(trophyObj);
+
+            await window.saveToCloud(data);
+            resetTrophyForm();
+        };
+
+        window.editAdminTrophy = (idx) => {
+            const data = window.siteCloudData;
+            if (data && data.trophies && data.trophies[idx]) {
+                const t = data.trophies[idx];
+                document.getElementById('admTrophyIndex').value = idx;
+                document.getElementById('admTrophyTitle').value = t.title || '';
+                document.getElementById('admTrophyYear').value = t.year || '';
+                document.getElementById('admTrophyPos').value = t.pos || '';
+                document.getElementById('admTrophyFormTitle').innerText = `Editar Título #${idx + 1}`;
+            }
+        };
+
+        window.deleteAdminTrophy = async (idx) => {
+            const data = window.siteCloudData;
+            if (data && data.trophies && data.trophies[idx]) {
+                data.trophies.splice(idx, 1);
+                await window.saveToCloud(data);
+                showToast("Título removido!", "info");
+            }
+        };
+
+        window.resetTrophyForm = () => {
+            document.getElementById('admTrophyIndex').value = "";
+            document.getElementById('admTrophyTitle').value = "";
+            document.getElementById('admTrophyYear').value = "";
+            document.getElementById('admTrophyPos').value = "";
+            document.getElementById('admTrophyFormTitle').innerText = "+ Cadastrar / Editar Título & Troféu";
+        };
+
+        // DEMAIS FUNÇÕES DO ADMIN
         window.saveAdminPlayer = async () => {
             const data = window.siteCloudData || DEFAULT_CLOUD_DATA;
             const idx = document.getElementById('admPlayerIndex').value;
@@ -868,17 +1101,12 @@
             const role = document.getElementById('admPlayerRole').value.trim();
             const photo = document.getElementById('admPlayerPhoto').value.trim() || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=600&auto=format&fit=crop';
 
-            if (!nick || !name || !role) {
-                return showToast("Preencha todos os campos do atleta!", "error");
-            }
+            if (!nick || !name || !role) return showToast("Preencha todos os campos do atleta!", "error");
 
             const playerObj = { nick, name, role, photo };
 
-            if (idx !== "") {
-                data.players[idx] = playerObj;
-            } else {
-                data.players.push(playerObj);
-            }
+            if (idx !== "") data.players[idx] = playerObj;
+            else data.players.push(playerObj);
 
             await window.saveToCloud(data);
             resetPlayerForm();
@@ -902,7 +1130,7 @@
             if (data && data.players && data.players[idx]) {
                 data.players.splice(idx, 1);
                 await window.saveToCloud(data);
-                showToast("Atleta removido do elenco!", "info");
+                showToast("Atleta removido!", "info");
             }
         };
 
@@ -915,7 +1143,6 @@
             document.getElementById('admPlayerFormTitle').innerText = "+ Cadastrar / Editar Atleta";
         };
 
-        // SALVAR/EDITAR/DELETAR NOTÍCIA
         window.saveAdminNews = async () => {
             const data = window.siteCloudData || DEFAULT_CLOUD_DATA;
             const idx = document.getElementById('admNewsIndex').value;
@@ -926,17 +1153,12 @@
             const content = document.getElementById('admNewsContent').value.trim() || summary;
             const img = document.getElementById('admNewsImg').value.trim() || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop';
 
-            if (!title || !summary) {
-                return showToast("Preencha ao menos o Título e o Resumo da notícia!", "error");
-            }
+            if (!title || !summary) return showToast("Preencha o Título e o Resumo!", "error");
 
             const newsObj = { id: Date.now(), title, date, tag, summary, content, img };
 
-            if (idx !== "") {
-                data.news[idx] = newsObj;
-            } else {
-                data.news.unshift(newsObj);
-            }
+            if (idx !== "") data.news[idx] = newsObj;
+            else data.news.unshift(newsObj);
 
             await window.saveToCloud(data);
             resetNewsForm();
@@ -977,43 +1199,4 @@
             document.getElementById('admNewsFormTitle').innerText = "+ Publicar / Editar Notícia";
         };
     </script>
-
-    <!-- UI HELPERS -->
-    <script>
-        // Upload de imagem local/galeria
-        function handleImageUpload(input, targetInputId) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById(targetInputId).value = e.target.result;
-                    showToast("Imagem carregada da galeria!", "success");
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function openNewsArticleModal(idx) {
-            const data = window.siteCloudData;
-            if (data && data.news && data.news[idx]) {
-                const item = data.news[idx];
-                const formattedDate = item.date ? new Date(item.date).toLocaleDateString('pt-BR') : '';
-                document.getElementById('articleTag').innerText = `${item.tag || 'COMUNICADO'} • ${formattedDate}`;
-                document.getElementById('articleTitle').innerText = item.title;
-                document.getElementById('articleImage').src = item.img || '';
-                document.getElementById('articleBody').innerText = item.content || item.summary || '';
-                document.getElementById('newsArticleModal').classList.remove('hidden');
-            }
-        }
-        function closeNewsArticleModal() {
-            document.getElementById('newsArticleModal').classList.add('hidden');
-        }
-
-        function filterShopCategory(cat) {
-            showToast(`Filtro "${cat}" aplicado`, "info");
-        }
-        function openCart() {
-            showToast("Sacola de compras acessada online", "info");
-        }
-    </script>
-</body>
-</html>
+<!-- ... existing code -->
