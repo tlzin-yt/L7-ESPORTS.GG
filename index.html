@@ -1165,16 +1165,12 @@
         onSnapshot(docRef, (docSnap) => {
             if (docSnap.exists()) {
                 const firebaseData = docSnap.data();
-                // Garante a preservação de notícias locais caso a coleção do Firebase venha vazia por primeira carga
-                if ((!firebaseData.news || firebaseData.news.length === 0) && DEFAULT_DATA.news) {
-                    firebaseData.news = DEFAULT_DATA.news;
-                }
                 window.siteData = firebaseData;
             } else {
                 window.siteData = DEFAULT_DATA;
                 setDoc(docRef, DEFAULT_DATA);
             }
-            // Atualiza o localStorage para garantir persistência mesmo offline
+            // Atualiza o localStorage para garantir persistência idêntica
             localStorage.setItem('L7_SITE_DATA', JSON.stringify(window.siteData));
 
             if (typeof window.renderAllContent === 'function') {
@@ -1197,7 +1193,7 @@
                 window.siteData = data;
                 localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
                 await setDoc(docRef, data);
-                showToast('Dados salvos no Firebase!', 'success');
+                showToast('Dados sincronizados no Firebase!', 'success');
             } catch (e) {
                 console.error("Erro ao salvar no Firestore:", e);
                 showToast('Dados salvos localmente.', 'info');
@@ -1764,7 +1760,7 @@
         // NEWS ADMIN
         window.openNewsForm = function() { document.getElementById('newsForm').classList.remove('hidden'); };
         window.closeNewsForm = function() { document.getElementById('newsForm').classList.add('hidden'); };
-        window.saveNews = function() {
+        window.saveNews = async function() {
             const data = getSiteData();
             const n = {
                 id: Date.now(),
@@ -1776,19 +1772,29 @@
             };
             if (!n.title) return showToast('Preencha o Título', 'error');
             if (!data.news) data.news = [];
-            data.news.push(n);
-            window.saveDataToFirebase(data);
+            data.news.unshift(n);
+            
+            // Salva no Firebase e limpa os campos
+            await window.saveDataToFirebase(data);
+            document.getElementById('nTitle').value = '';
+            document.getElementById('nTag').value = '';
+            document.getElementById('nSummary').value = '';
+            document.getElementById('nContent').value = '';
+            document.getElementById('nImg').value = '';
             closeNewsForm();
+            window.renderAllContent();
+            window.renderAdminLists();
         };
+        
         window.deleteNews = async function(idx) {
             const data = getSiteData();
             if (data.news && data.news.length > idx) {
                 data.news.splice(idx, 1);
-                // Atualização explícita do estado para salvar a exclusão permanente no Firebase
+                // Atualização permanente no Firebase e no cache local
                 await window.saveDataToFirebase(data);
                 window.renderAllContent();
                 window.renderAdminLists();
-                showToast('Notícia excluída permanentemente!', 'info');
+                showToast('Notícia excluída definitivamente!', 'info');
             }
         };
 
