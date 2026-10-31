@@ -1,0 +1,16 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'tuliofonseca00@gmail.com';
+    }
+
+    // Imagens públicas (Banners, Elenco, Notícias, Loja)
+    // Leituras abertas, gravações restritas ao Admin
+    match /{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}
