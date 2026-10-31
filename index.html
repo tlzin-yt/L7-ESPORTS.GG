@@ -489,27 +489,62 @@
                 <button onclick="switchAdminTab('tryouts')" class="px-3 py-1 bg-white/5 hover:bg-white/10 text-gray-300 font-bold text-xs uppercase rounded">Inscrições Peneira</button>
             </div>
 
-            <!-- TAB PLAYERS -->
+            <!-- TAB PLAYERS (EDIÇÃO & GALERIA INCLUÍDA) -->
             <div id="adminContent-players" class="space-y-4 overflow-y-auto flex-1">
-                <h4 class="text-xs font-bold text-brand-green uppercase">+ Cadastrar Novo Atleta no Banco de Dados</h4>
+                <h4 id="admPlayerFormTitle" class="text-xs font-bold text-brand-green uppercase">+ Cadastrar / Editar Atleta</h4>
+                <input type="hidden" id="admPlayerIndex" value="">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <input type="text" id="admPlayerNick" placeholder="Nick (ex: L7_NOBRU)" class="bg-black border border-white/20 p-2 text-xs text-white rounded">
-                    <input type="text" id="admPlayerName" placeholder="Nome Real" class="bg-black border border-white/20 p-2 text-xs text-white rounded">
-                    <input type="text" id="admPlayerRole" placeholder="Função (ex: Capitão)" class="bg-black border border-white/20 p-2 text-xs text-white rounded">
+                    <input type="text" id="admPlayerNick" placeholder="Nick (ex: L7_NOBRU) *" class="bg-black border border-white/20 p-2 text-xs text-white rounded">
+                    <input type="text" id="admPlayerName" placeholder="Nome Real *" class="bg-black border border-white/20 p-2 text-xs text-white rounded">
+                    <input type="text" id="admPlayerRole" placeholder="Função (ex: Capitão / IGL) *" class="bg-black border border-white/20 p-2 text-xs text-white rounded">
                 </div>
-                <button onclick="saveAdminPlayer()" class="bg-brand-green text-black font-bold px-4 py-2 text-xs uppercase rounded">Salvar Atleta na Nuvem</button>
                 
-                <div id="adminPlayersList" class="space-y-2 pt-4"></div>
+                <div class="flex gap-2 items-center">
+                    <input type="text" id="admPlayerPhoto" placeholder="URL da foto ou escolha da galeria *" class="flex-1 bg-black border border-white/20 p-2 text-xs text-white rounded">
+                    <label class="bg-brand-green hover:bg-brand-neon text-black font-bold text-xs px-3 py-2 rounded cursor-pointer whitespace-nowrap uppercase">
+                        <i class="fa-solid fa-image mr-1"></i> Galeria
+                        <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'admPlayerPhoto')">
+                    </label>
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="saveAdminPlayer()" class="bg-brand-green text-black font-bold px-4 py-2 text-xs uppercase rounded">Salvar Atleta na Nuvem</button>
+                    <button onclick="resetPlayerForm()" class="bg-white/10 text-gray-300 font-bold px-3 py-2 text-xs uppercase rounded">Limpar</button>
+                </div>
+                
+                <div id="adminPlayersList" class="space-y-2 pt-4 border-t border-white/10"></div>
             </div>
 
-            <!-- TAB NEWS -->
+            <!-- TAB NEWS (EDIÇÃO, DATA, RESUMO & TEXTO COMPLETO) -->
             <div id="adminContent-news" class="hidden space-y-4 overflow-y-auto flex-1">
-                <h4 class="text-xs font-bold text-brand-green uppercase">+ Publicar Nova Notícia na Nuvem</h4>
-                <input type="text" id="admNewsTitle" placeholder="Título da Notícia *" class="w-full bg-black border border-white/20 p-2 text-xs text-white rounded">
-                <textarea id="admNewsContent" placeholder="Conteúdo da Notícia *" class="w-full bg-black border border-white/20 p-2 text-xs text-white rounded" rows="4"></textarea>
-                <button onclick="saveAdminNews()" class="bg-brand-green text-black font-bold px-4 py-2 text-xs uppercase rounded">Publicar Notícia na Nuvem</button>
+                <h4 id="admNewsFormTitle" class="text-xs font-bold text-brand-green uppercase">+ Publicar / Editar Notícia</h4>
+                <input type="hidden" id="admNewsIndex" value="">
+                
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <input type="text" id="admNewsTitle" placeholder="Título da Notícia *" class="sm:col-span-2 bg-black border border-white/20 p-2 text-xs text-white rounded">
+                    <input type="date" id="admNewsDate" class="bg-black border border-white/20 p-2 text-xs text-white rounded">
+                </div>
 
-                <div id="adminNewsList" class="space-y-2 pt-4"></div>
+                <input type="text" id="admNewsTag" placeholder="Categoria / Tag (ex: LBFF 2026, ANÚNCIO)" class="w-full bg-black border border-white/20 p-2 text-xs text-white rounded">
+
+                <textarea id="admNewsSummary" placeholder="Texto Resumido (Front da notícia - exibido no card principal) *" class="w-full bg-black border border-white/20 p-2 text-xs text-white rounded" rows="2"></textarea>
+                
+                <textarea id="admNewsContent" placeholder="Texto Completo da Notícia (Exibido na minipágina ao abrir a matéria) *" class="w-full bg-black border border-white/20 p-2 text-xs text-white rounded" rows="4"></textarea>
+
+                <div class="flex gap-2 items-center">
+                    <input type="text" id="admNewsImg" placeholder="URL da Imagem da notícia ou escolha da galeria *" class="flex-1 bg-black border border-white/20 p-2 text-xs text-white rounded">
+                    <label class="bg-brand-green hover:bg-brand-neon text-black font-bold text-xs px-3 py-2 rounded cursor-pointer whitespace-nowrap uppercase">
+                        <i class="fa-solid fa-image mr-1"></i> Galeria
+                        <input type="file" accept="image/*" class="hidden" onchange="handleImageUpload(this, 'admNewsImg')">
+                    </label>
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="saveAdminNews()" class="bg-brand-green text-black font-bold px-4 py-2 text-xs uppercase rounded">Publicar / Salvar Notícia</button>
+                    <button onclick="resetNewsForm()" class="bg-white/10 text-gray-300 font-bold px-3 py-2 text-xs uppercase rounded">Limpar</button>
+                </div>
+
+                <div id="adminNewsList" class="space-y-2 pt-4 border-t border-white/10"></div>
             </div>
 
             <!-- TAB TRYOUTS -->
@@ -571,7 +606,15 @@
                 { nick: "L7_CORINGA", name: "Lucas", role: "Rush 1", photo: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600&auto=format&fit=crop" }
             ],
             news: [
-                { id: 1, title: "L7 ESPORTS AVANÇA PARA A GRANDE FINAL DA LBFF!", tag: "LBFF 2026", content: "A equipe cravou uma sequência histórica nas últimas quedas do campeonato.", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" }
+                { 
+                    id: 1, 
+                    title: "L7 ESPORTS AVANÇA PARA A GRANDE FINAL DA LBFF!", 
+                    tag: "LBFF 2026", 
+                    date: "2026-03-30",
+                    summary: "Com uma sequência épica de 3 Booyahs no mapa Bermudas, a equipe garantiu a liderança isolada.", 
+                    content: "A equipe da L7 ESPORTS deu um show de tática e agressividade durante as quedas de hoje na LBFF.\n\nCom rotações cirúrgicas comandadas pelo nosso IGL e um aproveitamento incrível de abates nas zonas finais, a guilda cravou 3 Booyahs seguidos e garantiu a vaga direta na Grande Final.\n\nFiquem ligados nas nossas redes sociais para acompanhar os bastidores!", 
+                    img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" 
+                }
             ],
             trophies: [
                 { title: "LIGA BOOYAH MASTER", year: "2026", pos: "CAMPEÃO #1" }
@@ -723,7 +766,7 @@
         function renderUIFromCloud() {
             const data = window.siteCloudData || DEFAULT_CLOUD_DATA;
 
-            // 1. Elenco
+            // 1. Elenco na Home
             const pGrid = document.getElementById('playersGrid');
             if (pGrid && data.players) {
                 pGrid.innerHTML = data.players.map(p => `
@@ -733,147 +776,231 @@
                         </div>
                         <div class="p-4">
                             <h3 class="font-display font-black text-xl text-white uppercase">${p.nick}</h3>
-                            <span class="text-xs text-brand-green font-bold block uppercase">${p.role}</span>
+                            <span class="text-xs text-gray-400 block">${p.name}</span>
+                            <span class="text-xs text-brand-green font-bold block uppercase mt-1">${p.role}</span>
                         </div>
                     </div>
                 `).join('');
             }
 
-            // 2. Notícias
+            // 2. Notícias na Home
             const nGrid = document.getElementById('newsGrid');
             if (nGrid && data.news) {
-                nGrid.innerHTML = data.news.map((n, idx) => `
-                    <article onclick="openNewsArticleModal(${idx})" class="bg-brand-card border border-white/10 rounded-xl overflow-hidden cursor-pointer hover:border-brand-green transition-all">
-                        <img src="${n.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop'}" class="w-full h-44 object-cover">
-                        <div class="p-4">
-                            <span class="text-[10px] text-brand-green font-bold uppercase">${n.tag || 'NOTÍCIA'}</span>
-                            <h3 class="font-display font-bold text-base text-white uppercase mt-1 leading-snug">${n.title}</h3>
-                        </div>
-                    </article>
-                `).join('');
+                nGrid.innerHTML = data.news.map((n, idx) => {
+                    const formattedDate = n.date ? new Date(n.date).toLocaleDateString('pt-BR') : '';
+                    return `
+                        <article onclick="openNewsArticleModal(${idx})" class="bg-brand-card border border-white/10 rounded-xl overflow-hidden cursor-pointer hover:border-brand-green transition-all flex flex-col justify-between">
+                            <div>
+                                <img src="${n.img || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop'}" class="w-full h-44 object-cover">
+                                <div class="p-4">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-[10px] text-brand-green font-bold uppercase">${n.tag || 'NOTÍCIA'}</span>
+                                        <span class="text-[10px] text-gray-400 font-mono">${formattedDate}</span>
+                                    </div>
+                                    <h3 class="font-display font-bold text-base text-white uppercase leading-snug mb-2">${n.title}</h3>
+                                    <p class="text-xs text-gray-400 line-clamp-3">${n.summary || n.content || ''}</p>
+                                </div>
+                            </div>
+                            <div class="p-4 pt-0">
+                                <span class="text-xs text-brand-green font-bold uppercase flex items-center gap-1">
+                                    Ler notícia completa <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                </span>
+                            </div>
+                        </article>
+                    `;
+                }).join('');
             }
 
-            // 3. Troféus
-            const tGrid = document.getElementById('trophiesGrid');
-            if (tGrid && data.trophies) {
-                tGrid.innerHTML = data.trophies.map(t => `
-                    <div class="bg-brand-card border border-white/10 p-5 rounded-xl flex items-center gap-4">
-                        <i class="fa-solid fa-trophy text-brand-green text-3xl"></i>
-                        <div>
-                            <span class="text-[10px] text-brand-green font-bold uppercase">${t.year} • ${t.pos}</span>
-                            <h4 class="font-display font-black text-base text-white uppercase">${t.title}</h4>
+            // Renderiza Listas do Painel Admin
+            renderAdminLists();
+        }
+
+        function renderAdminLists() {
+            const data = window.siteCloudData || DEFAULT_CLOUD_DATA;
+
+            // Lista do Elenco no Admin
+            const admPList = document.getElementById('adminPlayersList');
+            if (admPList && data.players) {
+                admPList.innerHTML = data.players.map((p, idx) => `
+                    <div class="flex items-center justify-between bg-black/60 p-3 rounded border border-white/10">
+                        <div class="flex items-center gap-3">
+                            <img src="${p.photo}" class="w-10 h-10 object-cover rounded bg-black">
+                            <div>
+                                <span class="font-bold text-xs text-white uppercase block">${p.nick} (${p.name})</span>
+                                <span class="text-[10px] text-brand-green font-mono">${p.role}</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="editAdminPlayer(${idx})" class="bg-purple-600 hover:bg-purple-500 text-white font-bold text-[10px] px-2.5 py-1 rounded uppercase">Editar</button>
+                            <button onclick="deleteAdminPlayer(${idx})" class="bg-red-900/60 hover:bg-red-700 text-white font-bold text-[10px] px-2.5 py-1 rounded uppercase">Excluir</button>
                         </div>
                     </div>
                 `).join('');
             }
 
-            // 4. Loja
-            const prGrid = document.getElementById('productsGrid');
-            if (prGrid && data.shop) {
-                prGrid.innerHTML = data.shop.map(prod => `
-                    <div class="bg-brand-card border border-white/10 rounded-lg p-4 flex flex-col justify-between">
-                        <div>
-                            <img src="${prod.img}" class="w-full h-48 object-cover rounded mb-3">
-                            <h3 class="font-bold text-sm text-white uppercase">${prod.name}</h3>
-                            <span class="text-brand-green font-black text-lg block mt-1">R$ ${prod.price.toFixed(2)}</span>
+            // Lista de Notícias no Admin
+            const admNList = document.getElementById('adminNewsList');
+            if (admNList && data.news) {
+                admNList.innerHTML = data.news.map((n, idx) => `
+                    <div class="flex items-center justify-between bg-black/60 p-3 rounded border border-white/10">
+                        <div class="flex items-center gap-3">
+                            <img src="${n.img}" class="w-10 h-10 object-cover rounded bg-black">
+                            <div>
+                                <span class="font-bold text-xs text-white uppercase block line-clamp-1">${n.title}</span>
+                                <span class="text-[10px] text-brand-green font-mono">${n.date || 'Sem data'} • ${n.tag || 'NOTÍCIA'}</span>
+                            </div>
                         </div>
-                        <button onclick="showToast('Reserva de produto enviada à nuvem!', 'success')" class="mt-4 bg-brand-green text-black font-bold py-2 text-xs uppercase clip-button">Reservar</button>
+                        <div class="flex gap-2">
+                            <button onclick="editAdminNews(${idx})" class="bg-purple-600 hover:bg-purple-500 text-white font-bold text-[10px] px-2.5 py-1 rounded uppercase">Editar</button>
+                            <button onclick="deleteAdminNews(${idx})" class="bg-red-900/60 hover:bg-red-700 text-white font-bold text-[10px] px-2.5 py-1 rounded uppercase">Excluir</button>
+                        </div>
                     </div>
                 `).join('');
             }
         }
 
-        // Funções do Modal expostas no escopo global
-        window.openAuthModal = () => document.getElementById('authModal').classList.remove('hidden');
-        window.closeAuthModal = () => document.getElementById('authModal').classList.add('hidden');
-        window.toggleAuthMode = () => {
-            isSignUpMode = !isSignUpMode;
-            document.getElementById('nameField').classList.toggle('hidden', !isSignUpMode);
-            document.getElementById('modalTitle').innerText = isSignUpMode ? "Cadastrar na L7" : "Acessar Conta L7";
-            document.getElementById('authSubmitBtn').innerText = isSignUpMode ? "CRIAR MINHA CONTA" : "ENTRAR";
-        };
-
-        window.submitTryout = async (e) => {
-            e.preventDefault();
-            const data = window.siteCloudData || DEFAULT_CLOUD_DATA;
-            if (!data.tryouts) data.tryouts = [];
-
-            data.tryouts.unshift({
-                nick: document.getElementById('tryNick').value,
-                ffId: document.getElementById('tryFfId').value,
-                fullName: document.getElementById('tryFullName').value,
-                phone: document.getElementById('tryPhone').value,
-                category: document.getElementById('tryCategory').value,
-                role: document.getElementById('tryRole').value,
-                video: document.getElementById('tryVideo').value,
-                date: new Date().toLocaleDateString('pt-BR')
-            });
-
-            await window.saveToCloud(data);
-            closeTryoutModal();
-            showToast("Inscrição gravada online com sucesso!", "success");
-        };
-
-        // Painel Admin na Nuvem
-        window.openAdminModal = () => document.getElementById('adminModal').classList.remove('hidden');
-        window.closeAdminModal = () => document.getElementById('adminModal').classList.add('hidden');
-        
-        window.switchAdminTab = (tab) => {
-            ['players', 'news', 'tryouts'].forEach(t => document.getElementById(`adminContent-${t}`).classList.add('hidden'));
-            document.getElementById(`adminContent-${tab}`).classList.remove('hidden');
-        };
-
+        // SALVAR/EDITAR/DELETAR ATLETA
         window.saveAdminPlayer = async () => {
             const data = window.siteCloudData || DEFAULT_CLOUD_DATA;
-            data.players.push({
-                nick: document.getElementById('admPlayerNick').value,
-                name: document.getElementById('admPlayerName').value,
-                role: document.getElementById('admPlayerRole').value
-            });
+            const idx = document.getElementById('admPlayerIndex').value;
+            const nick = document.getElementById('admPlayerNick').value.trim();
+            const name = document.getElementById('admPlayerName').value.trim();
+            const role = document.getElementById('admPlayerRole').value.trim();
+            const photo = document.getElementById('admPlayerPhoto').value.trim() || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=600&auto=format&fit=crop';
+
+            if (!nick || !name || !role) {
+                return showToast("Preencha todos os campos do atleta!", "error");
+            }
+
+            const playerObj = { nick, name, role, photo };
+
+            if (idx !== "") {
+                data.players[idx] = playerObj;
+            } else {
+                data.players.push(playerObj);
+            }
+
             await window.saveToCloud(data);
+            resetPlayerForm();
         };
 
+        window.editAdminPlayer = (idx) => {
+            const data = window.siteCloudData;
+            if (data && data.players && data.players[idx]) {
+                const p = data.players[idx];
+                document.getElementById('admPlayerIndex').value = idx;
+                document.getElementById('admPlayerNick').value = p.nick || '';
+                document.getElementById('admPlayerName').value = p.name || '';
+                document.getElementById('admPlayerRole').value = p.role || '';
+                document.getElementById('admPlayerPhoto').value = p.photo || '';
+                document.getElementById('admPlayerFormTitle').innerText = `Editar Atleta #${idx + 1}`;
+            }
+        };
+
+        window.deleteAdminPlayer = async (idx) => {
+            const data = window.siteCloudData;
+            if (data && data.players && data.players[idx]) {
+                data.players.splice(idx, 1);
+                await window.saveToCloud(data);
+                showToast("Atleta removido do elenco!", "info");
+            }
+        };
+
+        window.resetPlayerForm = () => {
+            document.getElementById('admPlayerIndex').value = "";
+            document.getElementById('admPlayerNick').value = "";
+            document.getElementById('admPlayerName').value = "";
+            document.getElementById('admPlayerRole').value = "";
+            document.getElementById('admPlayerPhoto').value = "";
+            document.getElementById('admPlayerFormTitle').innerText = "+ Cadastrar / Editar Atleta";
+        };
+
+        // SALVAR/EDITAR/DELETAR NOTÍCIA
         window.saveAdminNews = async () => {
             const data = window.siteCloudData || DEFAULT_CLOUD_DATA;
-            data.news.unshift({
-                title: document.getElementById('admNewsTitle').value,
-                content: document.getElementById('admNewsContent').value,
-                tag: 'ANÚNCIO'
-            });
+            const idx = document.getElementById('admNewsIndex').value;
+            const title = document.getElementById('admNewsTitle').value.trim();
+            const date = document.getElementById('admNewsDate').value || new Date().toISOString().split('T')[0];
+            const tag = document.getElementById('admNewsTag').value.trim() || 'ANÚNCIO';
+            const summary = document.getElementById('admNewsSummary').value.trim();
+            const content = document.getElementById('admNewsContent').value.trim() || summary;
+            const img = document.getElementById('admNewsImg').value.trim() || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop';
+
+            if (!title || !summary) {
+                return showToast("Preencha ao menos o Título e o Resumo da notícia!", "error");
+            }
+
+            const newsObj = { id: Date.now(), title, date, tag, summary, content, img };
+
+            if (idx !== "") {
+                data.news[idx] = newsObj;
+            } else {
+                data.news.unshift(newsObj);
+            }
+
             await window.saveToCloud(data);
+            resetNewsForm();
+        };
+
+        window.editAdminNews = (idx) => {
+            const data = window.siteCloudData;
+            if (data && data.news && data.news[idx]) {
+                const n = data.news[idx];
+                document.getElementById('admNewsIndex').value = idx;
+                document.getElementById('admNewsTitle').value = n.title || '';
+                document.getElementById('admNewsDate').value = n.date || '';
+                document.getElementById('admNewsTag').value = n.tag || '';
+                document.getElementById('admNewsSummary').value = n.summary || '';
+                document.getElementById('admNewsContent').value = n.content || '';
+                document.getElementById('admNewsImg').value = n.img || '';
+                document.getElementById('admNewsFormTitle').innerText = `Editar Notícia #${idx + 1}`;
+            }
+        };
+
+        window.deleteAdminNews = async (idx) => {
+            const data = window.siteCloudData;
+            if (data && data.news && data.news[idx]) {
+                data.news.splice(idx, 1);
+                await window.saveToCloud(data);
+                showToast("Notícia removida!", "info");
+            }
+        };
+
+        window.resetNewsForm = () => {
+            document.getElementById('admNewsIndex').value = "";
+            document.getElementById('admNewsTitle').value = "";
+            document.getElementById('admNewsDate').value = "";
+            document.getElementById('admNewsTag').value = "";
+            document.getElementById('admNewsSummary').value = "";
+            document.getElementById('admNewsContent').value = "";
+            document.getElementById('admNewsImg').value = "";
+            document.getElementById('admNewsFormTitle').innerText = "+ Publicar / Editar Notícia";
         };
     </script>
 
     <!-- UI HELPERS -->
     <script>
-        function showToast(msg, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `p-3 rounded text-xs font-bold uppercase shadow-lg border ${type === 'error' ? 'bg-red-900 text-red-200 border-red-500' : 'bg-black text-brand-green border-brand-green'}`;
-            toast.innerText = msg;
-            container.appendChild(toast);
-            setTimeout(() => toast.remove(), 3500);
-        }
-
-        function toggleMobileMenu() {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
-        }
-
-        function openTryoutModal() {
-            document.getElementById('tryoutModal').classList.remove('hidden');
-        }
-        function closeTryoutModal() {
-            document.getElementById('tryoutModal').classList.add('hidden');
+        // Upload de imagem local/galeria
+        function handleImageUpload(input, targetInputId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(targetInputId).value = e.target.result;
+                    showToast("Imagem carregada da galeria!", "success");
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
         function openNewsArticleModal(idx) {
             const data = window.siteCloudData;
             if (data && data.news && data.news[idx]) {
                 const item = data.news[idx];
-                document.getElementById('articleTag').innerText = item.tag || 'COMUNICADO';
+                const formattedDate = item.date ? new Date(item.date).toLocaleDateString('pt-BR') : '';
+                document.getElementById('articleTag').innerText = `${item.tag || 'COMUNICADO'} • ${formattedDate}`;
                 document.getElementById('articleTitle').innerText = item.title;
                 document.getElementById('articleImage').src = item.img || '';
-                document.getElementById('articleBody').innerText = item.content || '';
+                document.getElementById('articleBody').innerText = item.content || item.summary || '';
                 document.getElementById('newsArticleModal').classList.remove('hidden');
             }
         }
