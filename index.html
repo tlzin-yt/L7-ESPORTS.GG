@@ -520,13 +520,12 @@
         </div>
     </div>
 
-    <!-- FIREBASE SERVICES (100% ONLINE E NA NUVEM) -->
+    <!-- FIREBASE SERVICES (100% ONLINE E NA NUVEM COM CONFIGURAÇÕES DO PROJETO) -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { 
             getAuth, 
             signInWithCustomToken, 
-            signInAnonymously, 
             onAuthStateChanged,
             createUserWithEmailAndPassword,
             signInWithEmailAndPassword,
@@ -534,33 +533,27 @@
             updateProfile,
             GoogleAuthProvider,
             signInWithPopup
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { 
             getFirestore, 
             doc, 
             setDoc, 
-            getDoc,
-            collection,
             onSnapshot
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // E-mail Admin Supremo
         const ADMIN_EMAIL = "tuliofonseca00@gmail.com";
 
-        // Identificador Global do App
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'l7-esports-app';
-        
-        // Configuração de Conexão Nuvem
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : {
-                apiKey: "AIzaSyDemoConfigKeyForL7EsportsTestingOnly",
-                authDomain: "l7-esports-demo.firebaseapp.com",
-                projectId: "l7-esports-demo",
-                storageBucket: "l7-esports-demo.appspot.com",
-                messagingSenderId: "123456789",
-                appId: "1:123456789:web:abcdef123456"
-            };
+        // Configuração Oficial do SDK Firebase do seu projeto L7 ESPORTS
+        const firebaseConfig = {
+            apiKey: "AIzaSyDTnfevGDY7naxK_CTwr69flY_r9MEAhx4",
+            authDomain: "l7-esports.firebaseapp.com",
+            projectId: "l7-esports",
+            storageBucket: "l7-esports.firebasestorage.app",
+            messagingSenderId: "28086326903",
+            appId: "1:28086326903:web:bb24b597fa738cc1d91872",
+            measurementId: "G-5JQ7VSBT9Z"
+        };
 
         // Inicializar Instâncias
         const app = initializeApp(firebaseConfig);
@@ -591,6 +584,7 @@
         };
 
         // Escutar Banco de Dados Firestore na Nuvem em Tempo Real
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'l7-esports';
         const siteDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'siteContent', 'main');
 
         onSnapshot(siteDocRef, (snap) => {
@@ -617,18 +611,6 @@
                 showToast("Erro ao sincronizar com a nuvem.", "error");
             }
         };
-
-        // Autenticação Inicial
-        async function initAuth() {
-            try {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                }
-            } catch (err) {
-                console.warn("Auth token fallback:", err);
-            }
-        }
-        initAuth();
 
         // Monitorar estado de autenticação
         onAuthStateChanged(auth, async (user) => {
