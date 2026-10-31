@@ -1762,38 +1762,61 @@
         window.closeNewsForm = function() { document.getElementById('newsForm').classList.add('hidden'); };
         window.saveNews = async function() {
             const data = getSiteData();
+            const titleVal = document.getElementById('nTitle').value;
+            const tagVal = document.getElementById('nTag').value;
+            const summaryVal = document.getElementById('nSummary').value;
+            const contentVal = document.getElementById('nContent').value;
+            const imgVal = document.getElementById('nImg').value;
+
+            if (!titleVal) return showToast('Preencha o Título', 'error');
+
             const n = {
                 id: Date.now(),
-                title: document.getElementById('nTitle').value,
-                tag: document.getElementById('nTag').value || 'LBFF 2026',
-                summary: document.getElementById('nSummary').value,
-                content: document.getElementById('nContent').value || document.getElementById('nSummary').value,
-                img: document.getElementById('nImg').value || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop'
+                title: titleVal,
+                tag: tagVal || 'LBFF 2026',
+                summary: summaryVal,
+                content: contentVal || summaryVal,
+                img: imgVal || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop'
             };
-            if (!n.title) return showToast('Preencha o Título', 'error');
+
             if (!data.news) data.news = [];
             data.news.unshift(n);
             
-            // Salva no Firebase e limpa os campos
+            // 1. Atualiza imediatamente a variável global e o cache do navegador
+            window.siteData = data;
+            localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
+
+            // 2. Renderiza no front-end na hora
+            window.renderAllContent();
+            window.renderAdminLists();
+
+            // 3. Persiste no Firebase Firestore
             await window.saveDataToFirebase(data);
+
+            // Limpa os campos do formulário
             document.getElementById('nTitle').value = '';
             document.getElementById('nTag').value = '';
             document.getElementById('nSummary').value = '';
             document.getElementById('nContent').value = '';
             document.getElementById('nImg').value = '';
             closeNewsForm();
-            window.renderAllContent();
-            window.renderAdminLists();
+
+            showToast('Notícia publicada e salva no banco de dados!', 'success');
         };
         
         window.deleteNews = async function(idx) {
             const data = getSiteData();
             if (data.news && data.news.length > idx) {
                 data.news.splice(idx, 1);
-                // Atualização permanente no Firebase e no cache local
-                await window.saveDataToFirebase(data);
+                
+                // Atualiza local e global na hora
+                window.siteData = data;
+                localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
                 window.renderAllContent();
                 window.renderAdminLists();
+
+                // Salva permanentemente no Firebase
+                await window.saveDataToFirebase(data);
                 showToast('Notícia excluída definitivamente!', 'info');
             }
         };
