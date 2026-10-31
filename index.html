@@ -401,14 +401,91 @@
                     <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// FEED DE COMUNICADOS</span>
                     <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight">ÚLTIMAS <span class="text-brand-green">NOTÍCIAS</span></h2>
                 </div>
+                <p class="text-gray-400 text-sm max-w-md mt-2 md:mt-0">
+                    Clique em qualquer notícia para ler a matéria completa.
+                </p>
             </div>
 
-            <!-- NEWS GRID -->
+            <!-- NEWS GRID (EXIBE APENAS UM RESUMO CURTO) -->
             <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Loaded Dynamically via JS -->
             </div>
         </div>
     </section>
+
+    <!-- MODAL DE PÁGINA COMPLETA DA NOTÍCIA (ESTILO PORTAL DE NOTÍCIAS / G1) -->
+    <div id="newsArticleModal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6 bg-black/95 backdrop-blur-md hidden">
+        <div class="bg-brand-card border border-brand-border w-full max-w-4xl max-h-[92vh] flex flex-col rounded-xl overflow-hidden shadow-2xl relative">
+            
+            <!-- HEADER DO ARTIGO COM BOTÃO VOLTAR/FECHAR -->
+            <div class="flex items-center justify-between p-4 bg-black/80 border-b border-brand-border">
+                <div class="flex items-center gap-2">
+                    <span class="bg-brand-green text-black font-display font-extrabold text-[10px] uppercase px-2.5 py-0.5 clip-button">
+                        L7 NEWS
+                    </span>
+                    <span class="text-xs text-gray-400 font-mono hidden sm:inline">// PORTAL OFICIAL DE NOTÍCIAS</span>
+                </div>
+                <button onclick="closeNewsArticleModal()" class="bg-brand-card hover:bg-brand-green hover:text-black text-gray-300 border border-brand-border px-3 py-1.5 rounded text-xs font-bold uppercase transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Voltar para o Site</span>
+                </button>
+            </div>
+
+            <!-- CONTEÚDO SCROLLÁVEL DA MATÉRIA -->
+            <div class="p-4 sm:p-8 flex-1 overflow-y-auto space-y-8">
+                
+                <!-- CABEÇALHO DA MATÉRIA -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <span id="articleTag" class="text-brand-green font-mono font-bold text-xs uppercase px-3 py-1 bg-brand-green/10 border border-brand-green/30 rounded-full">LBFF 2026</span>
+                        <span id="articleDate" class="text-gray-400 text-xs font-mono">Publicado recentemente</span>
+                    </div>
+
+                    <h1 id="articleTitle" class="font-display font-black text-2xl sm:text-4xl text-white uppercase leading-tight">
+                        <!-- Título dinâmico -->
+                    </h1>
+
+                    <p id="articleSummary" class="text-gray-300 text-sm sm:text-base italic border-l-2 border-brand-green pl-4 py-1 font-sans">
+                        <!-- Resumo dinâmico -->
+                    </p>
+
+                    <div class="flex items-center gap-3 pt-2 text-xs text-gray-400 border-t border-brand-border/40">
+                        <div class="w-8 h-8 rounded-full bg-brand-green/20 border border-brand-green flex items-center justify-center text-brand-green font-bold">
+                            L7
+                        </div>
+                        <div>
+                            <span class="text-white font-bold block">Redação L7 eSports</span>
+                            <span class="text-[10px] text-gray-500">Jornalismo Oficial da Guilda</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IMAGEM DE CAPA DA MATÉRIA -->
+                <div class="w-full h-64 sm:h-96 rounded-xl overflow-hidden border border-brand-border bg-black relative">
+                    <img id="articleImg" src="" alt="Capa da Notícia" class="w-full h-full object-cover">
+                </div>
+
+                <!-- CORPO DO TEXTO DA NOTÍCIA -->
+                <div id="articleBody" class="text-gray-300 text-sm sm:text-base leading-relaxed space-y-4 font-sans">
+                    <!-- Texto completo renderizado via JS -->
+                </div>
+
+                <!-- SEÇÃO: OUTRAS NOTÍCIAS DO PRÓPRIO SITE -->
+                <div class="pt-10 border-t border-brand-border/60">
+                    <div class="mb-6">
+                        <span class="text-brand-green font-mono text-xs uppercase tracking-widest block mb-1">// LEIA TAMBÉM</span>
+                        <h3 class="font-display font-black text-xl text-white uppercase">OUTRAS NOTÍCIAS DA <span class="text-brand-green">L7 ESPORTS</span></h3>
+                    </div>
+
+                    <div id="relatedNewsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Outras notícias recomendadas via JS -->
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 
     <!-- CONQUISTAS SECTION (TÍTULOS ADQUIRIDOS) -->
     <section id="conquistas" class="py-20 border-t border-brand-border bg-brand-bg">
@@ -887,8 +964,9 @@
                         <h4 id="newsFormTitle" class="font-bold text-xs uppercase text-brand-green">Nova Notícia</h4>
                         <input type="hidden" id="nId">
                         <input type="text" id="nTitle" placeholder="Título da Notícia" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
-                        <input type="text" id="nTag" placeholder="Categoria/Tag (ex: LBFF, PENEIRA)" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
-                        <textarea id="nSummary" placeholder="Resumo do Comunicado" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white" rows="2"></textarea>
+                        <input type="text" id="nTag" placeholder="Categoria/Tag (ex: LBFF, PENEIRA, CAMPEONATO)" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white">
+                        <textarea id="nSummary" placeholder="Resumo Curto (Aparece na tela principal)" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white" rows="2"></textarea>
+                        <textarea id="nContent" placeholder="Texto Completo da Matéria (Aparece ao clicar na notícia)" class="w-full bg-black border border-brand-border p-2 rounded text-xs text-white" rows="6"></textarea>
                         
                         <!-- INPUT DE IMAGEM COM BOTÃO DE UPLOAD DE GALERIA LOCAL -->
                         <div>
@@ -1031,7 +1109,22 @@
                 { id: 2, nick: "L7_CORINGA", name: "Lucas", role: "Rush 1", kd: "5.10", headshot: "89%", photo: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600&auto=format&fit=crop" }
             ],
             news: [
-                { id: 1, title: "L7 ESPORTS AVANÇA PARA A GRANDE FINAL DA LBFF!", tag: "LBFF 2026", summary: "Com uma sequência épica de 3 Booyahs no mapa Bermudas, a equipe garantiu a liderança isolada.", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" }
+                { 
+                    id: 1, 
+                    title: "L7 ESPORTS AVANÇA PARA A GRANDE FINAL DA LBFF!", 
+                    tag: "LBFF 2026", 
+                    summary: "Com uma sequência épica de 3 Booyahs no mapa Bermudas, a equipe garantiu a liderança isolada do campeonato oficial.", 
+                    content: "A L7 ESPORTS fez história no último final de semana de quedas da LBFF. Em uma atuação cirúrgica sob o comando do IGL L7_NOBRU, o squad conquistou três Booyahs consecutivos, registrando o recorde de eliminações em uma única transmissão.\n\nA comissão técnica destacou a evolução tática nas rotações e a agressividade nas formações de Rush. A grande final acontecerá nos próximos dias e a torcida promete lotar a transmissão oficial para apoiar nossos atletas rumo ao título nacional.",
+                    img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" 
+                },
+                { 
+                    id: 2, 
+                    title: "ABERTAS AS INSCRIÇÕES PARA A SELETIVA DE ATLETAS 2026", 
+                    tag: "SELETIVA", 
+                    summary: "Procuramos novos talentos para as categorias Mobile e Emulador. Candidate-se direto pelo portal da guilda.", 
+                    content: "A diretoria da L7 ESPORTS anunciou a abertura oficial do processo seletivo para a temporada 2026. Jogadores de todo o Brasil nas modalidades Mobile e Emulador podem submeter suas candidaturas no formulário do site.\n\nTodos os currículos recebidos serão analisados pela nossa comissão técnica e os aprovados serão chamados via WhatsApp para a fase de testes privados na guilda.",
+                    img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop" 
+                }
             ],
             shop: [
                 { id: 101, name: "Curso de IGL & Rotação Pro", price: 97.90, category: "Curso", tag: "CURSO PRO", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop" },
@@ -1286,7 +1379,7 @@
                     newsGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500 text-sm">Nenhum comunicado publicado no momento.</div>`;
                 } else {
                     newsGrid.innerHTML = data.news.map(item => `
-                        <article class="bg-brand-card border border-brand-border rounded-xl overflow-hidden group hover:border-brand-green/60 transition-all duration-300 flex flex-col justify-between">
+                        <article onclick="openNewsArticleModal(${item.id})" class="bg-brand-card border border-brand-border rounded-xl overflow-hidden group hover:border-brand-green/60 transition-all duration-300 flex flex-col justify-between cursor-pointer">
                             <div>
                                 <div class="h-48 overflow-hidden relative bg-black">
                                     <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90">
@@ -1295,9 +1388,15 @@
                                     </span>
                                 </div>
                                 <div class="p-5">
-                                    <h3 class="font-display font-bold text-lg text-white uppercase group-hover:text-brand-green transition-colors leading-snug mb-2">${item.title}</h3>
-                                    <p class="text-xs text-gray-400 leading-relaxed">${item.summary}</p>
+                                    <h3 class="font-display font-bold text-lg text-white uppercase group-hover:text-brand-green transition-colors leading-snug mb-2 line-clamp-2">${item.title}</h3>
+                                    <p class="text-xs text-gray-400 leading-relaxed line-clamp-2">${item.summary}</p>
                                 </div>
+                            </div>
+                            <div class="px-5 pb-5 pt-0">
+                                <span class="text-brand-green font-display font-bold text-xs uppercase flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                    <span>Ler Matéria Completa</span>
+                                    <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                                </span>
                             </div>
                         </article>
                     `).join('');
@@ -1611,49 +1710,47 @@
                 window.saveDataToFirebase(data);
             }
         };
-
-        // SALVAR HERO E STATS
-        window.saveHeroChanges = function() {
+        // ABRIR E RENDERIZAR A PÁGINA COMPLETA DA NOTÍCIA
+        window.openNewsArticleModal = function(newsId) {
             const data = getSiteData();
-            data.hero = {
-                title: document.getElementById('adminHeroTitle').value,
-                subtitle: document.getElementById('adminHeroSubtitle').value,
-                bg: document.getElementById('adminHeroBg').value,
-                stV1: document.getElementById('stV1').value,
-                stL1: document.getElementById('stL1').value,
-                stV2: document.getElementById('stV2').value,
-                stL2: document.getElementById('stL2').value,
-                stV3: document.getElementById('stV3').value,
-                stL3: document.getElementById('stL3').value,
-                stV4: document.getElementById('stV4').value,
-                stL4: document.getElementById('stL4').value
-            };
-            window.saveDataToFirebase(data);
+            if (!data || !data.news) return;
+
+            const article = data.news.find(n => n.id === newsId);
+            if (!article) return;
+
+            document.getElementById('articleTitle').innerText = article.title;
+            document.getElementById('articleTag').innerText = article.tag || 'COMUNICADO';
+            document.getElementById('articleSummary').innerText = article.summary || '';
+            document.getElementById('articleImg').src = article.img;
+
+            // Formatação de parágrafos no corpo da notícia
+            const bodyContainer = document.getElementById('articleBody');
+            const paragraphs = (article.content || article.summary || '').split('\n').filter(p => p.trim() !== '');
+            bodyContainer.innerHTML = paragraphs.map(p => `<p class="leading-relaxed text-gray-300">${p}</p>`).join('');
+
+            // Renderizar Outras Notícias (Recomendações no final da página)
+            const relatedGrid = document.getElementById('relatedNewsGrid');
+            const otherNews = data.news.filter(n => n.id !== newsId);
+
+            if (otherNews.length === 0) {
+                relatedGrid.innerHTML = `<p class="text-gray-500 text-xs col-span-full">Não há mais notícias publicadas.</p>`;
+            } else {
+                relatedGrid.innerHTML = otherNews.slice(0, 2).map(item => `
+                    <div onclick="openNewsArticleModal(${item.id})" class="bg-black/60 border border-brand-border p-3 rounded-lg flex items-center gap-3 cursor-pointer hover:border-brand-green/60 transition-all group">
+                        <img src="${item.img}" class="w-16 h-16 object-cover rounded flex-shrink-0">
+                        <div>
+                            <span class="text-[9px] text-brand-green font-bold uppercase font-mono">${item.tag || 'NOTÍCIA'}</span>
+                            <h4 class="font-display font-bold text-xs text-white uppercase group-hover:text-brand-green transition-colors line-clamp-2">${item.title}</h4>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('newsArticleModal').classList.remove('hidden');
         };
 
-        // ADMIN FORM SHOW/HIDE
-        window.openPlayerForm = function() { document.getElementById('playerForm').classList.remove('hidden'); };
-        window.closePlayerForm = function() { document.getElementById('playerForm').classList.add('hidden'); };
-        window.savePlayer = function() {
-            const data = getSiteData();
-            const p = {
-                id: Date.now(),
-                nick: document.getElementById('pNick').value,
-                name: document.getElementById('pName').value,
-                role: document.getElementById('pRole').value,
-                kd: document.getElementById('pKd').value || '4.50',
-                headshot: document.getElementById('pHeadshot').value || '75%',
-                photo: document.getElementById('pPhoto').value || 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=600&auto=format&fit=crop'
-            };
-            if (!p.nick) return showToast('Preencha o Nick', 'error');
-            data.players.push(p);
-            window.saveDataToFirebase(data);
-            closePlayerForm();
-        };
-        window.deletePlayer = function(idx) {
-            const data = getSiteData();
-            data.players.splice(idx, 1);
-            window.saveDataToFirebase(data);
+        window.closeNewsArticleModal = function() {
+            document.getElementById('newsArticleModal').classList.add('hidden');
         };
 
         // NEWS ADMIN
@@ -1666,9 +1763,11 @@
                 title: document.getElementById('nTitle').value,
                 tag: document.getElementById('nTag').value || 'LBFF 2026',
                 summary: document.getElementById('nSummary').value,
+                content: document.getElementById('nContent').value || document.getElementById('nSummary').value,
                 img: document.getElementById('nImg').value || 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop'
             };
             if (!n.title) return showToast('Preencha o Título', 'error');
+            if (!data.news) data.news = [];
             data.news.push(n);
             window.saveDataToFirebase(data);
             closeNewsForm();
