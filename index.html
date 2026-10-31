@@ -1081,6 +1081,14 @@
             createUserWithEmailAndPassword, 
             signOut, 
             onAuthStateChanged,
+        // FIREBASE SDK & APP LOGIC
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword, 
+            signOut, 
+            onAuthStateChanged,
             updateProfile,
             GoogleAuthProvider,
             signInWithPopup 
@@ -1108,24 +1116,7 @@
                 { id: 1, nick: "L7_NOBRU", name: "Gabriel", role: "Capitão / IGL", kd: "4.92", headshot: "82%", photo: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=600&auto=format&fit=crop" },
                 { id: 2, nick: "L7_CORINGA", name: "Lucas", role: "Rush 1", kd: "5.10", headshot: "89%", photo: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600&auto=format&fit=crop" }
             ],
-            news: [
-                { 
-                    id: 1, 
-                    title: "L7 ESPORTS AVANÇA PARA A GRANDE FINAL DA LBFF!", 
-                    tag: "LBFF 2026", 
-                    summary: "Com uma sequência épica de 3 Booyahs no mapa Bermudas, a equipe garantiu a liderança isolada do campeonato oficial.", 
-                    content: "A L7 ESPORTS fez história no último final de semana de quedas da LBFF. Em uma atuação cirúrgica sob o comando do IGL L7_NOBRU, o squad conquistou três Booyahs consecutivos, registrando o recorde de eliminações em uma única transmissão.\n\nA comissão técnica destacou a evolução tática nas rotações e a agressividade nas formações de Rush. A grande final acontecerá nos próximos dias e a torcida promete lotar a transmissão oficial para apoiar nossos atletas rumo ao título nacional.",
-                    img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" 
-                },
-                { 
-                    id: 2, 
-                    title: "ABERTAS AS INSCRIÇÕES PARA A SELETIVA DE ATLETAS 2026", 
-                    tag: "SELETIVA", 
-                    summary: "Procuramos novos talentos para as categorias Mobile e Emulador. Candidate-se direto pelo portal da guilda.", 
-                    content: "A diretoria da L7 ESPORTS anunciou a abertura oficial do processo seletivo para a temporada 2026. Jogadores de todo o Brasil nas modalidades Mobile e Emulador podem submeter suas candidaturas no formulário do site.\n\nTodos os currículos recebidos serão analisados pela nossa comissão técnica e os aprovados serão chamados via WhatsApp para a fase de testes privados na guilda.",
-                    img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop" 
-                }
-            ],
+            news: [],
             shop: [
                 { id: 101, name: "Curso de IGL & Rotação Pro", price: 97.90, category: "Curso", tag: "CURSO PRO", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop" },
                 { id: 102, name: "Aulas de Rush & Movimentação", price: 67.90, category: "Curso", tag: "CURSO PRO", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600&auto=format&fit=crop" },
@@ -1161,17 +1152,30 @@
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'l7-esports';
         const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'siteContent', 'main');
 
-        // SINCRONIZAÇÃO EM TEMPO REAL COM FIRESTORE
+        // LEITURA INICIAL SEM RECONSTRUÇÃO DE DADOS PADRÃO
+        function loadLocalDataFirst() {
+            const stored = localStorage.getItem('L7_SITE_DATA');
+            if (stored) {
+                try {
+                    return JSON.parse(stored);
+                } catch(e) {}
+            }
+            return DEFAULT_DATA;
+        }
+
+        window.siteData = loadLocalDataFirst();
+
+        // SINCRONIZAÇÃO FIRESTORE PROTEGIDA CONTRA RESET
         onSnapshot(docRef, (docSnap) => {
             if (docSnap.exists()) {
                 const firebaseData = docSnap.data();
-                window.siteData = firebaseData;
+                if (firebaseData && typeof firebaseData === 'object') {
+                    window.siteData = firebaseData;
+                    localStorage.setItem('L7_SITE_DATA', JSON.stringify(firebaseData));
+                }
             } else {
-                window.siteData = DEFAULT_DATA;
-                setDoc(docRef, DEFAULT_DATA);
+                setDoc(docRef, window.siteData || DEFAULT_DATA);
             }
-            // Atualiza o localStorage para garantir persistência idêntica
-            localStorage.setItem('L7_SITE_DATA', JSON.stringify(window.siteData));
 
             if (typeof window.renderAllContent === 'function') {
                 window.renderAllContent();
@@ -1180,23 +1184,19 @@
                 if (typeof window.loadAdminValues === 'function') window.loadAdminValues();
             }
         }, (err) => {
-            console.error("Erro no Firestore:", err);
-            window.siteData = getSiteDataLocal();
-            if (typeof window.renderAllContent === 'function') {
-                window.renderAllContent();
-            }
+            console.warn("Utilizando armazenamento persistente local do navegador.", err);
         });
 
-        // SALVAR NO FIRESTORE
+        // SALVAR NO FIRESTORE COM CONFIRMAÇÃO DE ESCRITA
         window.saveDataToFirebase = async function(data) {
+            window.siteData = data;
+            localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
             try {
-                window.siteData = data;
-                localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
                 await setDoc(docRef, data);
-                showToast('Dados sincronizados no Firebase!', 'success');
+                showToast('Dados salvos permanentemente!', 'success');
             } catch (e) {
-                console.error("Erro ao salvar no Firestore:", e);
-                showToast('Dados salvos localmente.', 'info');
+                console.error("Erro ao gravar no Firestore:", e);
+                showToast('Salvo em cache local.', 'info');
             }
         };
 
@@ -1303,8 +1303,6 @@
 
     <!-- WEBSITE DATA MANAGEMENT & INTERACTIVITY -->
     <script>
-        window.siteData = null;
-
         function getSiteDataLocal() {
             const stored = localStorage.getItem('L7_SITE_DATA');
             if (stored) {
@@ -1314,7 +1312,10 @@
         }
 
         function getSiteData() {
-            return window.siteData || getSiteDataLocal();
+            if (!window.siteData) {
+                window.siteData = getSiteDataLocal();
+            }
+            return window.siteData;
         }
 
         // UPLOAD DE IMAGENS LOCAL DA GALERIA (BASE64)
@@ -1782,26 +1783,24 @@
             if (!data.news) data.news = [];
             data.news.unshift(n);
             
-            // 1. Atualiza imediatamente a variável global e o cache do navegador
+            // 1. Atualização síncrona
             window.siteData = data;
             localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
 
-            // 2. Renderiza no front-end na hora
+            // 2. Renderização imediata
             window.renderAllContent();
             window.renderAdminLists();
 
-            // 3. Persiste no Firebase Firestore
+            // 3. Gravação direta
             await window.saveDataToFirebase(data);
 
-            // Limpa os campos do formulário
+            // Limpa o formulário
             document.getElementById('nTitle').value = '';
             document.getElementById('nTag').value = '';
             document.getElementById('nSummary').value = '';
             document.getElementById('nContent').value = '';
             document.getElementById('nImg').value = '';
             closeNewsForm();
-
-            showToast('Notícia publicada e salva no banco de dados!', 'success');
         };
         
         window.deleteNews = async function(idx) {
@@ -1809,15 +1808,13 @@
             if (data.news && data.news.length > idx) {
                 data.news.splice(idx, 1);
                 
-                // Atualiza local e global na hora
                 window.siteData = data;
                 localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
+
                 window.renderAllContent();
                 window.renderAdminLists();
 
-                // Salva permanentemente no Firebase
                 await window.saveDataToFirebase(data);
-                showToast('Notícia excluída definitivamente!', 'info');
             }
         };
 
