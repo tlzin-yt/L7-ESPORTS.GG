@@ -670,38 +670,38 @@
             ],
             trophies: [
                 { title: "LIGA BOOYAH MASTER", year: "2026", pos: "CAMPEÃO #1" }
-            ],
-            shop: [
-                { id: 101, name: "Curso de IGL & Rotação Pro", price: 97.90, category: "Curso", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&auto=format&fit=crop" },
-                { id: 102, name: "Manta Oficial L7 Pro 2026", price: 149.90, category: "Vestuário", img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop" }
-            ],
-            tryouts: []
-        };
+        window.handleImageUpload = function(input, targetInputId) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const reader = new FileReader();
 
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'l7-esports';
-        const siteDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'siteContent', 'main');
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.onload = function() {
+                        // Redimensiona a imagem para otimizar o salvamento direto no Firestore
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        const maxWidth = 800;
 
-        onSnapshot(siteDocRef, (snap) => {
-            if (snap.exists()) {
-                window.siteCloudData = snap.data();
-            } else {
-                window.siteCloudData = DEFAULT_CLOUD_DATA;
-                setDoc(siteDocRef, DEFAULT_CLOUD_DATA);
-            }
-            renderUIFromCloud();
-        }, (err) => {
-            console.warn("Utilizando dados padrão local:", err);
-            window.siteCloudData = DEFAULT_CLOUD_DATA;
-            renderUIFromCloud();
-        });
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
 
-        window.saveToCloud = async function(data) {
-            try {
-                await setDoc(siteDocRef, data);
-                showToast("Dados salvos no servidor Firebase!", "success");
-            } catch (err) {
-                console.error("Erro ao salvar Firestore:", err);
-                showToast("Erro ao sincronizar com a nuvem.", "error");
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        // Converte a imagem otimizada em JPEG leve
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                        document.getElementById(targetInputId).value = compressedDataUrl;
+                        showToast('Imagem da galeria carregada e otimizada!', 'success');
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         };
 
