@@ -1780,10 +1780,16 @@
             window.saveDataToFirebase(data);
             closeNewsForm();
         };
-        window.deleteNews = function(idx) {
+        window.deleteNews = async function(idx) {
             const data = getSiteData();
-            data.news.splice(idx, 1);
-            window.saveDataToFirebase(data);
+            if (data.news && data.news.length > idx) {
+                data.news.splice(idx, 1);
+                // Atualização explícita do estado para salvar a exclusão permanente no Firebase
+                await window.saveDataToFirebase(data);
+                window.renderAllContent();
+                window.renderAdminLists();
+                showToast('Notícia excluída permanentemente!', 'info');
+            }
         };
 
         // SHOP ADMIN
