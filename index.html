@@ -104,6 +104,9 @@
                 <nav class="hidden md:flex items-center gap-8 font-display font-semibold tracking-wide text-sm uppercase">
                     <a href="#home" class="hover:text-brand-green transition-colors text-white">Início</a>
                     <a href="#elenco" class="hover:text-brand-green transition-colors text-gray-300">Elenco FF</a>
+                    <button onclick="openTryoutModal()" class="text-brand-green hover:text-white transition-colors flex items-center gap-1.5 font-bold">
+                        <i class="fa-solid fa-fire animate-pulse text-xs"></i> Peneira
+                    </button>
                     <a href="#noticias" class="hover:text-brand-green transition-colors text-gray-300">Notícias</a>
                     <a href="#conquistas" class="hover:text-brand-green transition-colors text-gray-300">Conquistas</a>
                     <a href="#loja" class="hover:text-brand-green transition-colors text-gray-300">Loja Merch</a>
@@ -145,6 +148,7 @@
         <div id="mobileMenu" class="hidden md:hidden bg-brand-card border-b border-brand-border px-4 pt-2 pb-6 space-y-3 font-display font-semibold uppercase text-sm">
             <a href="#home" class="block py-2 text-white hover:text-brand-green">Início</a>
             <a href="#elenco" class="block py-2 text-gray-300 hover:text-brand-green">Elenco FF</a>
+            <button onclick="openTryoutModal(); toggleMobileMenu();" class="block w-full text-left py-2 text-brand-green font-bold">Peneira / Inscrição</button>
             <a href="#noticias" class="block py-2 text-gray-300 hover:text-brand-green">Notícias</a>
             <a href="#conquistas" class="block py-2 text-gray-300 hover:text-brand-green">Conquistas</a>
             <a href="#loja" class="block py-2 text-gray-300 hover:text-brand-green">Loja Merch</a>
@@ -175,13 +179,13 @@
             </p>
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a id="heroCta" href="#elenco" class="w-full sm:w-auto bg-brand-green hover:bg-brand-darkGreen text-black font-display font-bold px-8 py-4 clip-button text-base tracking-wider uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,255,102,0.5)] flex items-center justify-center gap-3">
-                    <i class="fa-solid fa-crosshair text-lg"></i>
-                    <span>Conhecer Elenco</span>
-                </a>
-                <a href="#loja" class="w-full sm:w-auto bg-brand-card hover:bg-brand-card/80 text-white font-display font-bold px-8 py-4 clip-button text-base tracking-wider uppercase border border-brand-border hover:border-brand-green transition-all duration-300 flex items-center justify-center gap-3">
-                    <i class="fa-solid fa-shirt"></i>
-                    <span>Manta L7 2026</span>
+                <button onclick="openTryoutModal()" class="w-full sm:w-auto bg-brand-green hover:bg-brand-darkGreen text-black font-display font-black px-8 py-4 clip-button text-base tracking-wider uppercase transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,255,102,0.5)] flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-trophy text-lg"></i>
+                    <span>Inscrever-se na Peneira</span>
+                </button>
+                <a href="#elenco" class="w-full sm:w-auto bg-brand-card hover:bg-brand-card/80 text-white font-display font-bold px-8 py-4 clip-button text-base tracking-wider uppercase border border-brand-border hover:border-brand-green transition-all duration-300 flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Ver Elenco Pro</span>
                 </a>
             </div>
 
@@ -224,6 +228,28 @@
             <div id="playersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Loaded Dynamically via JS -->
             </div>
+        </div>
+    </section>
+
+    <!-- BANNER DE INSCRIÇÃO DA PENEIRA (CHAMADA PARA O MODAL) -->
+    <section class="py-16 border-t border-brand-border bg-gradient-to-r from-black via-brand-card to-black relative overflow-hidden">
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+            <div>
+                <span class="text-brand-green font-mono text-xs uppercase tracking-widest px-3 py-1 bg-brand-green/10 border border-brand-green/30 rounded-full inline-block mb-3">
+                    <i class="fa-solid fa-shield-halved mr-1"></i> SELETIVA PRO PLAYER ATIVA
+                </span>
+                <h2 class="font-display font-black text-3xl sm:text-4xl text-white uppercase tracking-tight">
+                    QUER ENTRAR PARA A <span class="text-brand-green text-glow">L7 ESPORTS?</span>
+                </h2>
+                <p class="text-gray-400 text-sm mt-2 max-w-xl">
+                    Clique no botão abaixo para abrir o painel de formulário e enviar sua candidatura direto para análise do Dashboard Admin.
+                </p>
+            </div>
+            <button onclick="openTryoutModal()" class="w-full md:w-auto whitespace-nowrap bg-brand-green hover:bg-brand-darkGreen text-black font-display font-black px-8 py-4 clip-button text-sm tracking-wider uppercase transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,255,102,0.5)] flex items-center justify-center gap-2">
+                <i class="fa-solid fa-file-pen text-lg"></i>
+                <span>ABRIR PAINEL DE INSCRIÇÃO</span>
+            </button>
         </div>
     </section>
 
@@ -357,6 +383,122 @@
         </div>
     </div>
 
+    <!-- MODAL / PAINEL FLUTUANTE DE INSCRIÇÃO NA PENEIRA -->
+    <div id="tryoutModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/90 backdrop-blur-md hidden">
+        <div class="bg-brand-card border-2 border-brand-green w-full max-w-3xl max-h-[90vh] flex flex-col rounded-xl overflow-hidden shadow-2xl relative clip-cyber">
+            
+            <!-- HEADER DO PAINEL -->
+            <div class="flex items-center justify-between p-4 sm:p-6 bg-black/60 border-b border-brand-border">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded bg-brand-green/20 border border-brand-green flex items-center justify-center text-brand-green font-bold text-lg">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-black text-white uppercase tracking-wider text-lg sm:text-xl">Formulário de Inscrição <span class="text-brand-green">L7</span></h3>
+                        <span class="text-xs text-gray-400">Preencha com atenção. Seus dados serão enviados ao Dashboard Admin.</span>
+                    </div>
+                </div>
+                <button onclick="closeTryoutModal()" class="w-9 h-9 bg-brand-card hover:bg-red-900/40 text-gray-400 hover:text-red-400 border border-brand-border hover:border-red-500/50 rounded flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- CONTEÚDO SCROLLÁVEL DO FORMULÁRIO -->
+            <div class="p-4 sm:p-6 flex-1 overflow-y-auto">
+                <form id="tryoutForm" onsubmit="submitTryout(event)" class="space-y-5">
+                    
+                    <!-- 1. CATEGORIA -->
+                    <div>
+                        <label class="block font-display font-bold text-xs uppercase text-brand-green mb-2">1. Categoria de Atuação *</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <label class="flex items-center gap-2 p-3 bg-black/50 border border-brand-border rounded cursor-pointer hover:border-brand-green transition-colors">
+                                <input type="radio" name="tryCategory" value="Mobile" checked class="accent-brand-green">
+                                <span class="text-xs font-bold text-white uppercase"><i class="fa-solid fa-mobile-screen mr-1 text-brand-green"></i> Mobile</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 bg-black/50 border border-brand-border rounded cursor-pointer hover:border-brand-green transition-colors">
+                                <input type="radio" name="tryCategory" value="Emulador" class="accent-brand-green">
+                                <span class="text-xs font-bold text-white uppercase"><i class="fa-solid fa-desktop mr-1 text-brand-green"></i> Emulador</span>
+                            </label>
+                            <label class="flex items-center gap-2 p-3 bg-black/50 border border-brand-border rounded cursor-pointer hover:border-brand-green transition-colors">
+                                <input type="radio" name="tryCategory" value="Misto/Flex" class="accent-brand-green">
+                                <span class="text-xs font-bold text-white uppercase"><i class="fa-solid fa-gamepad mr-1 text-brand-green"></i> Misto / Flex</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 2. IDENTIFICAÇÃO DO JOGADOR -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Nick de Jogo no Free Fire *</label>
+                            <input type="text" id="tryNick" required placeholder="Ex: L7_MITO9" class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase mb-1">ID do Free Fire *</label>
+                            <input type="text" id="tryFfId" required placeholder="Ex: 123456789" class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Nome Completo *</label>
+                            <input type="text" id="tryFullName" required placeholder="Seu nome real" class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase mb-1">WhatsApp de Contato (DDD + Número) *</label>
+                            <input type="tel" id="tryPhone" required placeholder="Ex: 31999998888" class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none">
+                        </div>
+                    </div>
+
+                    <!-- 3. FUNÇÃO E PATENTE -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Idade *</label>
+                            <input type="number" id="tryAge" required min="12" max="40" placeholder="Ex: 17" class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Função Principal *</label>
+                            <select id="tryRole" required class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none">
+                                <option value="Rusher 1">Rusher 1 (Primeira Linha)</option>
+                                <option value="Rusher 2">Rusher 2 / Segundo Rush</option>
+                                <option value="IGL / Capitão">IGL / Capitão de Rotação</option>
+                                <option value="Suporte / Sniper">Suporte / Sniper Longe</option>
+                                <option value="Grenadier">Grenadier / Granadeiro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Maior Patente Alcançada *</label>
+                            <select id="tryRank" required class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none">
+                                <option value="Desafiante">Desafiante Top Global</option>
+                                <option value="Mestre 5+ Estrelas">Mestre 5+ Estrelas</option>
+                                <option value="Mestre 1-4 Estrelas">Mestre 1-4 Estrelas</option>
+                                <option value="Elite / D4">Elite / Diamante 4</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 4. HIGHLIGHTS E HISTÓRICO -->
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Link de Vídeo / Highlights (YouTube, TikTok, Drive) *</label>
+                        <input type="url" id="tryVideo" required placeholder="https://youtube.com/watch?v=..." class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Histórico em Torneios e Ligas (LBFF, CPN, NFA, Copas)</label>
+                        <textarea id="tryHistory" rows="2" placeholder="Descreva os campeonatos que já jogou e posições conquistadas..." class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Por que a L7 ESPORTS deve te contratar?</label>
+                        <textarea id="tryReason" rows="2" placeholder="Conte um pouco sobre suas metas e rotina de treino..." class="w-full bg-black/60 border border-brand-border rounded p-3 text-xs text-white focus:border-brand-green focus:outline-none"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-brand-green hover:bg-brand-darkGreen text-black font-display font-black py-3.5 clip-button uppercase tracking-wider text-sm transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,255,102,0.5)] flex items-center justify-center gap-2 mt-4">
+                        <i class="fa-solid fa-paper-plane text-base"></i>
+                        <span>ENVIAR CANDIDATURA PARA O DASHBOARD ADMIN</span>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
     <!-- AUTHENTICATION MODAL (LOGIN / REGISTER) -->
     <div id="authModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
         <div class="bg-brand-card border border-brand-border w-full max-w-md p-6 sm:p-8 clip-cyber relative shadow-2xl">
@@ -445,6 +587,11 @@
             <!-- NAVEGAÇÃO DE ABAS DO DASHBOARD -->
             <div class="flex flex-wrap gap-2 p-4 bg-black/30 border-b border-brand-border">
                 <button onclick="switchAdminTab('hero')" class="bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 border border-purple-500/50 font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all">Textos & Hero</button>
+                <button onclick="switchAdminTab('tryouts')" class="bg-brand-green/20 hover:bg-brand-green/30 text-brand-green border border-brand-green/50 font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all flex items-center gap-1.5">
+                    <i class="fa-solid fa-id-card"></i>
+                    <span>Inscrições / Peneira</span>
+                    <span id="adminTryoutBadge" class="bg-brand-green text-black px-1.5 py-0.2 rounded-full text-[10px] font-black">0</span>
+                </button>
                 <button onclick="switchAdminTab('players')" class="bg-brand-card hover:bg-brand-card/80 text-gray-300 border border-brand-border font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all">Elenco Pro</button>
                 <button onclick="switchAdminTab('news')" class="bg-brand-card hover:bg-brand-card/80 text-gray-300 border border-brand-border font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all">Notícias</button>
                 <button onclick="switchAdminTab('shop')" class="bg-brand-card hover:bg-brand-card/80 text-gray-300 border border-brand-border font-display font-bold px-3 py-1.5 rounded text-xs uppercase transition-all">Loja Merch</button>
@@ -453,6 +600,26 @@
 
             <!-- CONTEÚDO SCROLLÁVEL DAS ABAS -->
             <div class="p-6 flex-1 overflow-y-auto space-y-6">
+                <!-- TAB RECEBIMENTO DE PENEIRAS / CANDIDATURAS -->
+                <div id="adminContent-tryouts" class="hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-brand-border pb-3 gap-2">
+                        <div>
+                            <h3 class="font-display font-bold text-lg text-white uppercase flex items-center gap-2">
+                                <i class="fa-solid fa-users-viewfinder text-brand-green"></i>
+                                <span>Candidaturas da Peneira</span>
+                            </h3>
+                            <p class="text-xs text-gray-400">Inscrições enviadas pelos jogadores no formulário do site.</p>
+                        </div>
+                        <span id="tryoutStatsSummary" class="text-xs font-mono bg-black/60 px-3 py-1 border border-brand-border rounded text-brand-green">
+                            Total: 0 inscrições
+                        </span>
+                    </div>
+
+                    <div id="adminTryoutsList" class="space-y-4">
+                        <!-- Tryout Applications Rendered Here -->
+                    </div>
+                </div>
+
                 <!-- TAB 1: HERO & BANNERS E STATS -->
                 <div id="adminContent-hero" class="space-y-6">
                     <h3 class="font-display font-bold text-lg text-white border-b border-brand-border pb-2">Editar Textos & Banners (Visual Front-End)</h3>
@@ -687,7 +854,8 @@
             ],
             trophies: [
                 { id: 1, title: "LIGA BOOYAH MASTER", year: "2026", pos: "CAMPEÃO #1" }
-            ]
+            ],
+            tryouts: []
         };
         window.DEFAULT_DATA = DEFAULT_DATA;
 
@@ -721,21 +889,27 @@
                 window.siteData = DEFAULT_DATA;
                 setDoc(docRef, DEFAULT_DATA);
             }
-            renderAllContent();
+            if (typeof window.renderAllContent === 'function') {
+                window.renderAllContent();
+            }
             if (document.getElementById('adminModal') && !document.getElementById('adminModal').classList.contains('hidden')) {
-                loadAdminValues();
+                if (typeof window.loadAdminValues === 'function') window.loadAdminValues();
             }
         }, (err) => {
             console.error("Erro no Firestore:", err);
             window.siteData = getSiteDataLocal();
-            renderAllContent();
+            if (typeof window.renderAllContent === 'function') {
+                window.renderAllContent();
+            }
         });
 
         // SALVAR NO FIRESTORE
         window.saveDataToFirebase = async function(data) {
             window.siteData = data;
             localStorage.setItem('L7_SITE_DATA', JSON.stringify(data));
-            renderAllContent();
+            if (typeof window.renderAllContent === 'function') {
+                window.renderAllContent();
+            }
             try {
                 await setDoc(docRef, data);
                 showToast('Salvo com sucesso no Banco de Dados!');
@@ -875,8 +1049,8 @@
             }
         };
 
-        // RENDERIZAR TODO O CONTEÚDO DO SITE
-        function renderAllContent() {
+        // RENDERIZAR TODO O CONTEÚDO DO SITE (EXPOSTO NO ESCOPO GLOBAL)
+        window.renderAllContent = function() {
             const data = getSiteData();
             if (!data) return;
 
@@ -982,7 +1156,7 @@
                     </div>
                 `).join('');
             }
-        }
+        };
 
         // CARRINHO DE COMPRAS
         let cart = [];
@@ -1052,14 +1226,14 @@
         // ADMIN MODAL & TAB LOGIC
         window.openAdminModal = function() {
             document.getElementById('adminModal').classList.remove('hidden');
-            loadAdminValues();
+            window.loadAdminValues();
         };
         window.closeAdminModal = function() {
             document.getElementById('adminModal').classList.add('hidden');
         };
 
         window.switchAdminTab = function(tabName) {
-            const tabs = ['hero', 'players', 'news', 'shop', 'trophies'];
+            const tabs = ['hero', 'tryouts', 'players', 'news', 'shop', 'trophies'];
             tabs.forEach(t => {
                 const el = document.getElementById(`adminContent-${t}`);
                 if (el) el.classList.add('hidden');
@@ -1068,7 +1242,7 @@
             if (active) active.classList.remove('hidden');
         };
 
-        function loadAdminValues() {
+        window.loadAdminValues = function() {
             const data = getSiteData();
             if (data.hero) {
                 document.getElementById('adminHeroTitle').value = data.hero.title || "";
@@ -1083,11 +1257,89 @@
                 document.getElementById('stV4').value = data.hero.stV4 || "";
                 document.getElementById('stL4').value = data.hero.stL4 || "";
             }
-            renderAdminLists();
-        }
+            window.renderAdminLists();
+        };
 
-        function renderAdminLists() {
+        window.renderAdminLists = function() {
             const data = getSiteData();
+            
+            // Admin Tryouts List (Formulário de Recrutamento)
+            const tryList = document.getElementById('adminTryoutsList');
+            const tryBadge = document.getElementById('adminTryoutBadge');
+            const trySummary = document.getElementById('tryoutStatsSummary');
+            
+            const tryouts = data.tryouts || [];
+            if (tryBadge) tryBadge.innerText = tryouts.length;
+            if (trySummary) trySummary.innerText = `Total: ${tryouts.length} candidatos`;
+
+            if (tryList) {
+                if (tryouts.length === 0) {
+                    tryList.innerHTML = `<div class="bg-black/40 border border-brand-border p-8 rounded text-center text-gray-500 text-xs">Nenhuma candidatura recebida no momento.</div>`;
+                } else {
+                    tryList.innerHTML = tryouts.map((t, idx) => {
+                        const cleanPhone = t.phone ? t.phone.replace(/\D/g, '') : '';
+                        const waMsg = encodeURIComponent(`Olá ${t.nick}! Sou do departamento de eSports da L7 ESPORTS. Analisamos sua candidatura para a peneira (${t.category} - ${t.role}) e gostaríamos de te convidar para o teste!`);
+                        const statusColors = {
+                            'Pendente': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/40',
+                            'Aprovado': 'bg-green-500/20 text-green-300 border-green-500/40',
+                            'Rejeitado': 'bg-red-500/20 text-red-300 border-red-500/40'
+                        };
+                        const status = t.status || 'Pendente';
+
+                        return `
+                            <div class="bg-black/60 border border-brand-border p-5 rounded-lg space-y-3 relative hover:border-brand-green/40 transition-colors">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-brand-border/60 pb-3">
+                                    <div class="flex items-center gap-3">
+                                        <span class="font-display font-black text-xl text-white uppercase">${t.nick}</span>
+                                        <span class="text-xs text-gray-400">ID: ${t.ffId}</span>
+                                        <span class="bg-brand-green/10 text-brand-green border border-brand-green/30 text-[10px] font-bold px-2 py-0.5 rounded uppercase font-mono">${t.category}</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[10px] border px-2 py-0.5 rounded uppercase font-bold ${statusColors[status] || statusColors['Pendente']}">
+                                            ${status}
+                                        </span>
+                                        <span class="text-[10px] text-gray-500 font-mono">${t.date || ''}</span>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                                    <div><span class="text-[10px] text-gray-500 uppercase block">Nome Real:</span><span class="font-semibold text-gray-200">${t.fullName}</span></div>
+                                    <div><span class="text-[10px] text-gray-500 uppercase block">Idade:</span><span class="font-semibold text-gray-200">${t.age} anos</span></div>
+                                    <div><span class="text-[10px] text-gray-500 uppercase block">Função:</span><span class="font-bold text-brand-green">${t.role}</span></div>
+                                    <div><span class="text-[10px] text-gray-500 uppercase block">Patente:</span><span class="font-semibold text-gray-200">${t.rank}</span></div>
+                                </div>
+
+                                ${t.history ? `<div class="text-xs bg-black/40 p-2.5 rounded border border-brand-border/50"><span class="text-[10px] text-gray-500 uppercase block font-bold">Histórico Competitivo:</span><p class="text-gray-300 mt-0.5">${t.history}</p></div>` : ''}
+                                ${t.reason ? `<div class="text-xs bg-black/40 p-2.5 rounded border border-brand-border/50"><span class="text-[10px] text-gray-500 uppercase block font-bold">Motivo p/ entrar na L7:</span><p class="text-gray-300 mt-0.5">${t.reason}</p></div>` : ''}
+
+                                <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-brand-border/40">
+                                    <a href="${t.video}" target="_blank" rel="noopener noreferrer" class="text-xs bg-red-600/20 hover:bg-red-600/40 text-red-300 border border-red-500/40 px-3 py-1.5 rounded flex items-center gap-1.5 transition-colors">
+                                        <i class="fa-brands fa-youtube"></i> Ver Highlights
+                                    </a>
+
+                                    <div class="flex items-center gap-2">
+                                        <select onchange="updateTryoutStatus(${idx}, this.value)" class="bg-black border border-brand-border text-[11px] text-gray-300 p-1.5 rounded">
+                                            <option value="Pendente" ${status === 'Pendente' ? 'selected' : ''}>Pendente</option>
+                                            <option value="Aprovado" ${status === 'Aprovado' ? 'selected' : ''}>Aprovado p/ Teste</option>
+                                            <option value="Rejeitado" ${status === 'Rejeitado' ? 'selected' : ''}>Rejeitado</option>
+                                        </select>
+
+                                        ${cleanPhone ? `
+                                            <a href="https://wa.me/55${cleanPhone}?text=${waMsg}" target="_blank" class="text-xs bg-green-600 hover:bg-green-500 text-black font-bold px-3 py-1.5 rounded flex items-center gap-1">
+                                                <i class="fa-brands fa-whatsapp text-sm"></i> Chamar no Whats
+                                            </a>
+                                        ` : ''}
+
+                                        <button onclick="deleteTryout(${idx})" class="text-xs bg-red-900/30 hover:bg-red-800 text-red-300 p-1.5 rounded" title="Excluir candidatura">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
             
             // Admin Players List
             const pList = document.getElementById('adminPlayersList');
@@ -1105,40 +1357,75 @@
                     </div>
                 `).join('');
             }
+        };
 
-            // Admin News List
-            const nList = document.getElementById('adminNewsList');
-            if (nList && data.news) {
-                nList.innerHTML = data.news.map((n, idx) => `
-                    <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border">
-                        <span class="font-bold text-xs text-white uppercase line-clamp-1">${n.title}</span>
-                        <button onclick="deleteNews(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1 px-3 rounded">Excluir</button>
-                    </div>
-                `).join('');
-            }
+        // SUBMETER FORMULÁRIO DE PENEIRA (CANDIDATURA)
+        window.submitTryout = function(e) {
+            e.preventDefault();
+            const data = getSiteData();
+            if (!data.tryouts) data.tryouts = [];
 
-            // Admin Shop List
-            const sList = document.getElementById('adminShopList');
-            if (sList && data.shop) {
-                sList.innerHTML = data.shop.map((s, idx) => `
-                    <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border">
-                        <span class="font-bold text-xs text-white uppercase">${s.name} - R$ ${s.price}</span>
-                        <button onclick="deleteProduct(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1 px-3 rounded">Excluir</button>
-                    </div>
-                `).join('');
-            }
+            const category = document.querySelector('input[name="tryCategory"]:checked')?.value || 'Mobile';
+            const nick = document.getElementById('tryNick').value;
+            const ffId = document.getElementById('tryFfId').value;
+            const fullName = document.getElementById('tryFullName').value;
+            const phone = document.getElementById('tryPhone').value;
+            const age = document.getElementById('tryAge').value;
+            const role = document.getElementById('tryRole').value;
+            const rank = document.getElementById('tryRank').value;
+            const video = document.getElementById('tryVideo').value;
+            const history = document.getElementById('tryHistory').value;
+            const reason = document.getElementById('tryReason').value;
 
-            // Admin Trophies List
-            const tList = document.getElementById('adminTrophiesList');
-            if (tList && data.trophies) {
-                tList.innerHTML = data.trophies.map((t, idx) => `
-                    <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border">
-                        <span class="font-bold text-xs text-white uppercase">${t.title} (${t.year})</span>
-                        <button onclick="deleteTrophy(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1 px-3 rounded">Excluir</button>
-                    </div>
-                `).join('');
+            const tryoutEntry = {
+                id: Date.now(),
+                category,
+                nick,
+                ffId,
+                fullName,
+                phone,
+                age,
+                role,
+                rank,
+                video,
+                history,
+                reason,
+                status: 'Pendente',
+                date: new Date().toLocaleDateString('pt-BR')
+            };
+
+            data.tryouts.unshift(tryoutEntry);
+            window.saveDataToFirebase(data);
+
+            document.getElementById('tryoutForm').reset();
+            closeTryoutModal();
+            showToast('Candidatura enviada com sucesso! Os analistas avaliarão sua inscrição.', 'success');
+        };
+
+        // CONTROLE DO MODAL DE INSCRIÇÃO DA PENEIRA
+        window.openTryoutModal = function() {
+            document.getElementById('tryoutModal').classList.remove('hidden');
+        };
+
+        window.closeTryoutModal = function() {
+            document.getElementById('tryoutModal').classList.add('hidden');
+        };
+
+        window.updateTryoutStatus = function(idx, newStatus) {
+            const data = getSiteData();
+            if (data.tryouts && data.tryouts[idx]) {
+                data.tryouts[idx].status = newStatus;
+                window.saveDataToFirebase(data);
             }
-        }
+        };
+
+        window.deleteTryout = function(idx) {
+            const data = getSiteData();
+            if (data.tryouts) {
+                data.tryouts.splice(idx, 1);
+                window.saveDataToFirebase(data);
+            }
+        };
 
         // SALVAR HERO E STATS
         window.saveHeroChanges = function() {
@@ -1300,7 +1587,7 @@
 
         // INITIALIZE RENDER
         document.addEventListener('DOMContentLoaded', () => {
-            renderAllContent();
+            window.renderAllContent();
             document.getElementById('openCartBtn').addEventListener('click', openCart);
         });
     </script>
