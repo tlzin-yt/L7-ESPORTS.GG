@@ -1015,33 +1015,44 @@
 
         // ESCUTA EM TEMPO REAL E MESCLA DADOS SEM APAGAR O LOCALSTORAGE
        // ESCUTA EM TEMPO REAL 100% FIRESTORE (NUVEM)
+// 1. CARREGA IMEDIATAMENTE DA MEMÓRIA LOCAL PARA NUNCA FICAR VAZIO AO DAR F5
+window.siteData = getSiteDataLocal() || DEFAULT_DATA;
+
+// Renderiza a tela na hora com o que o utilizador acabou de criar/salvar
+if (typeof window.renderAllContent === 'function') window.renderAllContent();
+if (typeof window.renderAdminLists === 'function') window.renderAdminLists();
+
+// 2. OUVINTE DO FIREBASE (ATUALIZAÇÃO EM SEGUNDO PLANO)
 onSnapshot(docRef, (docSnap) => {
     if (docSnap.exists()) {
         const cloudData = docSnap.data();
         
-        // Se a nuvem tiver dados válidos, atualiza a janela e o localStorage com os dados oficiais da nuvem
+        // Se a nuvem tiver dados válidos, sincroniza sem destruir o que está na tela
         if (cloudData && (cloudData.news || cloudData.players)) {
-            window.siteData = cloudData;
-            localStorage.setItem('L7_SITE_DATA', JSON.stringify(cloudData));
+            // Compara para garantir que não perde dados locais recentes
+            const localData = getSiteDataLocal();
+            const localNewsCount = localData && localData.news ? localData.news.length : 0;
+            const cloudNewsCount = cloudData.news ? cloudData.news.length : 0;
+
+            // Se o local tiver mais notícias que a nuvem, envia o local para a nuvem; caso contrário, atualiza com a nuvem
+            if (localNewsCount > cloudNewsCount) {
+                window.siteData = localData;
+                setDoc(docRef, localData); // Sobe o que faltava para a nuvem
+            } else {
+                window.siteData = cloudData;
+                localStorage.setItem('L7_SITE_DATA', JSON.stringify(cloudData));
+            }
         }
     } else {
-        // Se o documento não existir na nuvem ainda, cria-o com os dados locais atuais
-        const initialData = getSiteDataLocal() || DEFAULT_DATA;
-        window.siteData = initialData;
-        setDoc(docRef, initialData);
+        // Se o documento não existir, cria na nuvem com os dados locais atuais
+        setDoc(docRef, window.siteData);
     }
     
-    // Renderiza tudo na tela imediatamente
-    if (typeof window.renderAllContent === 'function') {
-        window.renderAllContent();
-    }
-    if (typeof window.renderAdminLists === 'function') {
-        window.renderAdminLists();
-    }
-}, (err) => {
-    console.warn("Modo offline / Erro no Firestore:", err);
-    window.siteData = getSiteDataLocal();
+    // Atualiza a interface visual
     if (typeof window.renderAllContent === 'function') window.renderAllContent();
+    if (typeof window.renderAdminLists === 'function') window.renderAdminLists();
+}, (err) => {
+    console.warn("Modo offline ativo:", err);
 });
         
 window.saveDataToFirebase = async function(data) {
