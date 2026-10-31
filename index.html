@@ -1034,10 +1034,11 @@
                 await setDoc(docRef, data);
                 showToast('Alterações salvas com sucesso!', 'success');
             } catch (e) {
-                console.error("Erro ao salvar dados:", e);
+                console.error("Erro ao salvar dados no Firebase:", e);
                 showToast('Salvo localmente com sucesso!', 'info');
             }
             if (typeof window.renderAllContent === 'function') window.renderAllContent();
+            if (typeof window.renderAdminLists === 'function') window.renderAdminLists();
         };
 
         onAuthStateChanged(auth, (user) => {
@@ -1208,6 +1209,7 @@
                 data.news.unshift(newsObj);
             }
 
+            // Garante o salvamento local e no Firebase
             window.saveDataToFirebase(data);
             closeNewsForm();
             if (typeof window.renderAllContent === 'function') window.renderAllContent();
