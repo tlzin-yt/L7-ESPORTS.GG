@@ -91,9 +91,8 @@
                 <nav class="hidden lg:flex items-center gap-6 font-display font-extrabold tracking-wider text-xs uppercase text-white">
                     <a href="#loja" class="hover:text-brand-green transition-colors">SHOP</a>
                     <a href="#loja" class="hover:text-brand-green transition-colors">COLEÇÕES</a>
-                    <a href="#loja" class="hover:text-brand-green transition-colors">COMBOS</a>
-                    <a href="#loja" class="text-brand-green hover:underline">SALE</a>
                     <a href="#noticias" class="hover:text-brand-green transition-colors">NEWS</a>
+                    <a href="#conquistas" class="hover:text-brand-green transition-colors">CONQUISTAS</a>
                     
                     <!-- DROPDOWN SOBRE A L7 -->
                     <div class="relative group py-2">
@@ -155,9 +154,8 @@
         <div id="mobileMenu" class="hidden lg:hidden bg-[#181818] border-b border-white/10 px-4 pt-2 pb-6 space-y-3 font-display font-extrabold uppercase text-xs text-white">
             <a href="#loja" class="block py-2 hover:text-brand-green">SHOP</a>
             <a href="#loja" class="block py-2 hover:text-brand-green">COLEÇÕES</a>
-            <a href="#loja" class="block py-2 hover:text-brand-green">COMBOS</a>
-            <a href="#loja" class="block py-2 text-brand-green">SALE</a>
             <a href="#noticias" class="block py-2 hover:text-brand-green">NEWS</a>
+            <a href="#conquistas" class="block py-2 hover:text-brand-green">CONQUISTAS</a>
             <a href="#sobre" class="block py-2 hover:text-brand-green">SOBRE A L7</a>
             <button onclick="openTryoutModal(); toggleMobileMenu();" class="block w-full text-left py-2 hover:text-brand-green">RASTREIE SEU PEDIDO</button>
         </div>
@@ -412,8 +410,26 @@
         </div>
     </section>
 
-    <!-- CONQUISTAS SECTION -->
+    <!-- CONQUISTAS SECTION (TÍTULOS ADQUIRIDOS) -->
     <section id="conquistas" class="py-20 border-t border-brand-border bg-brand-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <span class="text-brand-green font-mono text-sm uppercase tracking-widest block mb-2">// GALERIA DE TROFÉUS</span>
+                    <h2 class="font-display font-black text-4xl sm:text-5xl text-white uppercase tracking-tight">CONQUISTAS <span class="text-brand-green text-glow">& TÍTULOS</span></h2>
+                </div>
+                <p class="text-gray-400 text-sm max-w-md mt-2 md:mt-0">
+                    Nossa trajetória vitoriosa nos principais campeonatos e ligas competitivas de Free Fire.
+                </p>
+            </div>
+
+            <!-- TROPHIES GRID -->
+            <div id="trophiesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Loaded Dynamically via JS -->
+            </div>
+        </div>
+    </section>
+
     <!-- LOJA MERCH & CURSOS SECTION -->
     <section id="loja" class="py-20 border-t border-brand-border bg-brand-card/40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1252,6 +1268,51 @@
                 }
             }
 
+            // Render News Section (Envio em tempo real corrigido)
+            const newsGrid = document.getElementById('newsGrid');
+            if (newsGrid && data.news) {
+                if (data.news.length === 0) {
+                    newsGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500 text-sm">Nenhum comunicado publicado no momento.</div>`;
+                } else {
+                    newsGrid.innerHTML = data.news.map(item => `
+                        <article class="bg-brand-card border border-brand-border rounded-xl overflow-hidden group hover:border-brand-green/60 transition-all duration-300 flex flex-col justify-between">
+                            <div>
+                                <div class="h-48 overflow-hidden relative bg-black">
+                                    <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90">
+                                    <span class="absolute top-3 left-3 bg-brand-green text-black font-display font-bold text-[10px] uppercase px-2.5 py-0.5 clip-button">
+                                        ${item.tag || 'COMUNICADO'}
+                                    </span>
+                                </div>
+                                <div class="p-5">
+                                    <h3 class="font-display font-bold text-lg text-white uppercase group-hover:text-brand-green transition-colors leading-snug mb-2">${item.title}</h3>
+                                    <p class="text-xs text-gray-400 leading-relaxed">${item.summary}</p>
+                                </div>
+                            </div>
+                        </article>
+                    `).join('');
+                }
+            }
+
+            // Render Trophies Section
+            const trophiesGrid = document.getElementById('trophiesGrid');
+            if (trophiesGrid && data.trophies) {
+                if (data.trophies.length === 0) {
+                    trophiesGrid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-500 text-sm">Nenhum título cadastrado no momento.</div>`;
+                } else {
+                    trophiesGrid.innerHTML = data.trophies.map(t => `
+                        <div class="bg-brand-card border border-brand-border hover:border-brand-green/60 p-6 rounded-xl flex items-center gap-4 group transition-all">
+                            <div class="w-14 h-14 rounded-lg bg-black border border-brand-green/40 flex items-center justify-center text-brand-green text-2xl group-hover:scale-110 transition-transform flex-shrink-0">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+                            <div>
+                                <span class="text-[10px] text-brand-green font-mono font-bold uppercase block">${t.year} • ${t.pos}</span>
+                                <h4 class="font-display font-black text-lg text-white uppercase group-hover:text-brand-green transition-colors">${t.title}</h4>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+
             // Render Shop Products (Cursos e Merch)
             const productsGrid = document.getElementById('productsGrid');
             if (productsGrid && data.shop) {
@@ -1481,24 +1542,22 @@
             }
             
             // Admin Shop List (Com Opção de Excluir Produtos Existentes)
-            const sList = document.getElementById('adminShopList');
-            if (sList && data.shop) {
-                if (data.shop.length === 0) {
-                    sList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhum produto cadastrado na loja.</div>`;
+            // Admin News List
+            const nList = document.getElementById('adminNewsList');
+            if (nList && data.news) {
+                if (data.news.length === 0) {
+                    nList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhuma notícia cadastrada.</div>`;
                 } else {
-                    sList.innerHTML = data.shop.map((prod, idx) => `
+                    nList.innerHTML = data.news.map((n, idx) => `
                         <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border hover:border-brand-green/40 transition-colors">
                             <div class="flex items-center gap-3">
-                                <img src="${prod.img}" class="w-12 h-12 object-cover rounded bg-black">
+                                <img src="${n.img}" class="w-12 h-12 object-cover rounded bg-black">
                                 <div>
-                                    <span class="font-bold text-xs text-white uppercase block line-clamp-1">${prod.name}</span>
-                                    <div class="flex items-center gap-2 mt-0.5">
-                                        <span class="text-[10px] text-brand-green font-bold">R$ ${Number(prod.price).toFixed(2)}</span>
-                                        <span class="text-[9px] bg-brand-border px-1.5 py-0.2 rounded text-gray-300 font-mono">${prod.category || 'Vestuário'}</span>
-                                    </div>
+                                    <span class="font-bold text-xs text-white uppercase block line-clamp-1">${n.title}</span>
+                                    <span class="text-[10px] text-brand-green font-mono">${n.tag || 'LBFF'}</span>
                                 </div>
                             </div>
-                            <button onclick="deleteProduct(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
+                            <button onclick="deleteNews(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
                                 <i class="fa-solid fa-trash"></i>
                                 <span>Excluir</span>
                             </button>
@@ -1507,22 +1566,24 @@
                 }
             }
 
-            // Admin Players List
-            const pList = document.getElementById('adminPlayersList');
-            if (pList && data.players) {
-                if (data.players.length === 0) {
-                    pList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhum jogador cadastrado.</div>`;
+            // Admin Trophies List
+            const tList = document.getElementById('adminTrophiesList');
+            if (tList && data.trophies) {
+                if (data.trophies.length === 0) {
+                    tList.innerHTML = `<div class="bg-black/40 border border-brand-border p-6 rounded text-center text-gray-500 text-xs">Nenhum título cadastrado.</div>`;
                 } else {
-                    pList.innerHTML = data.players.map((p, idx) => `
+                    tList.innerHTML = data.trophies.map((tr, idx) => `
                         <div class="flex items-center justify-between bg-black/50 p-3 rounded border border-brand-border hover:border-brand-green/40 transition-colors">
                             <div class="flex items-center gap-3">
-                                <img src="${p.photo}" class="w-10 h-10 object-cover rounded-full bg-black">
+                                <div class="w-8 h-8 rounded bg-black border border-brand-green flex items-center justify-center text-brand-green text-xs">
+                                    <i class="fa-solid fa-trophy"></i>
+                                </div>
                                 <div>
-                                    <span class="font-bold text-xs text-white uppercase block">${p.nick} (${p.name})</span>
-                                    <span class="text-[10px] text-brand-green font-mono">${p.role} • K/D: ${p.kd} • Capa: ${p.headshot}</span>
+                                    <span class="font-bold text-xs text-white uppercase block">${tr.title}</span>
+                                    <span class="text-[10px] text-brand-green font-mono">${tr.year} - ${tr.pos}</span>
                                 </div>
                             </div>
-                            <button onclick="deletePlayer(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
+                            <button onclick="deleteTrophy(${idx})" class="bg-red-900/40 hover:bg-red-700 text-red-200 text-xs font-bold py-1.5 px-3 rounded flex items-center gap-1 transition-colors">
                                 <i class="fa-solid fa-trash"></i>
                                 <span>Excluir</span>
                             </button>
