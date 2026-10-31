@@ -1410,16 +1410,16 @@
                 } else {
                     playersGrid.innerHTML = data.players.map(player => `
                         <div class="bg-brand-card border border-brand-border hover:border-brand-green/60 rounded-xl overflow-hidden group transition-all duration-300 hover:-translate-y-1 shadow-lg">
-                            <div class="h-64 overflow-hidden relative bg-black">
+                            <div class="h-64 sm:h-72 overflow-hidden relative bg-black">
                                 <img src="${player.photo}" alt="${player.nick}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100">
                                 <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
                                 <span class="absolute top-3 left-3 bg-brand-green text-black font-display font-black text-[10px] uppercase px-2.5 py-1 clip-button">
                                     ${player.role}
                                 </span>
                             </div>
-                            <div class="p-5 relative -mt-6 z-10">
-                                <h3 class="font-display font-black text-2xl text-white uppercase tracking-wide group-hover:text-brand-green transition-colors">${player.nick}</h3>
-                                <span class="text-xs text-gray-400 block font-medium uppercase mb-4">${player.name}</span>
+                            <div class="p-4 sm:p-5 relative -mt-6 z-10">
+                                <h3 class="font-display font-black text-xl sm:text-2xl text-white uppercase tracking-wide group-hover:text-brand-green transition-colors">${player.nick}</h3>
+                                <span class="text-xs text-gray-400 block font-medium uppercase mb-3 sm:mb-4">${player.name}</span>
                                 <div class="grid grid-cols-2 gap-2 pt-3 border-t border-brand-border/60">
                                     <div class="bg-black/50 p-2 rounded text-center border border-brand-border/40">
                                         <span class="text-[9px] text-gray-400 uppercase block font-semibold">K/D Ratio</span>
@@ -1445,18 +1445,18 @@
                     newsGrid.innerHTML = data.news.map((item, index) => `
                         <article onclick="openNewsArticleModal(${index})" class="bg-brand-card border border-brand-border rounded-xl overflow-hidden group hover:border-brand-green/60 transition-all duration-300 flex flex-col justify-between cursor-pointer">
                             <div>
-                                <div class="h-48 overflow-hidden relative bg-black">
+                                <div class="h-44 sm:h-48 overflow-hidden relative bg-black">
                                     <img src="${item.img}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90">
                                     <span class="absolute top-3 left-3 bg-brand-green text-black font-display font-bold text-[10px] uppercase px-2.5 py-0.5 clip-button">
                                         ${item.tag || 'COMUNICADO'}
                                     </span>
                                 </div>
-                                <div class="p-5">
-                                    <h3 class="font-display font-bold text-lg text-white uppercase group-hover:text-brand-green transition-colors leading-snug mb-2">${item.title}</h3>
+                                <div class="p-4 sm:p-5">
+                                    <h3 class="font-display font-bold text-base sm:text-lg text-white uppercase group-hover:text-brand-green transition-colors leading-snug mb-2">${item.title}</h3>
                                     <p class="text-xs text-gray-400 leading-relaxed line-clamp-3">${item.summary}</p>
                                 </div>
                             </div>
-                            <div class="px-5 pb-5 pt-0">
+                            <div class="px-4 sm:px-5 pb-4 sm:pb-5 pt-0">
                                 <span class="text-xs text-brand-green font-bold uppercase flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                                     Ler notícia completa <i class="fa-solid fa-arrow-right text-[10px]"></i>
                                 </span>
@@ -1497,20 +1497,20 @@
                         return `
                             <div class="bg-brand-card border border-brand-border rounded-lg overflow-hidden group flex flex-col justify-between hover:border-brand-green/60 transition-all">
                                 <div>
-                                    <div class="h-56 overflow-hidden relative bg-black">
+                                    <div class="h-48 sm:h-56 overflow-hidden relative bg-black">
                                         <img src="${prod.img}" alt="${prod.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform filter brightness-90">
                                         <span class="absolute top-3 left-3 ${isCourse ? 'bg-purple-600 text-white' : 'bg-brand-green text-black'} font-bold text-[10px] uppercase px-2 py-0.5 clip-button">
                                             <i class="${isCourse ? 'fa-solid fa-graduation-cap' : 'fa-solid fa-fire'} mr-1"></i> ${prod.tag || (isCourse ? 'CURSO PRO' : 'LANÇAMENTO')}
                                         </span>
                                     </div>
-                                    <div class="p-5">
-                                        <h3 class="font-display font-bold text-base text-white uppercase line-clamp-2 min-h-[3rem]">${prod.name}</h3>
+                                    <div class="p-4 sm:p-5">
+                                        <h3 class="font-display font-bold text-sm sm:text-base text-white uppercase line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem]">${prod.name}</h3>
                                         <div class="flex items-center gap-2 mt-2">
-                                            <span class="font-display font-black text-2xl text-brand-green">R$ ${Number(prod.price).toFixed(2).replace('.', ',')}</span>
+                                            <span class="font-display font-black text-xl sm:text-2xl text-brand-green">R$ ${Number(prod.price).toFixed(2).replace('.', ',')}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="p-5 pt-0">
+                                <div class="p-4 sm:p-5 pt-0">
                                     <button onclick="addToCart(${prod.id})" class="w-full ${isCourse ? 'bg-purple-600 hover:bg-purple-500 text-white' : 'bg-brand-green/10 hover:bg-brand-green hover:text-black text-brand-green'} border border-brand-green/40 font-display font-bold py-2.5 text-xs uppercase clip-button transition-all flex items-center justify-center gap-1.5">
                                         <i class="${isCourse ? 'fa-solid fa-play' : 'fa-solid fa-cart-shopping'}"></i>
                                         <span>${isCourse ? 'COMPRAR CURSO' : 'RESERVAR'}</span>
